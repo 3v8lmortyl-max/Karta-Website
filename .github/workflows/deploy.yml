@@ -1,31 +1,22 @@
 name: Deploy to Netlify
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout gh-pages branch
+      - name: Checkout gh-pages
         uses: actions/checkout@v4
         with:
           ref: gh-pages
 
-      - name: Verify Netlify token
+      - name: Deploy
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            -H "Authorization: Bearer ${{ secrets.NETLIFY_AUTH_TOKEN }}" \
-            https://api.netlify.com/api/v1/sites/10d14059-8b60-4d36-b982-9f9fe2683d06)
-          echo "Netlify API status: $STATUS"
-          curl -s \
-            -H "Authorization: Bearer ${{ secrets.NETLIFY_AUTH_TOKEN }}" \
-            https://api.netlify.com/api/v1/sites/10d14059-8b60-4d36-b982-9f9fe2683d06 | python3 -c "import json,sys; d=json.load(sys.stdin); print('Site:', d.get('name'), '| URL:', d.get('url'))"
-
-      - name: Deploy to Netlify
-        run: |
-          npx netlify-cli deploy \
-            --dir=. \
-            --site=10d14059-8b60-4d36-b982-9f9fe2683d06 \
-            --prod \
-            --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} \
-            --message="Karta skeleton deploy"
+          npm i -g netlify-cli
+          netlify deploy --dir=. --site=$NETLIFY_SITE_ID --prod --auth=$NETLIFY_AUTH_TOKEN --message="Karta home v1"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: 10d14059-8b60-4d36-b982-9f9fe2683d06
