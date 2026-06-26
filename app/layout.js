@@ -1,4 +1,11 @@
 import './globals.css';
+import Header from '../components/Header';
+import MenuDrawer from '../components/MenuDrawer';
+import SearchOverlay from '../components/SearchOverlay';
+import CartDrawer from '../components/CartDrawer';
+import WishlistDrawer from '../components/WishlistDrawer';
+import BackgroundVideo from '../components/BackgroundVideo';
+import SmoothScroll from '../components/SmoothScroll';
 
 export const metadata = {
   title: 'Karta — Wear Art, Wear Karta',
@@ -19,7 +26,17 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SmoothScroll>
+          <BackgroundVideo />
+          <Header />
+          <MenuDrawer />
+          <SearchOverlay />
+          <CartDrawer />
+          <WishlistDrawer />
+          <main>{children}</main>
+        </SmoothScroll>
+      </body>
     </html>
   );
 }

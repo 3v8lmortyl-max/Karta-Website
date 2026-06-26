@@ -1,92 +1,203 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
-import { MenuIcon, SearchIcon, BagIcon, SoundOnIcon, SoundOffIcon } from '../components/Icons';
+import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
+import ProductCard from '../components/ProductCard';
+import { ArrowRight } from '../components/Icons';
+import { products } from '../lib/products';
+
+const Emblem3D = dynamic(() => import('../components/Emblem3D'), {
+  ssr: false,
+  loading: () => <div style={{ height: 460, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9a958d', fontSize: '0.75rem', letterSpacing: '0.3em' }}>KARTA</div>,
+});
+
+const fade = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0 } };
+
+function SectionHead({ eyebrow, title, sub, href, hrefLabel }) {
+  return (
+    <div className="section-head">
+      <div className="section-head-row">
+        <div>
+          <motion.p className="eyebrow" variants={fade} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ duration: 0.5 }}>{eyebrow}</motion.p>
+          <motion.h2 className="section-title" variants={fade} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.05 }} dangerouslySetInnerHTML={{ __html: title }} />
+          {sub && <motion.p className="section-sub" variants={fade} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>{sub}</motion.p>}
+        </div>
+        {href && (
+          <motion.div variants={fade} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }}>
+            <Link href={href} className="view-all">{hrefLabel} <ArrowRight size={15} /></Link>
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
-  const videoRef = useRef(null);
-  const [muted, setMuted] = useState(true);
-
-  useEffect(() => {
-    // Ensure autoplay works (muted autoplay is allowed by browsers)
-    const v = videoRef.current;
-    if (v) {
-      v.muted = true;
-      const p = v.play();
-      if (p && p.catch) p.catch(() => {});
-    }
-  }, []);
-
-  const toggleSound = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    const next = !muted;
-    v.muted = next;
-    if (!next) {
-      // unmuting — ensure it's playing
-      const p = v.play();
-      if (p && p.catch) p.catch(() => {});
-    }
-    setMuted(next);
-  };
+  const featured = products.filter(p => p.featured);
+  const newArrivals = products.filter(p => p.collection === 'New Arrivals');
+  const bestSellers = products.filter(p => p.collection === 'Best Sellers');
+  const limited = products.filter(p => p.collection === 'Limited Edition');
 
   return (
-    <main className="relative w-full h-[100svh] overflow-hidden bg-black">
-      {/* Background video */}
-      <video
-        ref={videoRef}
-        className="hero-video"
-        src="/hero-video.mp4"
-        poster="/hero-poster.jpg"
-        autoPlay
-        loop
-        muted
-        playsInline
-      />
-      <div className="hero-veil" />
+    <>
+      {/* HERO */}
+      <section className="hero">
+        <motion.div className="hero-shopall" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 1.2 }}>
+          <Link href="/shop" className="shop-all-link">Shop All</Link>
+        </motion.div>
+      </section>
 
-      {/* Top bar */}
-      <header className="absolute top-0 left-0 right-0 z-20 px-5 pt-5">
-        <div className="flex items-center justify-between">
-          {/* Left: menu + search */}
-          <div className="flex items-center gap-5">
-            <button className="icon-btn" aria-label="Menu"><MenuIcon /></button>
-            <button className="icon-btn" aria-label="Search"><SearchIcon /></button>
-          </div>
+      {/* FEATURED */}
+      <section className="section section-tint">
+        <div className="container">
+          <SectionHead eyebrow="Featured" title="Wear Art Collection" sub="Each piece individually crafted. No two identical." href="/collections/wear-art" hrefLabel="View Collection" />
+          <div className="product-grid">{featured.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}</div>
+        </div>
+      </section>
 
-          {/* Center: logo */}
-          <a href="/" aria-label="Karta home" className="absolute left-1/2 -translate-x-1/2">
-            <Image
-              src="/karta-logo.png"
-              alt="Karta"
-              width={110}
-              height={57}
-              priority
-              style={{ height: '38px', width: 'auto' }}
-            />
-          </a>
-
-          {/* Right: bag */}
-          <div className="flex items-center">
-            <button className="icon-btn" aria-label="Cart"><BagIcon /></button>
+      {/* STORY */}
+      <section className="section section-solid">
+        <div className="container">
+          <div className="story">
+            <div className="story-text">
+              <motion.p className="eyebrow" variants={fade} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ duration: 0.5 }}>Our Philosophy</motion.p>
+              <motion.h2 className="section-title" variants={fade} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.05 }}>
+                We don&apos;t sell clothes.<br />We create wearable art.
+              </motion.h2>
+              <motion.p className="story-body" variants={fade} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
+                Every Karta garment begins as a blank canvas. Our artists spend hours applying hand-painted techniques directly onto premium fabric — sumi ink, pigment washes, gestural brushwork. The result is clothing that carries the unpredictability and soul of fine art.
+              </motion.p>
+              <motion.p className="story-body" variants={fade} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 }}>
+                No two pieces are ever the same. When you wear Karta, you wear something that has never existed before, and never will again.
+              </motion.p>
+              <motion.div variants={fade} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }}>
+                <Link href="/about" className="view-all" style={{ marginTop: '2rem', display: 'inline-flex' }}>Our Story <ArrowRight size={15} /></Link>
+              </motion.div>
+            </div>
+            <motion.div className="story-visual" initial={{ opacity: 0, scale: 0.97 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }} />
           </div>
         </div>
-      </header>
+      </section>
 
-      {/* SHOP ALL — bottom center */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20">
-        <a href="/shop" className="shop-all">Shop All</a>
-      </div>
+      {/* 3D EMBLEM */}
+      <section className="section section-tint">
+        <div className="container">
+          <div className="emblem-section">
+            <motion.p className="eyebrow" variants={fade} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ duration: 0.5 }}>The Mark</motion.p>
+            <motion.h2 className="section-title" variants={fade} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.05 }}>Karta</motion.h2>
+            <Emblem3D />
+            <p className="emblem-hint">Drag to rotate · Explore the emblem</p>
+          </div>
+        </div>
+      </section>
 
-      {/* Sound toggle — bottom right */}
-      <button
-        className="sound-toggle absolute bottom-8 right-5 z-20"
-        onClick={toggleSound}
-        aria-label={muted ? 'Unmute video' : 'Mute video'}
-      >
-        {muted ? <SoundOffIcon /> : <SoundOnIcon />}
-      </button>
-    </main>
+      {/* PROCESS */}
+      <section className="section section-solid">
+        <div className="container">
+          <SectionHead eyebrow="The Process" title="Made by hand,<br/>worn with intention." sub="From blank fabric to finished artwork — every step is done by hand." />
+          <div className="process-grid">
+            {[
+              { step: '01', name: 'Select the Fabric', bg: 'linear-gradient(135deg,#1c1a18,#2a2520)' },
+              { step: '02', name: 'Paint the Art', bg: 'linear-gradient(135deg,#1a1c1e,#28303a)' },
+              { step: '03', name: 'Finish & Sign', bg: 'linear-gradient(135deg,#1e1a14,#382e1e)' },
+            ].map((s, i) => (
+              <motion.div key={s.step} className="process-card" style={{ background: s.bg }}
+                initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}>
+                <div className="process-overlay" />
+                <div className="process-card-label">
+                  <p className="process-step">{s.step}</p>
+                  <h3 className="process-name">{s.name}</h3>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* NEW ARRIVALS */}
+      {newArrivals.length > 0 && (
+        <section className="section section-tint">
+          <div className="container">
+            <SectionHead eyebrow="Just Dropped" title="New Arrivals" href="/shop?collection=new-arrivals" hrefLabel="See All" />
+            <div className="product-grid">{newArrivals.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}</div>
+          </div>
+        </section>
+      )}
+
+      {/* BEST SELLERS */}
+      {bestSellers.length > 0 && (
+        <section className="section section-solid">
+          <div className="container">
+            <SectionHead eyebrow="Collector Favourites" title="Best Sellers" href="/shop?collection=best-sellers" hrefLabel="See All" />
+            <div className="product-grid">{bestSellers.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}</div>
+          </div>
+        </section>
+      )}
+
+      {/* LIMITED */}
+      {limited.length > 0 && (
+        <section className="section section-tint">
+          <div className="container">
+            <SectionHead eyebrow="Numbered Pieces" title="Limited Editions" sub="Once they're gone, they're gone." href="/collections/limited-edition" hrefLabel="View All" />
+            <div className="product-grid">{limited.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}</div>
+          </div>
+        </section>
+      )}
+
+      {/* NEWSLETTER */}
+      <section className="section section-solid">
+        <div className="container">
+          <div className="newsletter">
+            <motion.p className="eyebrow" variants={fade} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ duration: 0.5 }}>Stay in the Studio</motion.p>
+            <motion.h2 className="section-title" variants={fade} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.05 }}>
+              New drops. Artist notes.<br />First access.
+            </motion.h2>
+            <motion.div className="newsletter-form" variants={fade} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.12 }}>
+              <input className="newsletter-input" type="email" placeholder="Your email address" />
+              <button className="btn-solid" style={{ whiteSpace: 'nowrap', padding: '0 1.6rem' }}>Subscribe</button>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="footer">
+        <div className="footer-grid">
+          <div>
+            <Image src="/karta-logo.png" alt="Karta" width={110} height={57} style={{ height: '34px', width: 'auto', marginBottom: '1rem' }} />
+            <p className="footer-tag">Wear Art. Wear Karta.</p>
+          </div>
+          <div className="footer-col">
+            <h4>Shop</h4>
+            <Link href="/shop">All Products</Link>
+            <Link href="/collections">Collections</Link>
+            <Link href="/shop?tag=new">New Arrivals</Link>
+            <Link href="/collections/limited-edition">Limited Editions</Link>
+          </div>
+          <div className="footer-col">
+            <h4>Company</h4>
+            <Link href="/about">About Karta</Link>
+            <Link href="/journal">Journal</Link>
+            <Link href="/contact">Contact</Link>
+            <Link href="/track">Order Tracking</Link>
+          </div>
+          <div className="footer-col">
+            <h4>Legal</h4>
+            <Link href="/privacy">Privacy Policy</Link>
+            <Link href="/shipping">Shipping Policy</Link>
+            <Link href="/returns">Returns</Link>
+            <Link href="/terms">Terms</Link>
+            <Link href="/faq">FAQ</Link>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <span>© 2026 Karta. All rights reserved.</span>
+          <span>Wear Art. Wear Karta.</span>
+        </div>
+      </footer>
+    </>
   );
 }
