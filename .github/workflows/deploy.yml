@@ -8,21 +8,20 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout gh-pages (pre-built static files)
+      - name: Checkout gh-pages branch
         uses: actions/checkout@v4
         with:
           ref: gh-pages
 
-      - name: List files to deploy
-        run: ls -la
-
-      - name: Deploy pre-built files to Netlify
-        run: |
-          npm install -g netlify-cli@latest
-          netlify deploy \
-            --dir=. \
-            --site=10d14059-8b60-4d36-b982-9f9fe2683d06 \
-            --prod \
-            --message "Karta home skeleton - static export"
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v3.0
+        with:
+          publish-dir: '.'
+          production-deploy: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Karta home skeleton"
+          netlify-config-path: './netlify-deploy.toml'
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: 10d14059-8b60-4d36-b982-9f9fe2683d06
+        timeout-minutes: 5
