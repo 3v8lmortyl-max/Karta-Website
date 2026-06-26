@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  trailingSlash: true,
+  // No output:'export' — Vercel runs Next.js natively (SSR + static hybrid)
+  reactStrictMode: true,
   images: {
-    unoptimized: true,   // required for static export (no image server)
+    domains: [],
   },
 };
 export default nextConfig;
