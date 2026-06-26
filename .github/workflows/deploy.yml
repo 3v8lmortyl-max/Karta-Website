@@ -1,22 +1,24 @@
-name: Deploy to Netlify
+name: Deploy to Vercel
 on:
-  workflow_dispatch:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout gh-pages
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
+      - uses: actions/checkout@v4
 
-      - name: Deploy
-        run: |
-          npm i -g netlify-cli
-          netlify deploy --dir=. --site=$NETLIFY_SITE_ID --prod --auth=$NETLIFY_AUTH_TOKEN --message="Karta home v1"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Deploy to Vercel
+        run: npx vercel --token=${{ secrets.VERCEL_TOKEN }} --prod --yes
         env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: 10d14059-8b60-4d36-b982-9f9fe2683d06
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
