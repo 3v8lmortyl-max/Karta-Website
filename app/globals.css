@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -24,14 +24,20 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top;
 }
 
-/* Subtle fade so icons stay legible over any frame */
+/* Subtle gradient veil so icons stay legible */
 .hero-veil {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.30) 100%);
+    linear-gradient(180deg,
+      rgba(0,0,0,0.35) 0%,
+      rgba(0,0,0,0) 18%,
+      rgba(0,0,0,0) 68%,
+      rgba(0,0,0,0.40) 100%
+    );
   pointer-events: none;
 }
 
@@ -43,34 +49,37 @@ body {
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 0;
-  transition: opacity 0.25s ease;
+  padding: 4px;
+  transition: opacity 0.22s ease;
+  -webkit-tap-highlight-color: transparent;
 }
-.icon-btn:hover { opacity: 0.65; }
+.icon-btn:hover { opacity: 0.6; }
+.icon-btn:active { opacity: 0.4; }
 
-.shop-all {
-  font-size: 0.95rem;
-  letter-spacing: 0.18em;
+.shop-all-link {
+  font-size: 0.82rem;
+  letter-spacing: 0.22em;
   color: #ffffff;
   text-transform: uppercase;
   font-weight: 400;
-  transition: opacity 0.25s ease;
+  text-decoration: none;
+  transition: opacity 0.22s ease;
+  -webkit-tap-highlight-color: transparent;
 }
-.shop-all:hover { opacity: 0.65; }
+.shop-all-link:hover { opacity: 0.6; }
 
 .sound-toggle {
-  width: 3.25rem;
-  height: 3.25rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 9999px;
-  background: rgba(20,20,20,0.55);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(0,0,0,0.45);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   border: none;
   cursor: pointer;
-  transition: background 0.25s ease;
+  transition: background 0.22s ease;
+  -webkit-tap-highlight-color: transparent;
 }
-.sound-toggle:hover { background: rgba(20,20,20,0.75); }
+.sound-toggle:hover { background: rgba(0,0,0,0.65); }
