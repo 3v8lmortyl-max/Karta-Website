@@ -1,8 +1,6 @@
 name: Deploy to Netlify
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
 
 jobs:
   deploy:
@@ -13,15 +11,21 @@ jobs:
         with:
           ref: gh-pages
 
+      - name: Verify Netlify token
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: Bearer ${{ secrets.NETLIFY_AUTH_TOKEN }}" \
+            https://api.netlify.com/api/v1/sites/10d14059-8b60-4d36-b982-9f9fe2683d06)
+          echo "Netlify API status: $STATUS"
+          curl -s \
+            -H "Authorization: Bearer ${{ secrets.NETLIFY_AUTH_TOKEN }}" \
+            https://api.netlify.com/api/v1/sites/10d14059-8b60-4d36-b982-9f9fe2683d06 | python3 -c "import json,sys; d=json.load(sys.stdin); print('Site:', d.get('name'), '| URL:', d.get('url'))"
+
       - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v3.0
-        with:
-          publish-dir: '.'
-          production-deploy: true
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Karta home skeleton"
-          netlify-config-path: './netlify-deploy.toml'
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: 10d14059-8b60-4d36-b982-9f9fe2683d06
-        timeout-minutes: 5
+        run: |
+          npx netlify-cli deploy \
+            --dir=. \
+            --site=10d14059-8b60-4d36-b982-9f9fe2683d06 \
+            --prod \
+            --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} \
+            --message="Karta skeleton deploy"
