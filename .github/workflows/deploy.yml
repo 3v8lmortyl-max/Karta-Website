@@ -1,23 +1,26 @@
 name: Deploy to Netlify
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-      - name: Install dependencies
-        run: npm install
-      - name: Build static export
-        run: npm run build
-      - name: Add .nojekyll
-        run: touch out/.nojekyll
-      - name: Deploy to Netlify via proxy
+          ref: gh-pages
+
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
+      - name: Deploy to Netlify
         run: |
-          npx -y @netlify/mcp@latest \
-            --site-id 10d14059-8b60-4d36-b982-9f9fe2683d06 \
-            --proxy-path "${{ secrets.NETLIFY_PROXY_URL }}"
+          netlify deploy \
+            --dir=. \
+            --site=10d14059-8b60-4d36-b982-9f9fe2683d06 \
+            --prod \
+            --message "Karta home skeleton"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
