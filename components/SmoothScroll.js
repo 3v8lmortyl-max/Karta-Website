@@ -8,20 +8,23 @@ export default function SmoothScroll({ children }) {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const lenis = new Lenis({
-      duration: 1.5,
-      easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)), // expo out — silky
+      duration: 1.15,
+      easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      wheelMultiplier: 0.9,
-      touchMultiplier: 1.8,
-      lerp: 0.09,            // lower = smoother glide
-      syncTouch: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.4,
+      lerp: 0.1,
+      // Respect elements / ancestors marked with data-lenis-prevent (e.g. 3D canvas)
+      prevent: (node) =>
+        node.hasAttribute?.('data-lenis-prevent') ||
+        node.closest?.('[data-lenis-prevent]') != null,
     });
 
     let raf;
-    function loop(time) {
+    const loop = (time) => {
       lenis.raf(time);
       raf = requestAnimationFrame(loop);
-    }
+    };
     raf = requestAnimationFrame(loop);
 
     return () => {

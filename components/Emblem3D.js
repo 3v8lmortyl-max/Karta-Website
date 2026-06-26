@@ -11,46 +11,43 @@ function LogoMesh() {
   const ref = useRef();
 
   const geometry = useMemo(() => {
-    // Build an SVG document string from the traced path and parse it
     const svgMarkup = `<svg xmlns="http://www.w3.org/2000/svg"><path d="${KARTA_LOGO_PATH}"/></svg>`;
-    const loader = new SVGLoader();
-    const data = loader.parse(svgMarkup);
+    const data = new SVGLoader().parse(svgMarkup);
 
     const shapes = [];
     data.paths.forEach((p) => {
-      const ss = SVGLoader.createShapes(p);
-      ss.forEach((s) => shapes.push(s));
+      SVGLoader.createShapes(p).forEach((s) => shapes.push(s));
     });
 
     const geo = new THREE.ExtrudeGeometry(shapes, {
-      depth: 0.42,
+      depth: 0.5,
       bevelEnabled: true,
-      bevelThickness: 0.06,
-      bevelSize: 0.045,
-      bevelSegments: 4,
-      curveSegments: 24,
+      bevelThickness: 0.08,
+      bevelSize: 0.05,
+      bevelOffset: 0,
+      bevelSegments: 5,
+      curveSegments: 26,
     });
-    geo.center();
-    // The trace was Y-flipped; flip back so it reads correctly
+    // SVGLoader uses y-down; flip Y once so the script reads correctly (not mirrored)
     geo.scale(1, -1, 1);
+    geo.center();
     geo.computeVertexNormals();
     return geo;
   }, []);
 
   useFrame((_, delta) => {
-    if (ref.current) {
-      ref.current.rotation.y += delta * 0.35;
-    }
+    if (ref.current) ref.current.rotation.y += delta * 0.3;
   });
 
   return (
-    <Float speed={1.3} rotationIntensity={0.4} floatIntensity={0.7}>
-      <mesh ref={ref} geometry={geometry} castShadow>
+    <Float speed={1.1} rotationIntensity={0.3} floatIntensity={0.55}>
+      <mesh ref={ref} geometry={geometry}>
+        {/* Polished aged-silver finish like the reference render */}
         <meshStandardMaterial
-          color="#eceef2"
+          color="#cdd0d4"
           metalness={1}
-          roughness={0.22}
-          envMapIntensity={1.6}
+          roughness={0.28}
+          envMapIntensity={1.5}
         />
       </mesh>
     </Float>
@@ -59,24 +56,27 @@ function LogoMesh() {
 
 export default function Emblem3D() {
   return (
-    <div className="emblem-canvas">
-      <Canvas camera={{ position: [0, 0, 7], fov: 42 }} dpr={[1, 2]}>
+    <div className="emblem-canvas" data-lenis-prevent>
+      <Canvas
+        camera={{ position: [0, 0, 7], fov: 42 }}
+        dpr={[1, 2]}
+        gl={{ antialias: true, alpha: true }}
+      >
         <Suspense fallback={null}>
-          <ambientLight intensity={0.5} />
-          <spotLight position={[8, 10, 8]} angle={0.3} penumbra={1} intensity={2.6} />
-          <pointLight position={[-8, -6, -6]} intensity={1.1} color="#c4973a" />
-          <pointLight position={[6, -2, 8]} intensity={0.8} color="#7fb0ff" />
+          <ambientLight intensity={0.45} />
+          <spotLight position={[8, 10, 8]} angle={0.3} penumbra={1} intensity={2.8} />
+          <spotLight position={[-6, 4, 6]} angle={0.4} penumbra={1} intensity={1.4} color="#fff6e6" />
+          <pointLight position={[-8, -6, -4]} intensity={1} color="#b9bcc2" />
           <Center>
             <LogoMesh />
           </Center>
           <Environment preset="studio" />
-          {/* Fully free rotation — drag any direction, any angle */}
           <OrbitControls
             enablePan={false}
             enableZoom={false}
             enableDamping
-            dampingFactor={0.06}
-            rotateSpeed={0.95}
+            dampingFactor={0.05}
+            rotateSpeed={0.9}
           />
         </Suspense>
       </Canvas>
