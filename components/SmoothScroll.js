@@ -5,14 +5,16 @@ import Lenis from 'lenis';
 
 export default function SmoothScroll({ children }) {
   useEffect(() => {
-    // Respect reduced motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      duration: 1.5,
+      easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)), // expo out — silky
       smoothWheel: true,
-      touchMultiplier: 1.5,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1.8,
+      lerp: 0.09,            // lower = smoother glide
+      syncTouch: true,
     });
 
     let raf;

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useWishlist, useCart, useUI } from '../lib/store';
-import { HeartIcon } from './Icons';
+import { HeartIcon, PlusIcon } from './Icons';
 import { formatINR } from '../lib/products';
 
 export default function ProductCard({ product, index = 0 }) {
@@ -28,10 +28,10 @@ export default function ProductCard({ product, index = 0 }) {
   return (
     <motion.div
       className="product-card"
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.6, delay: (index % 4) * 0.06, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.7, delay: (index % 2) * 0.08, ease: [0.16, 1, 0.3, 1] }}
     >
       <Link href={`/products/${product.id}`} className="product-link">
         <div className="product-media">
@@ -42,10 +42,11 @@ export default function ProductCard({ product, index = 0 }) {
             onClick={toggleWish}
             aria-label="Toggle wishlist"
           >
-            <HeartIcon size={18} filled={wished} />
+            <HeartIcon size={17} filled={wished} />
           </button>
-          <button className="product-quickadd" onClick={quickAdd}>
-            Quick Add
+          {/* Circular + quick-add, bottom-right (Zicabella style) */}
+          <button className="product-plus" onClick={quickAdd} aria-label="Quick add">
+            <PlusIcon size={20} />
           </button>
         </div>
         <div className="product-info">

@@ -208,23 +208,31 @@ button { font-family: inherit; }
 .view-all { font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); display: inline-flex; align-items: center; gap: 0.5rem; transition: color 0.2s; }
 .view-all:hover { color: var(--fg); }
 
-/* Product grid + card */
-.product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.6rem; }
+/* Product grid + card — Zicabella editorial 2-col */
+.product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem 0.5rem; }
 .product-card { width: 100%; }
-.product-media { position: relative; aspect-ratio: 3 / 4; overflow: hidden; border-radius: 2px; }
-.product-image { position: absolute; inset: 0; transition: transform 0.9s cubic-bezier(0.16,1,0.3,1); }
-.product-card:hover .product-image { transform: scale(1.06); }
-.product-tag { position: absolute; top: 0.8rem; left: 0.8rem; background: var(--fg); color: #0a0a0a; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.25rem 0.5rem; }
-.product-wish { position: absolute; top: 0.7rem; right: 0.7rem; width: 2rem; height: 2rem; border-radius: 9999px; background: rgba(0,0,0,0.35); border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transform: translateY(-4px); transition: all 0.3s ease; }
-.product-media:hover .product-wish { opacity: 1; transform: translateY(0); }
+.product-media { position: relative; aspect-ratio: 3 / 4; overflow: hidden; }
+.product-image { position: absolute; inset: 0; transition: transform 1s cubic-bezier(0.16,1,0.3,1); }
+.product-card:hover .product-image { transform: scale(1.05); }
+.product-tag { position: absolute; top: 1rem; left: 1rem; background: var(--fg); color: #0a0a0a; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.25rem 0.55rem; z-index: 2; }
+.product-wish { position: absolute; top: 0.85rem; right: 0.85rem; width: 2rem; height: 2rem; border-radius: 9999px; background: rgba(0,0,0,0.3); border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transition: opacity 0.3s ease, color 0.2s ease; z-index: 2; }
+.product-media:hover .product-wish { opacity: 1; }
 .product-wish.is-on { opacity: 1; color: var(--gold); }
-.product-quickadd { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(10,10,10,0.85); color: #fff; border: none; padding: 0.85rem; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); }
-.product-media:hover .product-quickadd { transform: translateY(0); }
-.product-info { display: flex; justify-content: space-between; align-items: baseline; margin-top: 0.9rem; gap: 1rem; }
-.product-name { font-size: 0.92rem; }
-.product-price { font-size: 0.9rem; color: var(--fg); display: flex; gap: 0.5rem; }
+/* circular + button, bottom-right */
+.product-plus {
+  position: absolute; bottom: 1rem; right: 1rem; z-index: 2;
+  width: 2.6rem; height: 2.6rem; border-radius: 9999px;
+  background: rgba(20,20,20,0.5); backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.18); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background 0.25s ease, transform 0.25s ease;
+}
+.product-plus:hover { background: rgba(20,20,20,0.85); transform: scale(1.08); }
+.product-info { display: flex; flex-direction: column; gap: 0.25rem; margin-top: 0.85rem; padding: 0 0.2rem; }
+.product-name { font-size: 0.92rem; letter-spacing: 0.04em; text-transform: uppercase; }
+.product-price { font-size: 0.88rem; color: var(--muted); display: flex; gap: 0.5rem; }
 .price-sale { color: var(--gold); }
-.price-was { color: var(--muted); text-decoration: line-through; font-size: 0.8rem; }
+.price-was { color: var(--muted); text-decoration: line-through; font-size: 0.8rem; opacity: 0.6; }
 
 /* Editorial / story */
 .story { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
@@ -266,17 +274,32 @@ button { font-family: inherit; }
 .reveal-up { opacity: 0; transform: translateY(28px); }
 
 /* ─────────── Responsive ─────────── */
-@media (max-width: 1024px) {
+@media (min-width: 1025px) {
   .product-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 1024px) {
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 720px) {
-  .section { padding: 4.5rem 1.2rem; }
-  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .section { padding: 4rem 0.7rem; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 0.4rem; }
   .story { grid-template-columns: 1fr; gap: 2rem; }
   .process-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
   .menu-link { font-size: 1.7rem; }
   .newsletter-form { flex-direction: column; }
-  .emblem-canvas { height: 360px; }
+  .emblem-canvas { height: 380px; }
+  .section-head { padding: 0 0.6rem; }
 }
+
+/* ─────────── Popular searches ─────────── */
+.popular { text-align: center; max-width: 1000px; margin: 0 auto; }
+.popular-title { font-family: var(--serif); font-size: clamp(1.6rem, 4vw, 2.4rem); letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 2.5rem; }
+.popular-group { margin-bottom: 2.2rem; }
+.popular-group-title { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+.popular-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1.4rem; }
+.popular-tag { font-size: 0.92rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg); opacity: 0.85; transition: color 0.2s, opacity 0.2s; position: relative; }
+.popular-tag:hover { color: var(--gold); opacity: 1; }
+
+/* Center section heads like Zicabella (optional emphasis) */
+.section-title { text-transform: none; }

@@ -163,6 +163,30 @@ export default function Home() {
         </div>
       </section>
 
+      {/* POPULAR SEARCHES */}
+      <section className="section section-tint">
+        <div className="container">
+          <div className="popular">
+            <h2 className="popular-title">Popular Searches</h2>
+            {[
+              { group: 'Shop by Category', items: ['Oversized Tees', 'Hand-Painted Shirts', 'Acid Wash', 'Designer Shirts', 'Artist Jackets', 'Statement Hoodies', 'Printed Sweatshirts', 'Graphic Tees'] },
+              { group: 'Shop by Style', items: ['Wearable Art', 'Abstract Prints', 'Casual Shirts', 'Full-Sleeve', 'Wide Trousers', 'Crew Neck', 'Printed Tees', 'Baggy Denim'] },
+              { group: 'Shop by Colour', items: ['Black', 'Bone', 'Ochre', 'Rust', 'Indigo', 'Clay'] },
+              { group: 'Shop by Season', items: ['Spring', 'Summer', 'Autumn', 'Winter'] },
+            ].map((g) => (
+              <div className="popular-group" key={g.group}>
+                <p className="popular-group-title">{g.group}</p>
+                <div className="popular-tags">
+                  {g.items.map((it) => (
+                    <Link href={`/shop?q=${encodeURIComponent(it)}`} key={it} className="popular-tag">{it}</Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* FOOTER */}
       <footer className="footer">
         <div className="footer-grid">
