@@ -98,3 +98,44 @@ export function SoundOffIcon({ size = 20 }) {
     </svg>
   );
 }
+
+/* ─────────── Social icons ─────────── */
+
+export function InstagramIcon({ size = 20 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function YoutubeIcon({ size = 20 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+      <rect x="2.5" y="6" width="19" height="12" rx="3.5" />
+      <path d="M10.5 9.2l4.2 2.8-4.2 2.8V9.2z" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function SpotifyIcon({ size = 20 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M7.4 9.6c3-0.8 6.2-0.5 8.8 1" />
+      <path d="M8 12.4c2.4-0.6 5-0.4 7.1 0.9" />
+      <path d="M8.5 15c1.9-0.5 3.9-0.3 5.6 0.7" />
+    </svg>
+  );
+}
+
+export function TiktokIcon({ size = 20 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+      <path d="M14 4v9.5a3.5 3.5 0 1 1-3.5-3.5" />
+      <path d="M14 4c.4 2.2 1.9 3.7 4 4" />
+    </svg>
+  );
+}

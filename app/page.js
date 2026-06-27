@@ -1,18 +1,17 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import ProductCard from '../components/ProductCard';
-import { ArrowRight } from '../components/Icons';
+import { ArrowRight, InstagramIcon, YoutubeIcon, SpotifyIcon, TiktokIcon } from '../components/Icons';
 import { products } from '../lib/products';
 
 // 3D emblem loads only when its section enters viewport
 const Emblem3D = dynamic(() => import('../components/Emblem3D'), {
   ssr: false,
   loading: () => (
-    <div style={{ height: 480, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9a958d', fontSize: '0.75rem', letterSpacing: '0.3em' }}>
+    <div style={{ height: 240, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9a958d', fontSize: '0.7rem', letterSpacing: '0.3em' }}>
       KARTA
     </div>
   ),
@@ -49,6 +48,23 @@ function SectionHead({ eyebrow, title, sub, href, hrefLabel }) {
     </div>
   );
 }
+
+const FOOTER_LINKS = [
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Refund Policy', href: '/returns' },
+  { label: 'Terms of Service', href: '/terms' },
+  { label: 'Shipping Policy', href: '/shipping' },
+  { label: 'Contact Information', href: '/contact' },
+  { label: 'FAQ', href: '/faq' },
+  { label: 'About Us', href: '/about' },
+];
+
+const POPULAR = [
+  { group: 'Shop by Category', items: ['Oversized Tees','Hand-Painted Shirts','Acid Wash','Designer Shirts','Artist Jackets','Statement Hoodies','Printed Sweatshirts','Graphic Tees'] },
+  { group: 'Shop by Style', items: ['Wearable Art','Abstract Prints','Casual Shirts','Full-Sleeve','Wide Trousers','Crew Neck','Printed Tees','Baggy Denim'] },
+  { group: 'Shop by Colour', items: ['Black','Bone','Ochre','Rust','Indigo','Clay'] },
+  { group: 'Shop by Season', items: ['Spring','Summer','Autumn','Winter'] },
+];
 
 export default function Home() {
   useRevealAll('.fade-up');
@@ -99,20 +115,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3D EMBLEM */}
-      <section className="section section-tint">
-        <div className="container">
-          <div className="emblem-section">
-            <p className="eyebrow fade-up">The Mark</p>
-            <h2 className="section-title fade-up" style={{ transitionDelay: '60ms' }}>Karta</h2>
-            <Emblem3D />
-            <p className="emblem-hint">Drag to rotate · Spin freely</p>
-          </div>
-        </div>
-      </section>
-
       {/* PROCESS */}
-      <section className="section section-solid">
+      <section className="section section-tint">
         <div className="container">
           <SectionHead eyebrow="The Process" title="Made by hand,<br/>worn with intention." sub="From blank fabric to finished artwork — every step is done by hand." />
           <div className="process-grid">
@@ -135,7 +139,7 @@ export default function Home() {
 
       {/* NEW ARRIVALS */}
       {newArrivals.length > 0 && (
-        <section className="section section-tint">
+        <section className="section section-solid">
           <div className="container">
             <SectionHead eyebrow="Just Dropped" title="New Arrivals" href="/shop?collection=new-arrivals" hrefLabel="See All" />
             <div className="product-grid">{newArrivals.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}</div>
@@ -145,7 +149,7 @@ export default function Home() {
 
       {/* BEST SELLERS */}
       {bestSellers.length > 0 && (
-        <section className="section section-solid">
+        <section className="section section-tint">
           <div className="container">
             <SectionHead eyebrow="Collector Favourites" title="Best Sellers" href="/shop?collection=best-sellers" hrefLabel="See All" />
             <div className="product-grid">{bestSellers.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}</div>
@@ -155,7 +159,7 @@ export default function Home() {
 
       {/* LIMITED */}
       {limited.length > 0 && (
-        <section className="section section-tint">
+        <section className="section section-solid">
           <div className="container">
             <SectionHead eyebrow="Numbered Pieces" title="Limited Editions" sub="Once they&apos;re gone, they&apos;re gone." href="/collections/limited-edition" hrefLabel="View All" />
             <div className="product-grid">{limited.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}</div>
@@ -164,7 +168,7 @@ export default function Home() {
       )}
 
       {/* NEWSLETTER */}
-      <section className="section section-solid">
+      <section className="section section-tint">
         <div className="container">
           <div className="newsletter">
             <p className="eyebrow fade-up">Stay in the Studio</p>
@@ -178,16 +182,11 @@ export default function Home() {
       </section>
 
       {/* POPULAR SEARCHES */}
-      <section className="section section-tint">
+      <section className="section section-solid">
         <div className="container">
           <div className="popular">
             <h2 className="popular-title fade-up">Popular Searches</h2>
-            {[
-              { group: 'Shop by Category', items: ['Oversized Tees','Hand-Painted Shirts','Acid Wash','Designer Shirts','Artist Jackets','Statement Hoodies','Printed Sweatshirts','Graphic Tees'] },
-              { group: 'Shop by Style', items: ['Wearable Art','Abstract Prints','Casual Shirts','Full-Sleeve','Wide Trousers','Crew Neck','Printed Tees','Baggy Denim'] },
-              { group: 'Shop by Colour', items: ['Black','Bone','Ochre','Rust','Indigo','Clay'] },
-              { group: 'Shop by Season', items: ['Spring','Summer','Autumn','Winter'] },
-            ].map((g) => (
+            {POPULAR.map((g) => (
               <div className="popular-group" key={g.group}>
                 <p className="popular-group-title">{g.group}</p>
                 <div className="popular-tags">
@@ -201,36 +200,27 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FOOTER */}
+      {/* FOOTER — emblem + links + socials, inspired editorial layout */}
       <footer className="footer">
-        <div className="footer-grid">
-          <div>
-            <Image src="/karta-logo.png" alt="Karta" width={110} height={57} style={{ height: '34px', width: 'auto', marginBottom: '1rem' }} />
-            <p className="footer-tag">Wear Art. Wear Karta.</p>
-          </div>
-          <div className="footer-col">
-            <h4>Shop</h4>
-            <Link href="/shop">All Products</Link>
-            <Link href="/collections">Collections</Link>
-            <Link href="/shop?tag=new">New Arrivals</Link>
-            <Link href="/collections/limited-edition">Limited Editions</Link>
-          </div>
-          <div className="footer-col">
-            <h4>Company</h4>
-            <Link href="/about">About Karta</Link>
-            <Link href="/journal">Journal</Link>
-            <Link href="/contact">Contact</Link>
-            <Link href="/track">Order Tracking</Link>
-          </div>
-          <div className="footer-col">
-            <h4>Legal</h4>
-            <Link href="/privacy">Privacy Policy</Link>
-            <Link href="/shipping">Shipping Policy</Link>
-            <Link href="/returns">Returns</Link>
-            <Link href="/terms">Terms</Link>
-            <Link href="/faq">FAQ</Link>
-          </div>
+        <div className="footer-emblem">
+          <Emblem3D />
         </div>
+
+        <hr className="footer-divider" />
+
+        <nav className="footer-links">
+          {FOOTER_LINKS.map((l) => (
+            <Link key={l.href} href={l.href}>{l.label}</Link>
+          ))}
+        </nav>
+
+        <div className="footer-socials">
+          <a className="footer-social" href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><InstagramIcon /></a>
+          <a className="footer-social" href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><YoutubeIcon /></a>
+          <a className="footer-social" href="https://open.spotify.com" target="_blank" rel="noopener noreferrer" aria-label="Spotify"><SpotifyIcon /></a>
+          <a className="footer-social" href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><TiktokIcon /></a>
+        </div>
+
         <div className="footer-bottom">
           <span>© 2026 Karta. All rights reserved.</span>
           <span>Wear Art. Wear Karta.</span>
