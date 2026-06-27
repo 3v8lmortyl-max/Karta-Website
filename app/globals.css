@@ -236,3 +236,64 @@ input { font: inherit; }
   .announce-track, .loader-word, .loader-tag { animation: none; }
   .card-reveal, .fade-up { opacity: 1; transform: none; }
 }
+
+/* ─────────── Product detail page ─────────── */
+.pdp { padding: 1.2rem 0 3.5rem; }
+.pdp-crumb { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; font-size: 0.74rem; color: var(--muted); margin-bottom: 1.1rem; }
+.pdp-crumb a { color: var(--muted); transition: color .2s; }
+.pdp-crumb a:hover { color: var(--fg); }
+.pdp-crumb span { opacity: 0.6; }
+.pdp-crumb-current { color: var(--fg); }
+
+.pdp-main { display: grid; grid-template-columns: 1fr; gap: 1.6rem; }
+
+/* gallery */
+.pdp-stage { position: relative; width: 100%; aspect-ratio: 3/4; overflow: hidden; border-radius: 16px; background: #e3e1dd; touch-action: pan-y; }
+.pdp-track { display: flex; width: 100%; height: 100%; transition: transform .45s cubic-bezier(.16,1,.3,1); }
+.pdp-slide { flex: 0 0 100%; height: 100%; background-size: cover; background-position: center; }
+.pdp-counter { position: absolute; left: 14px; bottom: 12px; font-size: 0.74rem; color: #fff; background: rgba(0,0,0,.4); padding: 2px 9px; border-radius: 999px; backdrop-filter: blur(4px); }
+.pdp-thumbs { display: flex; gap: 0.5rem; margin-top: 0.7rem; }
+.pdp-thumb { width: 54px; height: 68px; border-radius: 9px; background-size: cover; background-position: center; opacity: 0.55; border: 1px solid var(--line); transition: opacity .2s, border-color .2s; }
+.pdp-thumb.on { opacity: 1; border-color: var(--fg); }
+
+/* info */
+.pdp-titlerow { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.pdp-name { font-size: clamp(1.3rem, 4vw, 1.7rem); font-weight: 600; letter-spacing: -0.01em; }
+.pdp-save { color: var(--fg); flex: 0 0 auto; }
+.pdp-save.on { color: var(--fg); }
+.pdp-price { font-size: 1.05rem; color: var(--fg); margin-top: 0.4rem; display: flex; gap: 0.6rem; align-items: baseline; }
+.pdp-sizehead { display: flex; align-items: center; justify-content: space-between; margin: 1.5rem 0 0.7rem; }
+.pdp-sizehead > span { font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.pdp-guide-btn { font-size: 0.72rem; padding: 0.32rem 0.85rem; border-radius: 999px; background: #fff; box-shadow: 0 1px 6px rgba(0,0,0,.06); }
+.pdp-sizes { display: flex; flex-wrap: wrap; gap: 0.55rem; }
+.pdp-size { min-width: 58px; padding: 0.62rem 0.9rem; border-radius: 999px; border: 1px solid var(--line); background: #fff; font-size: 0.82rem; transition: all .15s ease; }
+.pdp-size:hover { border-color: var(--fg); }
+.pdp-size.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.pdp-guide { margin-top: 0.9rem; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff; }
+.pdp-guide-row { display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 0.55rem 0.9rem; font-size: 0.82rem; border-bottom: 1px solid var(--line); }
+.pdp-guide-row:last-child { border-bottom: none; }
+.pdp-guide-head { font-weight: 600; background: var(--soft); }
+.pdp-btn { margin-top: 0.8rem; }
+.pdp-info .pdp-btn:first-of-type { margin-top: 1.4rem; }
+
+/* tabs */
+.pdp-tabs { display: flex; gap: 1.2rem; border-bottom: 1px solid var(--line); margin-top: 2rem; overflow-x: auto; scrollbar-width: none; }
+.pdp-tabs::-webkit-scrollbar { display: none; }
+.pdp-tab { padding: 0.7rem 0; font-size: 0.92rem; color: var(--muted); white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color .2s, border-color .2s; }
+.pdp-tab.on { color: var(--fg); border-color: var(--fg); font-weight: 600; }
+.pdp-tabpanel { padding: 1.3rem 0; }
+.pdp-subhead { font-size: 1rem; font-weight: 700; margin: 0.2rem 0 0.7rem; }
+.pdp-subhead + .pdp-subhead, .pdp-list + .pdp-subhead { margin-top: 1.5rem; }
+.pdp-list { display: flex; flex-direction: column; gap: 0.45rem; }
+.pdp-list li { color: #5a5a5a; font-size: 0.9rem; padding-left: 1rem; position: relative; }
+.pdp-list li::before { content: '–'; position: absolute; left: 0; color: var(--muted); }
+.pdp-desc { color: #5a5a5a; font-size: 0.9rem; line-height: 1.7; }
+
+.pdp-related { margin-top: 3rem; }
+.pdp-related .grid-title { margin-bottom: 1.2rem; }
+
+@media (min-width: 900px) {
+  .pdp-main { grid-template-columns: 1.1fr 1fr; gap: 2.6rem; align-items: start; }
+  .pdp-gallery { position: sticky; top: 80px; }
+  .pdp-stage { aspect-ratio: 4/5; }
+}
