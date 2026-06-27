@@ -1,7 +1,6 @@
 import './globals.css';
 import { Archivo, Pinyon_Script } from 'next/font/google';
 import Loader from '../components/Loader';
-import AnnouncementBar from '../components/AnnouncementBar';
 import Header from '../components/Header';
 import MenuDrawer from '../components/MenuDrawer';
 import SearchOverlay from '../components/SearchOverlay';
@@ -26,7 +25,6 @@ export default function RootLayout({ children }) {
       <body>
         <Loader />
         <SmoothScroll>
-          <AnnouncementBar />
           <Header />
           <MenuDrawer />
           <SearchOverlay />

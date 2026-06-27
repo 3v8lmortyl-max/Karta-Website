@@ -1,8 +1,9 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useUI, useCart } from '../lib/store';
-import { MenuIcon, SearchIcon, BagIcon, BookmarkIcon } from './Icons';
+import { PlusIcon, SearchIcon, BagIcon, BookmarkIcon } from './Icons';
 
 export default function Header() {
   const { openMenu, openSearch, openCart, openWishlist } = useUI();
@@ -12,8 +13,10 @@ export default function Header() {
     <header className="site-header">
       <div className="header-inner">
         <div className="header-pill">
-          <button className="pill-btn" onClick={openMenu} aria-label="Open menu"><MenuIcon size={18} /></button>
-          <Link href="/" className="wordmark" aria-label="Karta home">Karta</Link>
+          <button className="pill-btn" onClick={openMenu} aria-label="Open menu"><PlusIcon size={18} /></button>
+          <Link href="/" className="header-logo" aria-label="Karta home">
+            <Image src="/karta-logo-mark.png" alt="Karta" width={441} height={148} priority className="header-logo-img" />
+          </Link>
         </div>
         <div className="header-right">
           <button className="icon-btn" onClick={openSearch} aria-label="Search"><SearchIcon /></button>

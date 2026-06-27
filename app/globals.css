@@ -46,11 +46,13 @@ input { font: inherit; }
   backdrop-filter: saturate(180%) blur(14px); -webkit-backdrop-filter: saturate(180%) blur(14px); }
 .header-inner { display: flex; align-items: center; justify-content: space-between;
   max-width: var(--maxw); margin: 0 auto; padding: 0.6rem clamp(0.9rem, 2.6vw, 2rem); }
-.header-pill { display: inline-flex; align-items: center; gap: 0.55rem; background: var(--pill);
-  border-radius: 999px; padding: 0.28rem 1rem 0.28rem 0.32rem; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
+.header-pill { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--pill);
+  border-radius: 999px; padding: 0.26rem 1.1rem 0.26rem 0.3rem; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
 .pill-btn { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px;
   border-radius: 50%; background: rgba(0,0,0,0.04); color: var(--fg); }
 .wordmark { font-weight: 800; font-size: 1.28rem; letter-spacing: 0.18em; text-transform: uppercase; line-height: 1; padding-left: 0.18em; }
+.header-logo { display: inline-flex; align-items: center; }
+.header-logo-img { height: 22px; width: auto; display: block; }
 .header-right { display: flex; align-items: center; gap: 0.35rem; }
 .icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; color: var(--fg); }
 .icon-badge { position: relative; }

@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import Stories from '../components/Stories';
 import Hero from '../components/Hero';
 import ProductGrid from '../components/ProductGrid';
 import CapsCard from '../components/CapsCard';
@@ -59,7 +58,6 @@ export default function Home() {
 
   return (
     <>
-      <Stories />
       <Hero />
 
       <ProductGrid title="Latest drop" discoverHref="/shop?collection=new-arrivals" dark={false}
