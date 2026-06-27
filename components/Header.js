@@ -14,8 +14,8 @@ export default function Header() {
       <div className="header-inner">
         <div className="header-pill">
           <button className="pill-btn" onClick={openMenu} aria-label="Open menu"><PlusIcon size={18} /></button>
-          <Link href="/" className="header-logo" aria-label="Karta home">
-            <Image src="/karta-logo-mark.png" alt="Karta" width={441} height={148} priority className="header-logo-img" />
+          <Link href="/" className="header-logo" aria-label="Krta home">
+            <Image src="/karta-logo-mark.png" alt="Krta" width={441} height={148} priority className="header-logo-img" />
           </Link>
         </div>
         <div className="header-right">

@@ -7,9 +7,9 @@ export default function BrandStory() {
   return (
     <section className="section brandstory">
       <div className="container brandstory-inner">
-        <h2>Karta — Wearable Art, Hand-Finished in India</h2>
+        <h2>Krta — Wearable Art, Hand-Finished in India</h2>
         <p>
-          Karta is a wearable-art label built on a simple idea: clothing can carry the soul of a piece of art.
+          Krta is a wearable-art label built on a simple idea: clothing can carry the soul of a piece of art.
           Every garment begins as a blank canvas and is finished by hand — pigment washes, gestural brushwork,
           and considered detailing on premium fabric. The result is streetwear with the unpredictability and
           presence of an original work.
@@ -30,7 +30,7 @@ export default function BrandStory() {
             </p>
             <h3>A studio, not a factory</h3>
             <p>
-              Karta is an independent studio rooted in India and shipping nationwide. We move at the pace of the
+              Krta is an independent studio rooted in India and shipping nationwide. We move at the pace of the
               work — releasing drops when they’re ready, not when a calendar says so.
             </p>
           </>

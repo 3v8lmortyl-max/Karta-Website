@@ -80,7 +80,7 @@ export default function MenuDrawer() {
             </div>
 
             <div className="menu-foot">
-              <p className="menu-tag">Wear Art. Wear Karta.</p>
+              <p className="menu-tag">Wear Art. Wear Krta.</p>
             </div>
           </motion.aside>
         </>

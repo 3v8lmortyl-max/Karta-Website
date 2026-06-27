@@ -12,9 +12,9 @@ const archivo = Archivo({ subsets: ['latin'], weight: ['400', '500', '600', '700
 const pinyon = Pinyon_Script({ subsets: ['latin'], weight: '400', variable: '--font-script', display: 'swap' });
 
 export const metadata = {
-  title: 'Karta — Wear Art, Wear Karta',
-  description: 'Karta is a wearable-art streetwear label. Hand-finished pieces on premium fabric, shipped across India.',
-  openGraph: { title: 'Karta — Wear Art, Wear Karta', description: 'Hand-finished wearable-art streetwear on premium fabric.', type: 'website' },
+  title: 'Krta — Wear Art, Wear Krta',
+  description: 'Krta is a wearable-art streetwear label. Hand-finished pieces on premium fabric, shipped across India.',
+  openGraph: { title: 'Krta — Wear Art, Wear Krta', description: 'Hand-finished wearable-art streetwear on premium fabric.', type: 'website' },
 };
 
 export const viewport = { width: 'device-width', initialScale: 1, viewportFit: 'cover', themeColor: '#ececea' };

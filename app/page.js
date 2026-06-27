@@ -54,7 +54,7 @@ export default function Home() {
   const newArrivals = products.filter((p) => p.collection === 'New Arrivals');
   const bestSellers = products.filter((p) => p.collection === 'Best Sellers');
   const limited = products.filter((p) => p.collection === 'Limited Edition');
-  const caps = products; // placeholder set for the "Karta Caps" carousel
+  const caps = products; // placeholder set for the "Krta Caps" carousel
 
   return (
     <>
@@ -63,7 +63,7 @@ export default function Home() {
       <ProductGrid title="Latest drop" discoverHref="/shop?collection=new-arrivals" dark={false}
         items={[...newArrivals, ...bestSellers].slice(0, 4)} />
 
-      <CapsCard title="Karta Caps" discoverHref="/shop?q=Cap" items={caps} />
+      <CapsCard title="Krta Caps" discoverHref="/shop?q=Cap" items={caps} />
 
       <CollectionTiles />
 
@@ -76,7 +76,7 @@ export default function Home() {
 
       <footer className="footer">
         <div className="container">
-          <div className="footer-script">Karta</div>
+          <div className="footer-script">krta</div>
 
           <div className="footer-grid">
             <div className="footer-colset">
@@ -93,7 +93,7 @@ export default function Home() {
             </div>
 
             <div className="footer-col">
-              <h4>We are Karta</h4>
+              <h4>We are Krta</h4>
               {FOOTER.brand.map((l) => <Link key={l.label} href={l.href}>{l.label}</Link>)}
             </div>
           </div>
@@ -104,11 +104,11 @@ export default function Home() {
               <path d="M30 56 L42 44 L132 44 L120 56 Z" fill="#fbfbfa" stroke="#d8d6d1" strokeWidth="1.5"/>
               <path d="M120 56 L132 44 L132 174 L120 174 Z" fill="#eeece8" stroke="#d8d6d1" strokeWidth="1.5"/>
               <path d="M58 50 q17 22 34 0" fill="none" stroke="#cfcdc8" strokeWidth="2"/>
-              <text x="70" y="125" textAnchor="middle" fontFamily="Archivo, sans-serif" fontWeight="800" fontSize="15" letterSpacing="2" fill="#1a1a1a">KARTA</text>
+              <text x="70" y="125" textAnchor="middle" fontFamily="Archivo, sans-serif" fontWeight="800" fontSize="15" letterSpacing="2" fill="#1a1a1a">KRTA</text>
             </svg>
           </div>
 
-          <div className="footer-copy">© 2026 Karta Retail Private Limited, all rights reserved</div>
+          <div className="footer-copy">© 2026 Krta Retail Private Limited, all rights reserved</div>
         </div>
       </footer>
     </>
