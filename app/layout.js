@@ -1,4 +1,5 @@
 import './globals.css';
+import Loader from '../components/Loader';
 import Header from '../components/Header';
 import MenuDrawer from '../components/MenuDrawer';
 import SearchOverlay from '../components/SearchOverlay';
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+        <Loader />
         <SmoothScroll>
           <BackgroundVideo />
           <Header />
