@@ -139,3 +139,12 @@ export function TiktokIcon({ size = 20 }) {
     </svg>
   );
 }
+
+export function BookmarkIcon({ size = 20, filled = false }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={filled ? 'currentColor' : 'none'}
+      stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" />
+    </svg>
+  );
+}
