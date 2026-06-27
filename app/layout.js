@@ -1,5 +1,5 @@
 import './globals.css';
-import { Archivo, Pinyon_Script } from 'next/font/google';
+import { Hanken_Grotesk, Pinyon_Script } from 'next/font/google';
 import Loader from '../components/Loader';
 import Header from '../components/Header';
 import MenuDrawer from '../components/MenuDrawer';
@@ -8,7 +8,7 @@ import CartDrawer from '../components/CartDrawer';
 import WishlistDrawer from '../components/WishlistDrawer';
 import SmoothScroll from '../components/SmoothScroll';
 
-const archivo = Archivo({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800'], variable: '--font-archivo', display: 'swap' });
+const sans = Hanken_Grotesk({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800'], variable: '--font-sans', display: 'swap' });
 const pinyon = Pinyon_Script({ subsets: ['latin'], weight: '400', variable: '--font-script', display: 'swap' });
 
 export const metadata = {
@@ -21,7 +21,7 @@ export const viewport = { width: 'device-width', initialScale: 1, viewportFit: '
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${archivo.variable} ${pinyon.variable}`}>
+    <html lang="en" className={`${sans.variable} ${pinyon.variable}`}>
       <body>
         <Loader />
         <SmoothScroll>

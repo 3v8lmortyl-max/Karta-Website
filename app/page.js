@@ -98,17 +98,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="footer-bag" aria-hidden="true">
-            <svg width="150" height="180" viewBox="0 0 150 180" fill="none">
-              <path d="M30 56 L120 56 L132 174 L18 174 Z" fill="#f6f5f3" stroke="#d8d6d1" strokeWidth="1.5"/>
-              <path d="M30 56 L42 44 L132 44 L120 56 Z" fill="#fbfbfa" stroke="#d8d6d1" strokeWidth="1.5"/>
-              <path d="M120 56 L132 44 L132 174 L120 174 Z" fill="#eeece8" stroke="#d8d6d1" strokeWidth="1.5"/>
-              <path d="M58 50 q17 22 34 0" fill="none" stroke="#cfcdc8" strokeWidth="2"/>
-              <text x="70" y="125" textAnchor="middle" fontFamily="Archivo, sans-serif" fontWeight="800" fontSize="15" letterSpacing="2" fill="#1a1a1a">KRTA</text>
-            </svg>
-          </div>
 
-          <div className="footer-copy">© 2026 Krta Retail Private Limited, all rights reserved</div>
+          <div className="footer-copy">© 2026 Krta. All rights reserved.</div>
         </div>
       </footer>
     </>
