@@ -1,5 +1,7 @@
 import './globals.css';
+import { Archivo } from 'next/font/google';
 import Loader from '../components/Loader';
+import AnnouncementBar from '../components/AnnouncementBar';
 import Header from '../components/Header';
 import MenuDrawer from '../components/MenuDrawer';
 import SearchOverlay from '../components/SearchOverlay';
@@ -7,32 +9,37 @@ import CartDrawer from '../components/CartDrawer';
 import WishlistDrawer from '../components/WishlistDrawer';
 import SmoothScroll from '../components/SmoothScroll';
 
+const archivo = Archivo({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-archivo',
+  display: 'swap',
+});
+
 export const metadata = {
   title: 'Karta — Wear Art, Wear Karta',
-  description: 'Karta is a premium handmade wearable-art clothing brand from India. Hand-painted, one-of-one pieces on quality fabric.',
+  description: 'Karta is a wearable-art streetwear label. Hand-finished pieces on premium fabric, shipped across India.',
   openGraph: {
     title: 'Karta — Wear Art, Wear Karta',
-    description: 'Premium handmade wearable art on quality fabric, designed and painted in India.',
+    description: 'Hand-finished wearable-art streetwear on premium fabric.',
     type: 'website',
   },
 };
 
-export const viewport = { width: 'device-width', initialScale: 1, viewportFit: 'cover', themeColor: '#ffffff' };
-
-const ANNOUNCE = ['Free shipping across India', 'Hand-painted, one-of-one pieces', 'New drop live now', 'Wear Art. Wear Karta.'];
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: '#ffffff',
+};
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={archivo.variable}>
       <body>
         <Loader />
-        <div className="announce">
-          <div className="announce-track">
-            <span>{ANNOUNCE.map((t, i) => <span key={'a' + i}>{t} ✦</span>)}</span>
-            <span>{ANNOUNCE.map((t, i) => <span key={'b' + i}>{t} ✦</span>)}</span>
-          </div>
-        </div>
         <SmoothScroll>
+          <AnnouncementBar />
           <Header />
           <MenuDrawer />
           <SearchOverlay />

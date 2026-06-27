@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 
 export default function Loader() {
   const [done, setDone] = useState(false);
@@ -33,10 +32,11 @@ export default function Loader() {
   if (gone) return null;
 
   return (
-    <div className={`loader ${done ? 'loader-hide' : ''}`} role="status" aria-label="Loading">
+    <div className={`loader ${done ? 'loader-hide' : ''}`} aria-hidden={done} role="status" aria-label="Loading">
       <div className="loader-inner">
-        <Image src="/karta-wordmark.png" alt="Karta" width={200} height={75} priority className="loader-logo" />
+        <span className="loader-word">Karta</span>
         <div className="loader-bar"><span /></div>
+        <p className="loader-tag">Wear Art. Wear Karta.</p>
       </div>
     </div>
   );
