@@ -21,32 +21,6 @@ function useRevealAll() {
   }, []);
 }
 
-const FOOTER = {
-  connect: [
-    { label: 'Call', href: 'tel:+919000000010' },
-    { label: 'Text (WhatsApp)', href: 'https://wa.me/919000000010' },
-    { label: 'Instagram', href: 'https://instagram.com' },
-    { label: 'YouTube', href: 'https://youtube.com' },
-    { label: 'LinkedIn', href: 'https://linkedin.com' },
-  ],
-  support: [
-    { label: 'Make a Return / Exchange', href: '/returns' },
-    { label: 'Refund / Exchange Policy', href: '/returns' },
-    { label: 'Track Your Order', href: '/track' },
-    { label: 'Shipping Policy', href: '/shipping' },
-    { label: "FAQ's", href: '/faq' },
-    { label: 'Terms', href: '/terms' },
-  ],
-  brand: [
-    { label: 'Our Story', href: '/about' },
-    { label: 'Walk-in Stores', href: '/about' },
-    { label: 'Collaborations', href: '/about' },
-    { label: 'Careers', href: '/about' },
-    { label: 'Media', href: '/journal' },
-    { label: 'Blogs', href: '/journal' },
-  ],
-};
-
 export default function Home() {
   useRevealAll();
 
@@ -71,33 +45,6 @@ export default function Home() {
 
       <BrandStory />
 
-      <footer className="footer">
-        <div className="container">
-          <div className="footer-script">krta</div>
-
-          <div className="footer-grid">
-            <div className="footer-colset">
-              <div className="footer-col">
-                <h4>Connect with us</h4>
-                {FOOTER.connect.map((l) => (
-                  <a key={l.label} href={l.href} target={l.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer">{l.label}</a>
-                ))}
-              </div>
-              <div className="footer-col">
-                <h4>Order Support</h4>
-                {FOOTER.support.map((l) => <Link key={l.label} href={l.href}>{l.label}</Link>)}
-              </div>
-            </div>
-
-            <div className="footer-col">
-              <h4>We are Krta</h4>
-              {FOOTER.brand.map((l) => <Link key={l.label} href={l.href}>{l.label}</Link>)}
-            </div>
-          </div>
-
-          <div className="footer-copy">© 2026 Krta. All rights reserved.</div>
-        </div>
-      </footer>
     </>
   );
 }

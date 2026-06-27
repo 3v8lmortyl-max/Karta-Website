@@ -7,6 +7,7 @@ import SearchOverlay from '../components/SearchOverlay';
 import CartDrawer from '../components/CartDrawer';
 import WishlistDrawer from '../components/WishlistDrawer';
 import SmoothScroll from '../components/SmoothScroll';
+import Footer from '../components/Footer';
 
 const sans = Hanken_Grotesk({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800'], variable: '--font-sans', display: 'swap' });
 const pinyon = Pinyon_Script({ subsets: ['latin'], weight: '400', variable: '--font-script', display: 'swap' });
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
           <CartDrawer />
           <WishlistDrawer />
           <main>{children}</main>
+          <Footer />
         </SmoothScroll>
       </body>
     </html>
