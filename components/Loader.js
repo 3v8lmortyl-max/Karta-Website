@@ -4,31 +4,19 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 export default function Loader() {
-  const [done, setDone] = useState(false); // begin fade-out
-  const [gone, setGone] = useState(false); // remove from DOM
+  const [done, setDone] = useState(false);
+  const [gone, setGone] = useState(false);
 
-  // Decide when to start fading out (after window load, with a graceful minimum)
   useEffect(() => {
-    const MIN = 1500;          // keep the screen up at least this long
+    const MIN = 1400;
     const start = performance.now();
-
-    const finish = () => {
-      const wait = Math.max(0, MIN - (performance.now() - start));
-      setTimeout(() => setDone(true), wait);
-    };
-
+    const finish = () => setTimeout(() => setDone(true), Math.max(0, MIN - (performance.now() - start)));
     if (document.readyState === 'complete') finish();
     else window.addEventListener('load', finish, { once: true });
-
-    const safety = setTimeout(() => setDone(true), 4500); // never hang forever
-
-    return () => {
-      window.removeEventListener('load', finish);
-      clearTimeout(safety);
-    };
+    const safety = setTimeout(() => setDone(true), 4500);
+    return () => { window.removeEventListener('load', finish); clearTimeout(safety); };
   }, []);
 
-  // Lock scroll while the loader is visible
   useEffect(() => {
     if (gone) return;
     const prev = document.body.style.overflow;
@@ -36,7 +24,6 @@ export default function Loader() {
     return () => { document.body.style.overflow = prev; };
   }, [gone]);
 
-  // Unmount after the fade-out transition completes
   useEffect(() => {
     if (!done) return;
     const t = setTimeout(() => setGone(true), 650);
@@ -46,18 +33,10 @@ export default function Loader() {
   if (gone) return null;
 
   return (
-    <div className={`loader ${done ? 'loader-hide' : ''}`} aria-hidden={done} role="status" aria-label="Loading">
+    <div className={`loader ${done ? 'loader-hide' : ''}`} role="status" aria-label="Loading">
       <div className="loader-inner">
-        <Image
-          src="/karta-logo.png"
-          alt="Karta"
-          width={160}
-          height={83}
-          priority
-          className="loader-logo"
-        />
+        <Image src="/karta-wordmark.png" alt="Karta" width={200} height={75} priority className="loader-logo" />
         <div className="loader-bar"><span /></div>
-        <p className="loader-tag">Wear Art. Wear Karta.</p>
       </div>
     </div>
   );

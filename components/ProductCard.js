@@ -2,11 +2,10 @@
 
 import { useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { useWishlist, useCart, useUI } from '../lib/store';
-import { HeartIcon, PlusIcon } from './Icons';
+import { useCart, useUI } from '../lib/store';
+import { PlusIcon } from './Icons';
 import { formatINR } from '../lib/products';
 
-// Lightweight reveal — pure CSS + IntersectionObserver (no Framer Motion)
 function useReveal() {
   const ref = useRef(null);
   useEffect(() => {
@@ -24,10 +23,8 @@ function useReveal() {
 
 export default function ProductCard({ product, index = 0 }) {
   const ref = useReveal();
-  const { has, toggle } = useWishlist();
   const addToCart = useCart((s) => s.add);
   const openCart = useUI((s) => s.openCart);
-  const wished = has(product.id);
 
   const quickAdd = (e) => {
     e.preventDefault(); e.stopPropagation();
@@ -35,27 +32,14 @@ export default function ProductCard({ product, index = 0 }) {
     openCart();
   };
 
-  const toggleWish = (e) => {
-    e.preventDefault(); e.stopPropagation();
-    toggle(product);
-  };
-
   return (
-    <div
-      ref={ref}
-      className="product-card card-reveal"
-      style={{ transitionDelay: `${(index % 2) * 60}ms` }}
-    >
+    <div ref={ref} className="product-card card-reveal" style={{ transitionDelay: `${(index % 4) * 50}ms` }}>
       <Link href={`/products/${product.id}`} className="product-link">
         <div className="product-media">
-          <div className="product-image" style={{ background: product.image }} />
+          <div className="product-image main" style={{ background: product.image }} />
+          <div className="product-image alt" style={{ background: product.image2 || product.image }} />
           {product.salePrice && <span className="product-tag">Sale</span>}
-          <button className={`product-wish ${wished ? 'is-on' : ''}`} onClick={toggleWish} aria-label="Toggle wishlist">
-            <HeartIcon size={17} filled={wished} />
-          </button>
-          <button className="product-plus" onClick={quickAdd} aria-label="Quick add">
-            <PlusIcon size={20} />
-          </button>
+          <button className="product-plus" onClick={quickAdd} aria-label="Quick add"><PlusIcon size={18} /></button>
         </div>
         <div className="product-info">
           <span className="product-name">{product.name}</span>

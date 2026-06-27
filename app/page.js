@@ -2,223 +2,198 @@
 
 import Link from 'next/link';
 import { useEffect } from 'react';
-import dynamic from 'next/dynamic';
 import ProductCard from '../components/ProductCard';
-import { ArrowRight, InstagramIcon, YoutubeIcon, SpotifyIcon, TiktokIcon } from '../components/Icons';
+import { ArrowRight } from '../components/Icons';
 import { products } from '../lib/products';
 
-// 3D emblem loads only when its section enters viewport
-const Emblem3D = dynamic(() => import('../components/Emblem3D'), {
-  ssr: false,
-  loading: () => (
-    <div style={{ height: 240, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9a958d', fontSize: '0.7rem', letterSpacing: '0.3em' }}>
-      KARTA
-    </div>
-  ),
-});
-
-// Lightweight reveal hook
-function useRevealAll(selector = '.fade-up') {
+function useRevealAll() {
   useEffect(() => {
-    const els = document.querySelectorAll(selector);
     const obs = new IntersectionObserver(
       (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); obs.unobserve(e.target); } }),
       { rootMargin: '-30px', threshold: 0.08 }
     );
-    els.forEach(el => obs.observe(el));
+    document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
     return () => obs.disconnect();
   }, []);
 }
 
-function SectionHead({ eyebrow, title, sub, href, hrefLabel }) {
-  return (
-    <div className="section-head">
-      <div className="section-head-row">
-        <div>
-          <p className="eyebrow fade-up">{eyebrow}</p>
-          <h2 className="section-title fade-up" style={{ transitionDelay: '60ms' }} dangerouslySetInnerHTML={{ __html: title }} />
-          {sub && <p className="section-sub fade-up" style={{ transitionDelay: '100ms' }}>{sub}</p>}
-        </div>
-        {href && (
-          <Link href={href} className="view-all fade-up" style={{ transitionDelay: '120ms' }}>
-            {hrefLabel} <ArrowRight size={15} />
-          </Link>
-        )}
-      </div>
-    </div>
-  );
-}
-
-const FOOTER_LINKS = [
-  { label: 'Privacy Policy', href: '/privacy' },
-  { label: 'Refund Policy', href: '/returns' },
-  { label: 'Terms of Service', href: '/terms' },
-  { label: 'Shipping Policy', href: '/shipping' },
-  { label: 'Contact Information', href: '/contact' },
-  { label: 'FAQ', href: '/faq' },
-  { label: 'About Us', href: '/about' },
+const LOOKBOOK = [
+  { name: 'New Arrivals', href: '/shop?collection=new-arrivals', bg: 'linear-gradient(150deg,#d9d2c6,#a9b2c2)' },
+  { name: 'Hand-Painted', href: '/collections/wear-art', bg: 'linear-gradient(150deg,#e7c79a,#c06a3a)' },
+  { name: 'Limited Editions', href: '/collections/limited-edition', bg: 'linear-gradient(150deg,#bcc6e6,#5f6f9e)' },
+  { name: 'The Studio', href: '/about', bg: 'linear-gradient(150deg,#e9e4db,#bcae97)' },
 ];
 
-const POPULAR = [
-  { group: 'Shop by Category', items: ['Oversized Tees','Hand-Painted Shirts','Acid Wash','Designer Shirts','Artist Jackets','Statement Hoodies','Printed Sweatshirts','Graphic Tees'] },
-  { group: 'Shop by Style', items: ['Wearable Art','Abstract Prints','Casual Shirts','Full-Sleeve','Wide Trousers','Crew Neck','Printed Tees','Baggy Denim'] },
-  { group: 'Shop by Colour', items: ['Black','Bone','Ochre','Rust','Indigo','Clay'] },
-  { group: 'Shop by Season', items: ['Spring','Summer','Autumn','Winter'] },
+const COLLECTION_TILES = [
+  { title: 'Wear Art', href: '/collections/wear-art', bg: 'linear-gradient(135deg,#cdb189 0%,#7c4a2b 100%)', span: true },
+  { title: 'New Arrivals', href: '/shop?collection=new-arrivals', bg: 'linear-gradient(135deg,#9aa6c6 0%,#33406a 100%)' },
+  { title: 'Limited Editions', href: '/collections/limited-edition', bg: 'linear-gradient(135deg,#1c1c1c 0%,#444 100%)' },
 ];
+
+const STORES = [
+  { name: 'The Studio', status: 'Open now', addr: 'Bichkunda, Kamareddy District, Telangana 503235', href: 'https://maps.google.com', tone: 'linear-gradient(150deg,#e8e2d8,#c9bda6)' },
+  { name: 'Hyderabad', status: 'Coming soon', addr: 'Banjara Hills — opening 2026. Appointments by request.', href: 'https://maps.google.com', tone: 'linear-gradient(150deg,#c7d0e2,#8593b3)' },
+  { name: 'Online', status: 'Open 24/7', addr: 'Worldwide shipping. Every piece made to order in the studio.', href: '/shop', tone: 'linear-gradient(150deg,#e9cfa6,#c98a4e)' },
+];
+
+const POPULAR = ['Oversized Tees','Hand-Painted Shirts','Acid Wash','Wide Trousers','Artist Jackets','Statement Hoodies','Silk Scarves','Limited Editions','Black','Bone','Ochre','Indigo','Rust','New Arrivals'];
 
 export default function Home() {
-  useRevealAll('.fade-up');
-
-  const featured = products.filter(p => p.featured);
+  useRevealAll();
   const newArrivals = products.filter(p => p.collection === 'New Arrivals');
-  const bestSellers = products.filter(p => p.collection === 'Best Sellers');
-  const limited = products.filter(p => p.collection === 'Limited Edition');
+  const bestSellers = products.filter(p => p.collection === 'Best Sellers' || p.collection === 'Limited Edition');
 
   return (
     <>
       {/* HERO */}
       <section className="hero">
-        <div className="hero-shopall">
-          <Link href="/shop" className="shop-all-link">Shop All</Link>
-        </div>
-      </section>
-
-      {/* FEATURED */}
-      <section className="section section-tint">
-        <div className="container">
-          <SectionHead eyebrow="Featured" title="Wear Art Collection" sub="Each piece individually crafted. No two identical." href="/collections/wear-art" hrefLabel="View Collection" />
-          <div className="product-grid">{featured.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}</div>
-        </div>
-      </section>
-
-      {/* STORY */}
-      <section className="section section-solid">
-        <div className="container">
-          <div className="story">
-            <div className="story-text">
-              <p className="eyebrow fade-up">Our Philosophy</p>
-              <h2 className="section-title fade-up" style={{ transitionDelay: '60ms' }}>
-                We don&apos;t sell clothes.<br />We create wearable art.
-              </h2>
-              <p className="story-body fade-up" style={{ transitionDelay: '100ms' }}>
-                Every Karta garment begins as a blank canvas. Our artists spend hours applying hand-painted techniques directly onto premium fabric — sumi ink, pigment washes, gestural brushwork. The result is clothing that carries the unpredictability and soul of fine art.
-              </p>
-              <p className="story-body fade-up" style={{ transitionDelay: '130ms' }}>
-                No two pieces are ever the same. When you wear Karta, you wear something that has never existed before, and never will again.
-              </p>
-              <Link href="/about" className="view-all fade-up" style={{ marginTop: '2rem', display: 'inline-flex', transitionDelay: '160ms' }}>
-                Our Story <ArrowRight size={15} />
-              </Link>
-            </div>
-            <div className="story-visual fade-up" style={{ transitionDelay: '80ms' }} />
+        <div className="hero-inner">
+          <p className="hero-kicker fade-up">Handmade Wearable Art · Est. Telangana</p>
+          <h1 className="hero-title fade-up" style={{ transitionDelay: '80ms' }}>Wear Art.<br />Wear Karta.</h1>
+          <div className="hero-actions fade-up" style={{ transitionDelay: '160ms' }}>
+            <Link href="/shop" className="btn-solid">Shop All</Link>
+            <Link href="/collections/wear-art" className="btn-line">The Collection</Link>
           </div>
         </div>
       </section>
 
-      {/* PROCESS */}
-      <section className="section section-tint">
-        <div className="container">
-          <SectionHead eyebrow="The Process" title="Made by hand,<br/>worn with intention." sub="From blank fabric to finished artwork — every step is done by hand." />
-          <div className="process-grid">
-            {[
-              { step: '01', name: 'Select the Fabric', bg: 'linear-gradient(135deg,#1c1a18,#2a2520)' },
-              { step: '02', name: 'Paint the Art', bg: 'linear-gradient(135deg,#1a1c1e,#28303a)' },
-              { step: '03', name: 'Finish & Sign', bg: 'linear-gradient(135deg,#1e1a14,#382e1e)' },
-            ].map((s, i) => (
-              <div key={s.step} className="process-card card-reveal" style={{ background: s.bg, transitionDelay: `${i * 80}ms` }}>
-                <div className="process-overlay" />
-                <div className="process-card-label">
-                  <p className="process-step">{s.step}</p>
-                  <h3 className="process-name">{s.name}</h3>
-                </div>
+      {/* LOOKBOOK */}
+      <section className="section">
+        <div className="lookbook">
+          {LOOKBOOK.map((l, i) => (
+            <Link key={l.name} href={l.href} className="look-tile fade-up" style={{ transitionDelay: `${i * 60}ms` }}>
+              <div className="look-tile-bg" style={{ background: l.bg }} />
+              <div className="look-tile-content">
+                <span className="look-tile-name">{l.name}</span>
+                <span className="look-tile-shop">Shop Now <ArrowRight size={13} /></span>
               </div>
-            ))}
-          </div>
+            </Link>
+          ))}
         </div>
       </section>
 
-      {/* NEW ARRIVALS */}
-      {newArrivals.length > 0 && (
-        <section className="section section-solid">
-          <div className="container">
-            <SectionHead eyebrow="Just Dropped" title="New Arrivals" href="/shop?collection=new-arrivals" hrefLabel="See All" />
-            <div className="product-grid">{newArrivals.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}</div>
+      {/* LATEST DROP */}
+      <section className="section section-tint">
+        <div className="section-head">
+          <div>
+            <p className="eyebrow fade-up">Just Dropped</p>
+            <h2 className="section-title fade-up" style={{ transitionDelay: '60ms' }}>Latest Drop</h2>
           </div>
-        </section>
-      )}
+          <Link href="/shop?collection=new-arrivals" className="view-all fade-up">Discover More <ArrowRight size={14} /></Link>
+        </div>
+        <div className="product-grid">
+          {newArrivals.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
+        </div>
+      </section>
+
+      {/* DISCOVER COLLECTION */}
+      <section className="section" style={{ paddingBottom: 0 }}>
+        <div className="section-head">
+          <div>
+            <p className="eyebrow fade-up">Explore</p>
+            <h2 className="section-title fade-up" style={{ transitionDelay: '60ms' }}>Discover Collection</h2>
+          </div>
+        </div>
+        <div className="collections-stack">
+          {COLLECTION_TILES.map((c) => (
+            <Link key={c.title} href={c.href} className={`coll-tile ${c.span ? 'span-2' : ''}`}>
+              <div className="coll-tile-bg" style={{ background: c.bg }} />
+              <div className="coll-tile-inner">
+                <h3 className="coll-tile-title">{c.title}</h3>
+                <span className="coll-tile-cta">Shop Now <ArrowRight size={14} /></span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       {/* BEST SELLERS */}
-      {bestSellers.length > 0 && (
-        <section className="section section-tint">
-          <div className="container">
-            <SectionHead eyebrow="Collector Favourites" title="Best Sellers" href="/shop?collection=best-sellers" hrefLabel="See All" />
-            <div className="product-grid">{bestSellers.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}</div>
-          </div>
-        </section>
-      )}
-
-      {/* LIMITED */}
-      {limited.length > 0 && (
-        <section className="section section-solid">
-          <div className="container">
-            <SectionHead eyebrow="Numbered Pieces" title="Limited Editions" sub="Once they&apos;re gone, they&apos;re gone." href="/collections/limited-edition" hrefLabel="View All" />
-            <div className="product-grid">{limited.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}</div>
-          </div>
-        </section>
-      )}
-
-      {/* NEWSLETTER */}
       <section className="section section-tint">
-        <div className="container">
-          <div className="newsletter">
-            <p className="eyebrow fade-up">Stay in the Studio</p>
-            <h2 className="section-title fade-up" style={{ transitionDelay: '60ms' }}>New drops. Artist notes.<br />First access.</h2>
-            <div className="newsletter-form fade-up" style={{ transitionDelay: '100ms' }}>
-              <input className="newsletter-input" type="email" placeholder="Your email address" />
-              <button className="btn-solid" style={{ whiteSpace: 'nowrap', padding: '0 1.6rem' }}>Subscribe</button>
-            </div>
+        <div className="section-head">
+          <div>
+            <p className="eyebrow fade-up">Collector Favourites</p>
+            <h2 className="section-title fade-up" style={{ transitionDelay: '60ms' }}>Best Sellers</h2>
           </div>
+          <Link href="/shop" className="view-all fade-up">View All <ArrowRight size={14} /></Link>
+        </div>
+        <div className="product-grid">
+          {bestSellers.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
         </div>
       </section>
 
-      {/* POPULAR SEARCHES */}
-      <section className="section section-solid">
-        <div className="container">
-          <div className="popular">
-            <h2 className="popular-title fade-up">Popular Searches</h2>
-            {POPULAR.map((g) => (
-              <div className="popular-group" key={g.group}>
-                <p className="popular-group-title">{g.group}</p>
-                <div className="popular-tags">
-                  {g.items.map(it => (
-                    <Link href={`/shop?q=${encodeURIComponent(it)}`} key={it} className="popular-tag">{it}</Link>
-                  ))}
-                </div>
+      {/* STORES */}
+      <section className="section">
+        <div className="section-head">
+          <div>
+            <p className="eyebrow fade-up">Find Us</p>
+            <h2 className="section-title fade-up" style={{ transitionDelay: '60ms' }}>Visit the Studio</h2>
+          </div>
+        </div>
+        <div className="stores-grid">
+          {STORES.map((s) => (
+            <div key={s.name} className="store-card fade-up">
+              <div className="store-img" style={{ background: s.tone }}>
+                <span className="store-status">{s.status}</span>
               </div>
-            ))}
-          </div>
+              <div className="store-body">
+                <h3 className="store-name">{s.name}</h3>
+                <p className="store-addr">{s.addr}</p>
+                <Link href={s.href} className="store-link">Get Direction <ArrowRight size={13} /></Link>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* FOOTER — emblem + links + socials, inspired editorial layout */}
+      {/* EDITORIAL / SEO */}
+      <section className="section section-tint">
+        <div className="editorial">
+          <h2 className="fade-up">Handmade Wearable Art from India</h2>
+          <p className="lead fade-up">Karta begins where fashion ends and art starts. Every garment leaves the studio as a one-of-one piece — hand-painted, pigment-washed, and signed. No two are ever alike.</p>
+          <p className="fade-up">Born in Telangana, Karta blends the discipline of fine art with the ease of everyday streetwear. We work in small batches on premium, responsibly sourced fabric, letting the unpredictability of the brush define each drop. The result is clothing with the soul of a canvas and the comfort of your favourite tee.</p>
+          <h3 className="fade-up">What Makes Karta Different</h3>
+          <p className="fade-up">Where most labels print at scale, we paint by hand. Sumi ink, pigment study dyes, raw-edge construction and gestural brushwork turn each tee, trouser and jacket into a wearable artwork. It is slow fashion with intention — made to be seen, felt, and kept.</p>
+          <h3 className="fade-up">Wearable Art for Every Season</h3>
+          <p className="fade-up">From lightweight hand-painted tees for summer to heavyweight pigment hoodies and raw denim for winter, the Karta wardrobe is built to layer across the year. Unisex by design, our pieces are made for anyone who treats getting dressed as a form of self-expression.</p>
+        </div>
+      </section>
+
+      {/* FOOTER */}
       <footer className="footer">
-        <div className="footer-emblem">
-          <Emblem3D />
+        <div className="footer-top">
+          <div className="footer-col">
+            <h4>Karta</h4>
+            <p className="footer-tagline">Handmade wearable art on premium fabric. Designed and painted in Telangana, India. Wear Art. Wear Karta.</p>
+          </div>
+          <div className="footer-col">
+            <h4>Connect</h4>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">YouTube</a>
+            <a href="https://wa.me/910000000000" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <a href="mailto:hello@karta.studio">Email</a>
+          </div>
+          <div className="footer-col">
+            <h4>Order Support</h4>
+            <Link href="/returns">Returns & Exchange</Link>
+            <Link href="/shipping">Shipping Policy</Link>
+            <Link href="/track">Track Your Order</Link>
+            <Link href="/faq">FAQ</Link>
+            <Link href="/terms">Terms</Link>
+          </div>
+          <div className="footer-col">
+            <h4>We Are Karta</h4>
+            <Link href="/about">Our Story</Link>
+            <Link href="/about">The Studio</Link>
+            <Link href="/collaborations">Collaborations</Link>
+            <Link href="/careers">Careers</Link>
+          </div>
         </div>
 
-        <hr className="footer-divider" />
-
-        <nav className="footer-links">
-          {FOOTER_LINKS.map((l) => (
-            <Link key={l.href} href={l.href}>{l.label}</Link>
-          ))}
-        </nav>
-
-        <div className="footer-socials">
-          <a className="footer-social" href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><InstagramIcon /></a>
-          <a className="footer-social" href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><YoutubeIcon /></a>
-          <a className="footer-social" href="https://open.spotify.com" target="_blank" rel="noopener noreferrer" aria-label="Spotify"><SpotifyIcon /></a>
-          <a className="footer-social" href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><TiktokIcon /></a>
+        <div className="footer-pop">
+          <h4>Popular Searches</h4>
+          <div className="footer-tags">
+            {POPULAR.map(t => <Link key={t} href={`/shop?q=${encodeURIComponent(t)}`}>{t}</Link>)}
+          </div>
         </div>
 
         <div className="footer-bottom">
