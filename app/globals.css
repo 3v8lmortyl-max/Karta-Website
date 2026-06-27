@@ -45,18 +45,18 @@ input { font: inherit; }
 .site-header { position: sticky; top: 0; z-index: 50; background: transparent; }
 .header-inner { display: flex; align-items: center; justify-content: space-between;
   max-width: var(--maxw); margin: 0 auto; padding: 0.6rem clamp(0.9rem, 2.6vw, 2rem); }
-.header-pill { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--pill);
-  border-radius: 999px; padding: 0.26rem 1.1rem 0.26rem 0.3rem; box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+.header-pill { display: inline-flex; align-items: center; gap: 0.42rem; background: var(--pill);
+  border-radius: 999px; padding: 0.16rem 0.95rem 0.16rem 0.22rem; box-shadow: 0 1px 8px rgba(0,0,0,0.06);
   backdrop-filter: saturate(160%) blur(12px); -webkit-backdrop-filter: saturate(160%) blur(12px); }
-.pill-btn { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px;
+.pill-btn { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px;
   border-radius: 50%; background: rgba(0,0,0,0.04); color: var(--fg); }
 .wordmark { font-weight: 800; font-size: 1.28rem; letter-spacing: 0.18em; text-transform: uppercase; line-height: 1; padding-left: 0.18em; }
 .header-logo { display: inline-flex; align-items: center; }
-.header-logo-img { height: 22px; width: auto; display: block; }
-.header-right { display: flex; align-items: center; gap: 0.05rem; background: var(--pill);
-  border-radius: 999px; padding: 0.1rem 0.3rem; box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+.header-logo-img { height: 20px; width: auto; display: block; }
+.header-right { display: flex; align-items: center; gap: 0; background: var(--pill);
+  border-radius: 999px; padding: 0.04rem 0.22rem; box-shadow: 0 1px 8px rgba(0,0,0,0.06);
   backdrop-filter: saturate(160%) blur(12px); -webkit-backdrop-filter: saturate(160%) blur(12px); }
-.header-right .icon-btn { width: 38px; height: 38px; }
+.header-right .icon-btn { width: 34px; height: 34px; }
 .icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; color: var(--fg); }
 .icon-badge { position: relative; }
 .badge { position: absolute; top: 5px; right: 4px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px;

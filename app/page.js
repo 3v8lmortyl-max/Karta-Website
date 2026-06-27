@@ -7,7 +7,6 @@ import ProductGrid from '../components/ProductGrid';
 import CapsCard from '../components/CapsCard';
 import CollectionTiles from '../components/CollectionTiles';
 import BrandStory from '../components/BrandStory';
-import PopularSearches from '../components/PopularSearches';
 import { products } from '../lib/products';
 
 function useRevealAll() {
@@ -72,8 +71,6 @@ export default function Home() {
 
       <BrandStory />
 
-      <PopularSearches />
-
       <footer className="footer">
         <div className="container">
           <div className="footer-script">krta</div>
@@ -97,7 +94,6 @@ export default function Home() {
               {FOOTER.brand.map((l) => <Link key={l.label} href={l.href}>{l.label}</Link>)}
             </div>
           </div>
-
 
           <div className="footer-copy">© 2026 Krta. All rights reserved.</div>
         </div>
