@@ -64,8 +64,8 @@ input { font: inherit; }
 
 /* ---------- Section heads & pill buttons ---------- */
 .grid-head, .caps-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
-.grid-title { font-size: clamp(1.15rem, 3.4vw, 1.7rem); font-weight: 700; letter-spacing: -0.01em; }
-.pill-link { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.01em; padding: 0.62rem 1.2rem; border-radius: 999px; white-space: nowrap; transition: transform .2s ease, opacity .2s ease; }
+.grid-title { font-size: clamp(1.12rem, 3.2vw, 1.6rem); font-weight: 600; letter-spacing: -0.01em; }
+.pill-link { font-size: 0.82rem; font-weight: 500; line-height: 1; letter-spacing: 0.005em; padding: 0.48rem 1.15rem; border-radius: 999px; white-space: nowrap; transition: transform .2s ease, opacity .2s ease; }
 .pill-link:hover { transform: translateY(-1px); }
 .pill-dark { background: var(--ink); color: #fff; }
 .pill-light { background: #fff; color: var(--ink); box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
