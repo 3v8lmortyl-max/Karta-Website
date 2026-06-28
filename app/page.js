@@ -27,7 +27,7 @@ export default function Home() {
   const newArrivals = products.filter((p) => p.collection === 'New Arrivals');
   const bestSellers = products.filter((p) => p.collection === 'Best Sellers');
   const limited = products.filter((p) => p.collection === 'Limited Edition');
-  const caps = products; // placeholder set for the "Krta Caps" carousel
+  const caps = products.filter((p) => p.category === 'Cap');
 
   return (
     <>
