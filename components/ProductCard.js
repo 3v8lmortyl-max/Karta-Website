@@ -43,8 +43,8 @@ export default function ProductCard({ product, index = 0 }) {
   const onTouchEnd = (e) => {
     if (startX.current == null) return;
     const dx = e.changedTouches[0].clientX - startX.current;
-    if (dx > 40) setIdx((i) => Math.max(0, i - 1));
-    else if (dx < -40) setIdx((i) => Math.min(gallery.length - 1, i + 1));
+    if (dx > 40) setIdx((i) => (i - 1 + gallery.length) % gallery.length);
+    else if (dx < -40) setIdx((i) => (i + 1) % gallery.length);
     startX.current = null;
   };
   // Cancel navigation if the touch was a swipe, not a tap
