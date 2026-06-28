@@ -84,13 +84,13 @@ export default function ProductDetail({ product, related = [] }) {
           <div className="pdp-gallery">
             <div className="pdp-stage" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
               <div className="pdp-track" style={{ transform: `translateX(-${slide * 100}%)` }}>
-                {gallery.map((g, i) => <span key={i} className="pdp-slide" style={{ background: g }} />)}
+                {gallery.map((g, i) => <span key={i} className="pdp-slide" style={{ backgroundImage: g }} />)}
               </div>
               <span className="pdp-counter">{slide + 1} / {gallery.length}</span>
             </div>
             <div className="pdp-thumbs">
               {gallery.map((g, i) => (
-                <button key={i} className={`pdp-thumb ${i === slide ? 'on' : ''}`} style={{ background: g }} onClick={() => setSlide(i)} aria-label={`Image ${i + 1}`} />
+                <button key={i} className={`pdp-thumb ${i === slide ? 'on' : ''}`} style={{ backgroundImage: g }} onClick={() => setSlide(i)} aria-label={`Image ${i + 1}`} />
               ))}
             </div>
           </div>

@@ -13,7 +13,7 @@ export default function CapsCard({ title, discoverHref, items }) {
           <div className="caps-track">
             {items.map((p) => (
               <Link key={p.id} href={`/products/${p.id}`} className="caps-tile">
-                <span className="caps-img" style={{ background: p.image }} />
+                <span className="caps-img" style={{ backgroundImage: p.image }} />
               </Link>
             ))}
           </div>
