@@ -25,7 +25,7 @@ const DEFAULT_WASHCARE = [
 const DEFAULT_SHIPPING =
   'Dispatched within 2–4 business days. Free shipping across India on orders above ₹2,000. Easy 7-day returns and exchanges on unworn pieces.';
 
-const SIZE_GUIDE = [['S', 40, 27], ['M', 42, 28], ['L', 44, 29], ['XL', 46, 30], ['XXL', 48, 31]];
+const SIZE_GUIDE = [['S', 40, 27], ['M', 42, 28], ['L', 44, 29]];
 
 // Build at least 4 gallery slides. Real photos (product.images) take priority;
 // otherwise derive tonal variations from the placeholder gradients.
@@ -39,7 +39,7 @@ function buildGallery(p) {
 
 export default function ProductDetail({ product, related = [] }) {
   const gallery = buildGallery(product);
-  const sizes = product.sizes && product.sizes.length ? product.sizes : ['XS', 'S', 'M', 'L', 'XL'];
+  const sizes = product.sizes && product.sizes.length ? product.sizes : ['XS', 'S', 'M', 'L'];
 
   const [slide, setSlide] = useState(0);
   const [size, setSize] = useState(sizes[0]);
