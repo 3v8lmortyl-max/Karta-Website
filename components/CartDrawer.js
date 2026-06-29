@@ -49,7 +49,7 @@ export default function CartDrawer() {
                 <div className="cart-items">
                   {items.map((i) => (
                     <div className="cart-item" key={`${i.id}-${i.size}`}>
-                      <div className="cart-item-img" style={{ background: i.image }} />
+                      <div className="cart-item-img" style={{ backgroundImage: i.image }} />
                       <div className="cart-item-meta">
                         <div className="cart-item-top">
                           <span className="cart-item-name">{i.name}</span>

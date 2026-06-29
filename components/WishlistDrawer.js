@@ -54,7 +54,7 @@ export default function WishlistDrawer() {
               <div className="cart-items">
                 {items.map((p) => (
                   <div className="cart-item" key={p.id}>
-                    <div className="cart-item-img" style={{ background: p.image }} />
+                    <div className="cart-item-img" style={{ backgroundImage: p.image }} />
                     <div className="cart-item-meta">
                       <div className="cart-item-top">
                         <span className="cart-item-name">{p.name}</span>

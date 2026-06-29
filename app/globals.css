@@ -317,3 +317,21 @@ input { font: inherit; }
   .scroll-hand, .scroll-chevrons svg { animation: none; }
   .scroll-chevrons svg { opacity: 0.7; }
 }
+
+/* ─────────── Custom-design WhatsApp banner ─────────── */
+.custom-banner { margin: clamp(2rem, 5vw, 3.5rem) auto; }
+.custom-banner-inner { position: relative; border-radius: 22px; overflow: hidden;
+  min-height: clamp(330px, 62vw, 460px); display: flex; align-items: flex-end; }
+.custom-banner-bg { position: absolute; inset: 0;
+  background-image: linear-gradient(135deg, #2b2b2e 0%, #111113 60%, #050506 100%);
+  background-size: cover; background-position: center; }
+.custom-banner-inner::after { content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,.12) 62%); }
+.custom-banner-overlay { position: relative; z-index: 2; padding: clamp(1.4rem, 4.5vw, 2.6rem); color: #fff; max-width: 560px; }
+.custom-banner-kicker { font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; opacity: .85; margin-bottom: .55rem; }
+.custom-banner-title { font-size: clamp(1.5rem, 5.4vw, 2.3rem); font-weight: 600; line-height: 1.08; letter-spacing: -0.01em; }
+.custom-banner-sub { margin: .75rem 0 1.3rem; font-size: .92rem; line-height: 1.6; opacity: .9; }
+.custom-wa-btn { display: inline-flex; align-items: center; gap: .55rem; background: #25D366; color: #fff;
+  font-weight: 600; font-size: .92rem; padding: .72rem 1.25rem; border-radius: 999px;
+  box-shadow: 0 6px 18px rgba(37,211,102,.32); transition: transform .2s ease, filter .2s ease; }
+.custom-wa-btn:hover { transform: translateY(-1px); filter: brightness(1.05); }

@@ -77,7 +77,7 @@ export default function SearchOverlay() {
                   className="search-result"
                   onClick={closeSearch}
                 >
-                  <div className="search-result-img" style={{ background: p.image }} />
+                  <div className="search-result-img" style={{ backgroundImage: p.image }} />
                   <div className="search-result-meta">
                     <span className="search-result-name">{p.name}</span>
                     <span className="search-result-sub">

@@ -2,11 +2,10 @@ import Link from 'next/link';
 
 const FOOTER = {
   connect: [
-    { label: 'Call', href: 'tel:+919000000010' },
-    { label: 'Text (WhatsApp)', href: 'https://wa.me/919000000010' },
-    { label: 'Instagram', href: 'https://instagram.com' },
+    { label: 'Call', href: 'tel:+919014612268' },
+    { label: 'Text (WhatsApp)', href: 'https://wa.me/919014612268' },
+    { label: 'Instagram', href: 'https://instagram.com/krta.in' },
     { label: 'YouTube', href: 'https://youtube.com' },
-    { label: 'LinkedIn', href: 'https://linkedin.com' },
   ],
   support: [
     { label: 'Make a Return / Exchange', href: '/returns' },
@@ -20,9 +19,7 @@ const FOOTER = {
     { label: 'Our Story', href: '/about' },
     { label: 'Walk-in Stores', href: '/about' },
     { label: 'Collaborations', href: '/about' },
-    { label: 'Careers', href: '/about' },
     { label: 'Media', href: '/journal' },
-    { label: 'Blogs', href: '/journal' },
   ],
 };
 

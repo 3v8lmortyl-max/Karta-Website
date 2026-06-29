@@ -7,6 +7,7 @@ import ProductGrid from '../components/ProductGrid';
 import CapsCard from '../components/CapsCard';
 import CollectionTiles from '../components/CollectionTiles';
 import BrandStory from '../components/BrandStory';
+import CustomBanner from '../components/CustomBanner';
 import { products } from '../lib/products';
 
 function useRevealAll() {
@@ -43,6 +44,7 @@ export default function Home() {
       <ProductGrid title="Winter collection" discoverHref="/collections/limited-edition" dark={false}
         items={[...bestSellers, ...limited, ...newArrivals].slice(0, 6)} />
 
+      <CustomBanner />
       <BrandStory />
 
     </>
