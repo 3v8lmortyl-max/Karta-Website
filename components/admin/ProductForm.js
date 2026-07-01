@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const SIZE_OPTIONS = ['XS', 'S', 'M', 'L', 'One Size'];
+const IMAGE_SLOT_LABELS = ['Front', 'Back', 'Styled angle', 'Close-up detail'];
 
 function slugify(name) {
   return name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -47,6 +48,13 @@ export default function ProductForm({ initial }) {
   };
 
   const removeImage = (url) => setImages((cur) => cur.filter((u) => u !== url));
+
+  // Common-sense gate: don't let the admin start uploading photos for a product
+  // that doesn't even have a name, price, or a size yet.
+  const readyForImages = name.trim().length > 0 && String(price).trim().length > 0 && sizes.length > 0;
+  const emptySlots = readyForImages
+    ? IMAGE_SLOT_LABELS.slice(images.length + 1).filter(() => images.length < IMAGE_SLOT_LABELS.length)
+    : [];
 
   const save = async (e) => {
     e.preventDefault();
@@ -130,18 +138,38 @@ export default function ProductForm({ initial }) {
 
       <div className="admin-field">
         <span>Images</span>
-        <div className="admin-image-grid">
-          {images.map((url) => (
-            <div className="admin-image-tile" key={url}>
-              <div className="admin-image-preview" style={{ backgroundImage: `url(${url})` }} />
-              <button type="button" className="admin-image-remove" onClick={() => removeImage(url)}>×</button>
+        {!readyForImages ? (
+          <p className="admin-hint">
+            Fill in the product name, price, and at least one size before adding images.
+          </p>
+        ) : (
+          <>
+            <div className="admin-image-grid">
+              {images.map((url, i) => (
+                <div className="admin-image-tile" key={url}>
+                  <div className="admin-image-preview" style={{ backgroundImage: `url(${url})` }} />
+                  <span className="admin-image-label">{IMAGE_SLOT_LABELS[i] || `Image ${i + 1}`}</span>
+                  <button type="button" className="admin-image-remove" onClick={() => removeImage(url)}>×</button>
+                </div>
+              ))}
+              {images.length < IMAGE_SLOT_LABELS.length && (
+                <label className="admin-image-upload">
+                  {uploading ? 'Uploading…' : `+ Add ${IMAGE_SLOT_LABELS[images.length]} photo`}
+                  <input type="file" accept="image/*" multiple hidden onChange={onFileChange} />
+                </label>
+              )}
+              {emptySlots.map((label, i) => (
+                <div className="admin-image-slot-empty" key={label + i}>
+                  <span>{label}</span>
+                  <small>Not added yet</small>
+                </div>
+              ))}
             </div>
-          ))}
-          <label className="admin-image-upload">
-            {uploading ? 'Uploading…' : '+ Add image'}
-            <input type="file" accept="image/*" multiple hidden onChange={onFileChange} />
-          </label>
-        </div>
+            <p className="admin-hint">
+              Add up to {IMAGE_SLOT_LABELS.length} photos — front, back, a styled angle, and a close-up of the print or detail work. These become the swipeable gallery on the product page.
+            </p>
+          </>
+        )}
       </div>
 
       <label className="admin-field">
