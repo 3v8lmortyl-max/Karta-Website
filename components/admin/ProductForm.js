@@ -64,7 +64,12 @@ export default function ProductForm({ initial }) {
 
   const save = async (e) => {
     e.preventDefault();
-    setSaving(true); setError('');
+    setError('');
+    if (salePrice !== '' && Number(salePrice) >= Number(price)) {
+      setError('Sale price must be lower than the regular price — otherwise it will look like the price went up.');
+      return;
+    }
+    setSaving(true);
     const payload = {
       name, price: Number(price), sale_price: salePrice === '' ? null : Number(salePrice),
       category, collection, color, sizes, featured, images,
@@ -102,6 +107,7 @@ export default function ProductForm({ initial }) {
         <label className="admin-field">
           <span>Sale price (₹, optional)</span>
           <input className="admin-input" type="number" value={salePrice} onChange={(e) => setSalePrice(e.target.value)} />
+          <small className="admin-hint">Must be lower than the regular price above.</small>
         </label>
       </div>
 
