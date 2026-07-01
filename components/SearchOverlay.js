@@ -4,12 +4,13 @@ import { useState, useMemo, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useUI } from '../lib/store';
-import { products, formatINR } from '../lib/products';
+import { formatINR } from '../lib/products';
 import { CloseIcon, SearchIcon } from './Icons';
 
 export default function SearchOverlay() {
   const { searchOpen, closeSearch } = useUI();
   const [q, setQ] = useState('');
+  const [products, setProducts] = useState([]);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -18,6 +19,13 @@ export default function SearchOverlay() {
     }
     if (!searchOpen) setQ('');
   }, [searchOpen]);
+
+  // Load the catalog once the overlay opens (cheap: cached after first open)
+  useEffect(() => {
+    if (searchOpen && products.length === 0) {
+      fetch('/api/products').then((r) => r.json()).then((d) => setProducts(d.products || [])).catch(() => {});
+    }
+  }, [searchOpen, products.length]);
 
   const results = useMemo(() => {
     const term = q.trim().toLowerCase();

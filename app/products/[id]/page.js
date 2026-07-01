@@ -1,20 +1,19 @@
 import { notFound } from 'next/navigation';
-import { products } from '../../../lib/products';
+import { getProduct, getProducts } from '../../../lib/products';
 import ProductDetail from '../../../components/ProductDetail';
 
-export function generateStaticParams() {
-  return products.map((p) => ({ id: String(p.id) }));
-}
+export const revalidate = 30;
 
-export function generateMetadata({ params }) {
-  const product = products.find((p) => String(p.id) === params.id);
+export async function generateMetadata({ params }) {
+  const product = await getProduct(params.id);
   if (!product) return { title: 'Product — Krta' };
   return { title: `${product.name} — Krta`, description: `Shop the ${product.name} at Krta. Hand-finished wearable art.` };
 }
 
-export default function ProductPage({ params }) {
-  const product = products.find((p) => String(p.id) === params.id);
+export default async function ProductPage({ params }) {
+  const product = await getProduct(params.id);
   if (!product) notFound();
-  const related = products.filter((p) => p.id !== product.id).slice(0, 4);
+  const all = await getProducts();
+  const related = all.filter((p) => p.id !== product.id).slice(0, 4);
   return <ProductDetail product={product} related={related} />;
 }
