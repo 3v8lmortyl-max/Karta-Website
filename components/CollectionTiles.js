@@ -56,7 +56,7 @@ export default function CollectionTiles({ slides }) {
             };
             return (
               <Link key={t.id} href={t.href} className="cover-slide" style={style} aria-hidden={off !== 0}>
-                <span className="cover-bg" style={{ background: t.bg }} />
+                <span className="cover-bg" style={{ backgroundImage: t.bg }} />
                 <span className="cover-title">{t.title}</span>
               </Link>
             );
