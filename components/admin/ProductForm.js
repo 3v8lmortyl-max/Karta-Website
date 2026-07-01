@@ -20,41 +20,44 @@ export default function ProductForm({ initial }) {
   const [color, setColor] = useState(initial?.color || '');
   const [sizes, setSizes] = useState(initial?.sizes || []);
   const [featured, setFeatured] = useState(initial?.featured || false);
-  const [images, setImages] = useState(initial?.images || []);
+  const initialSlots = Array.from({ length: IMAGE_SLOT_LABELS.length }, (_, i) => (initial?.images || [])[i] || null);
+  const [slots, setSlots] = useState(initialSlots);   // fixed 4 slots, null = empty
+  const [slotUploading, setSlotUploading] = useState(Array(IMAGE_SLOT_LABELS.length).fill(false));
+  const images = slots.filter(Boolean); // compact list actually saved to the DB
   const [details, setDetails] = useState((initial?.details || []).join('\n'));
   const [description, setDescription] = useState(initial?.description || '');
   const [stock, setStock] = useState(initial?.stock || {});
-  const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
   const toggleSize = (s) => setSizes((cur) => cur.includes(s) ? cur.filter((x) => x !== s) : [...cur, s]);
   const setStockFor = (s, v) => setStock((cur) => ({ ...cur, [s]: Number(v) || 0 }));
 
-  const uploadFile = async (file) => {
-    setUploading(true); setError('');
+  const setSlotBusy = (i, val) => setSlotUploading((cur) => cur.map((v, idx) => (idx === i ? val : v)));
+
+  // Each slot uploads exactly ONE image, replacing whatever was there before.
+  const uploadToSlot = async (i, file) => {
+    setSlotBusy(i, true); setError('');
     const form = new FormData(); form.append('file', file);
     const res = await fetch('/api/admin/upload', { method: 'POST', body: form });
-    setUploading(false);
+    setSlotBusy(i, false);
     if (!res.ok) { setError('Image upload failed.'); return; }
     const data = await res.json();
-    setImages((cur) => [...cur, data.url]);
+    setSlots((cur) => cur.map((v, idx) => (idx === i ? data.url : v)));
   };
 
-  const onFileChange = (e) => {
-    const files = Array.from(e.target.files || []);
-    files.forEach(uploadFile);
+  const onSlotFileChange = (i, e) => {
+    const file = e.target.files && e.target.files[0];
     e.target.value = '';
+    if (file) uploadToSlot(i, file);
   };
 
-  const removeImage = (url) => setImages((cur) => cur.filter((u) => u !== url));
+  const removeSlot = (i) => setSlots((cur) => cur.map((v, idx) => (idx === i ? null : v)));
+  const uploading = slotUploading.some(Boolean);
 
   // Common-sense gate: don't let the admin start uploading photos for a product
   // that doesn't even have a name, price, or a size yet.
   const readyForImages = name.trim().length > 0 && String(price).trim().length > 0 && sizes.length > 0;
-  const emptySlots = readyForImages
-    ? IMAGE_SLOT_LABELS.slice(images.length + 1).filter(() => images.length < IMAGE_SLOT_LABELS.length)
-    : [];
 
   const save = async (e) => {
     e.preventDefault();
@@ -145,28 +148,32 @@ export default function ProductForm({ initial }) {
         ) : (
           <>
             <div className="admin-image-grid">
-              {images.map((url, i) => (
-                <div className="admin-image-tile" key={url}>
-                  <div className="admin-image-preview" style={{ backgroundImage: `url(${url})` }} />
-                  <span className="admin-image-label">{IMAGE_SLOT_LABELS[i] || `Image ${i + 1}`}</span>
-                  <button type="button" className="admin-image-remove" onClick={() => removeImage(url)}>×</button>
-                </div>
-              ))}
-              {images.length < IMAGE_SLOT_LABELS.length && (
-                <label className="admin-image-upload">
-                  {uploading ? 'Uploading…' : `+ Add ${IMAGE_SLOT_LABELS[images.length]} photo`}
-                  <input type="file" accept="image/*" multiple hidden onChange={onFileChange} />
-                </label>
-              )}
-              {emptySlots.map((label, i) => (
-                <div className="admin-image-slot-empty" key={label + i}>
-                  <span>{label}</span>
-                  <small>Not added yet</small>
-                </div>
-              ))}
+              {IMAGE_SLOT_LABELS.map((label, i) => {
+                const url = slots[i];
+                const busy = slotUploading[i];
+                return (
+                  <div className={`admin-image-slot ${url ? 'filled' : 'empty'}`} key={label}>
+                    {url ? (
+                      <div className="admin-image-preview" style={{ backgroundImage: `url(${url})` }} />
+                    ) : (
+                      <div className="admin-image-placeholder"><small>Not added yet</small></div>
+                    )}
+                    <span className="admin-image-label">{label}</span>
+
+                    {url && (
+                      <button type="button" className="admin-image-remove" onClick={() => removeSlot(i)} aria-label={`Remove ${label} photo`}>×</button>
+                    )}
+
+                    <label className="admin-image-slot-action">
+                      {busy ? 'Uploading…' : url ? 'Change' : '+ Add'}
+                      <input type="file" accept="image/*" hidden onChange={(e) => onSlotFileChange(i, e)} />
+                    </label>
+                  </div>
+                );
+              })}
             </div>
             <p className="admin-hint">
-              Add up to {IMAGE_SLOT_LABELS.length} photos — front, back, a styled angle, and a close-up of the print or detail work. These become the swipeable gallery on the product page.
+              One photo per slot — front, back, a styled angle, and a close-up of the print or detail work. Tap "Change" to replace a photo already in a slot.
             </p>
           </>
         )}
