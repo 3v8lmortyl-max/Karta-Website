@@ -17,7 +17,7 @@
 .admin-btn-dark { background: var(--a-ink); color: #fff; }
 .admin-btn-ghost { background: transparent; border-color: var(--a-line); color: var(--a-ink); }
 
-.admin-input, .admin-textarea { width: 100%; padding: 0.62rem 0.8rem; border: 1px solid var(--a-line); border-radius: 10px; font-size: 0.92rem; background: #fff; color: var(--a-ink); font-family: inherit; }
+.admin-input, .admin-textarea, select.admin-input { width: 100%; padding: 0.62rem 0.8rem; border: 1px solid var(--a-line); border-radius: 10px; font-size: 0.92rem; background: #fff; color: var(--a-ink); font-family: inherit; appearance: auto; }
 .admin-textarea { resize: vertical; }
 .admin-error { color: var(--a-danger); font-size: 0.85rem; }
 .admin-muted { color: var(--a-muted); font-size: 0.9rem; }

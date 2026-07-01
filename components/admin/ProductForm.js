@@ -4,6 +4,9 @@ import { useRouter } from 'next/navigation';
 
 const SIZE_OPTIONS = ['XS', 'S', 'M', 'L', 'One Size'];
 const IMAGE_SLOT_LABELS = ['Front', 'Back', 'Styled angle', 'Close-up detail'];
+// These must match exactly what the storefront filters on (app/components/HomeContent.js).
+const CATEGORY_OPTIONS = ['Tops', 'Bottoms', 'Outerwear', 'Cap', 'Accessories'];
+const COLLECTION_OPTIONS = ['New Arrivals', 'Best Sellers', 'Limited Edition', 'Caps'];
 
 function slugify(name) {
   return name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -105,11 +108,17 @@ export default function ProductForm({ initial }) {
       <div className="admin-field-row">
         <label className="admin-field">
           <span>Category</span>
-          <input className="admin-input" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Tops, Cap, Bottoms…" />
+          <select className="admin-input" value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option value="">Select category…</option>
+            {CATEGORY_OPTIONS.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
         </label>
         <label className="admin-field">
           <span>Collection</span>
-          <input className="admin-input" value={collection} onChange={(e) => setCollection(e.target.value)} placeholder="New Arrivals, Caps…" />
+          <select className="admin-input" value={collection} onChange={(e) => setCollection(e.target.value)}>
+            <option value="">Select collection…</option>
+            {COLLECTION_OPTIONS.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
         </label>
         <label className="admin-field">
           <span>Color</span>
