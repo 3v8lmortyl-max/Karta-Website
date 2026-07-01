@@ -56,7 +56,6 @@
   .admin-header-actions { width: 100%; }
   .admin-btn { flex: 1; text-align: center; }
 
-  .admin-row-head { display: none; }
   .admin-row {
     display: grid;
     grid-template-columns: 52px 1fr;
@@ -92,4 +91,7 @@
     border-top: 1px solid var(--a-line);
   }
   .admin-link { font-size: 0.9rem; }
+
+  .admin-table .admin-row-head { display: none; }
 }
+
