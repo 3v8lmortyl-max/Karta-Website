@@ -141,6 +141,7 @@ export default function ProductForm({ initial }) {
 
       <div className="admin-field">
         <span>Images</span>
+        {error && <p className="admin-error">{error}</p>}
         {!readyForImages ? (
           <p className="admin-hint">
             Fill in the product name, price, and at least one size before adding images.
