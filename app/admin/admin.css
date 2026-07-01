@@ -7,9 +7,13 @@
 .admin-login-sub { color: var(--a-muted); font-size: 0.88rem; margin-top: -0.4rem; }
 
 .admin-shell { max-width: 980px; margin: 0 auto; padding: 1.5rem 1.2rem 4rem; }
-.admin-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 1.4rem; }
+.admin-header { position: relative; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 1.4rem; padding-right: 2.6rem; }
 .admin-header h1 { font-size: 1.4rem; font-weight: 700; }
 .admin-header-actions { display: flex; gap: 0.6rem; }
+.admin-gear { position: absolute; top: 0; right: 0; display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 50%; color: var(--a-ink); background: #fff; border: 1px solid var(--a-line);
+  transition: background .15s ease, transform .2s ease; }
+.admin-gear:hover { background: #f2f1ee; transform: rotate(20deg); }
 
 .admin-btn { padding: 0.6rem 1.1rem; border-radius: 10px; font-size: 0.88rem; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: opacity .2s; }
 .admin-btn:hover { opacity: 0.85; }
@@ -20,6 +24,7 @@
 .admin-input, .admin-textarea, select.admin-input { width: 100%; padding: 0.62rem 0.8rem; border: 1px solid var(--a-line); border-radius: 10px; font-size: 0.92rem; background: #fff; color: var(--a-ink); font-family: inherit; appearance: auto; }
 .admin-textarea { resize: vertical; }
 .admin-error { color: var(--a-danger); font-size: 0.85rem; }
+.admin-success { color: #1a7f37; font-size: 0.85rem; font-weight: 600; }
 .admin-muted { color: var(--a-muted); font-size: 0.9rem; }
 
 .admin-table { display: flex; flex-direction: column; border: 1px solid var(--a-line); border-radius: 14px; overflow: hidden; background: #fff; }
