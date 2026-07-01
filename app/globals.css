@@ -196,6 +196,31 @@ input { font: inherit; }
 .cart-item-name { font-size: 0.82rem; letter-spacing: 0.02em; }
 .cart-remove { color: var(--muted); }
 .cart-item-size { font-size: 0.74rem; color: var(--muted); }
+.cart-size-select { display: flex; align-items: center; gap: 0.4rem; }
+.cart-size-select select { font-size: 0.8rem; font-weight: 600; color: var(--fg); border: 1px solid var(--line);
+  border-radius: 7px; padding: 0.2rem 0.5rem; background: #fff; }
+
+/* ─────────── Shop / all products page ─────────── */
+.shop-page { padding: 1.4rem 0 3.5rem; }
+.shop-title { font-size: clamp(1.4rem, 5vw, 2rem); font-weight: 700; letter-spacing: -0.01em; text-transform: capitalize; margin-bottom: 1.1rem; }
+.shop-filters { display: flex; gap: 0.6rem; overflow-x: auto; scrollbar-width: none; padding-bottom: 1.4rem; }
+.shop-filters::-webkit-scrollbar { display: none; }
+.shop-filter-pill { flex: 0 0 auto; padding: 0.5rem 1.1rem; border-radius: 999px; border: 1px solid var(--line);
+  background: #fff; font-size: 0.84rem; font-weight: 500; white-space: nowrap; transition: all .15s ease; }
+.shop-filter-pill.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* ─────────── Quick-add size picker sheet ─────────── */
+.sizesheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 200; background: #fff;
+  border-radius: 20px 20px 0 0; padding: 1.4rem 1.2rem calc(1.4rem + env(safe-area-inset-bottom));
+  max-width: 480px; margin: 0 auto; box-shadow: 0 -8px 30px rgba(0,0,0,.12); }
+.sizesheet-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.1rem; }
+.sizesheet-title { font-size: 1.05rem; font-weight: 600; }
+.sizesheet-price { margin-top: 0.3rem; font-size: 0.92rem; color: var(--fg); display: flex; gap: 0.5rem; }
+.sizesheet-label { font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.7rem; }
+.sizesheet-sizes { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-bottom: 1.3rem; }
+.sizesheet-size { min-width: 58px; padding: 0.62rem 0.9rem; border-radius: 999px; border: 1px solid var(--line); background: #fff; font-size: 0.86rem; transition: all .15s ease; }
+.sizesheet-size.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.sizesheet-cta { width: 100%; }
 .cart-item-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
 .qty { display: flex; align-items: center; gap: 0.8rem; border: 1px solid var(--line); border-radius: 999px; padding: 0.25rem 0.7rem; }
 .qty button { display: flex; align-items: center; }

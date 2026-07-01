@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useCart, useUI, useWishlist } from '../lib/store';
 import { PlusIcon, BookmarkIcon } from './Icons';
 import { formatINR } from '../lib/products';
+import SizePickerSheet from './SizePickerSheet';
 
 function useReveal() {
   const ref = useRef(null);
@@ -50,7 +51,9 @@ export default function ProductCard({ product, index = 0 }) {
   // Cancel navigation if the touch was a swipe, not a tap
   const onClickCapture = (e) => { if (moved.current) { e.preventDefault(); e.stopPropagation(); moved.current = false; } };
 
-  const quickAdd = (e) => { e.preventDefault(); e.stopPropagation(); addToCart(product, product.sizes?.[0] || 'M', 1); openCart(); };
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const quickAdd = (e) => { e.preventDefault(); e.stopPropagation(); setSheetOpen(true); };
+  const confirmAdd = (size) => { addToCart(product, size, 1); setSheetOpen(false); openCart(); };
   const wish = (e) => { e.preventDefault(); e.stopPropagation(); toggleWish(product); };
   const dot = (e, i) => { e.preventDefault(); e.stopPropagation(); setIdx(i); };
 
@@ -86,6 +89,12 @@ export default function ProductCard({ product, index = 0 }) {
           <button className="product-plus" onClick={quickAdd} aria-label="Quick add"><PlusIcon size={22} /></button>
         </div>
       </Link>
+      <SizePickerSheet
+        product={product}
+        open={sheetOpen}
+        onClose={() => setSheetOpen(false)}
+        onConfirm={confirmAdd}
+      />
     </div>
   );
 }

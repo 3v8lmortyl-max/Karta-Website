@@ -8,7 +8,7 @@ import { formatINR } from '../lib/products';
 
 export default function CartDrawer() {
   const { cartOpen, closeCart } = useUI();
-  const { items, remove, updateQty } = useCart();
+  const { items, remove, updateQty, changeSize } = useCart();
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
 
   return (
@@ -61,7 +61,20 @@ export default function CartDrawer() {
                             <CloseIcon size={16} />
                           </button>
                         </div>
-                        <span className="cart-item-size">Size {i.size}</span>
+                        {i.sizes && i.sizes.length > 1 ? (
+                          <label className="cart-item-size cart-size-select">
+                            Size
+                            <select
+                              value={i.size}
+                              onChange={(e) => changeSize(i.id, i.size, e.target.value)}
+                              aria-label={`Change size for ${i.name}`}
+                            >
+                              {i.sizes.map((s) => <option key={s} value={s}>{s}</option>)}
+                            </select>
+                          </label>
+                        ) : (
+                          <span className="cart-item-size">Size {i.size}</span>
+                        )}
                         <div className="cart-item-bottom">
                           <div className="qty">
                             <button onClick={() => updateQty(i.id, i.size, i.qty - 1)} aria-label="Decrease">

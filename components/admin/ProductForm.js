@@ -20,7 +20,6 @@ export default function ProductForm({ initial }) {
   const [salePrice, setSalePrice] = useState(initial?.sale_price ?? '');
   const [category, setCategory] = useState(initial?.category || '');
   const [collection, setCollection] = useState(initial?.collection || '');
-  const [color, setColor] = useState(initial?.color || '');
   const [sizes, setSizes] = useState(initial?.sizes || []);
   const [featured, setFeatured] = useState(initial?.featured || false);
   const initialSlots = Array.from({ length: IMAGE_SLOT_LABELS.length }, (_, i) => (initial?.images || [])[i] || null);
@@ -72,7 +71,7 @@ export default function ProductForm({ initial }) {
     setSaving(true);
     const payload = {
       name, price: Number(price), sale_price: salePrice === '' ? null : Number(salePrice),
-      category, collection, color, sizes, featured, images,
+      category, collection, sizes, featured, images,
       details: details.split('\n').map((s) => s.trim()).filter(Boolean),
       description, stock,
     };
@@ -125,10 +124,6 @@ export default function ProductForm({ initial }) {
             <option value="">Select collection…</option>
             {COLLECTION_OPTIONS.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
-        </label>
-        <label className="admin-field">
-          <span>Color</span>
-          <input className="admin-input" value={color} onChange={(e) => setColor(e.target.value)} />
         </label>
       </div>
 

@@ -33,6 +33,7 @@ export default function Dashboard() {
       <header className="admin-header">
         <h1>Krta Admin</h1>
         <div className="admin-header-actions">
+          <Link href="/admin/slides" className="admin-btn admin-btn-ghost">Homepage slides</Link>
           <Link href="/admin/products/new" className="admin-btn admin-btn-dark">+ New product</Link>
           <button className="admin-btn admin-btn-ghost" onClick={logout}>Log out</button>
         </div>

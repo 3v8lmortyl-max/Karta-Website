@@ -3,15 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 
-const TILES = [
-  { title: 'Caps',            href: '/shop?q=Cap',                   bg: 'linear-gradient(150deg,#7a1f2b,#3a0e16)' },
-  { title: 'Yacht Collection',href: '/collections/wear-art',         bg: 'linear-gradient(150deg,#2a2118,#0e0b08)' },
-  { title: 'Wear Art',        href: '/collections/wear-art',         bg: 'linear-gradient(150deg,#2c2c40,#6f5cff)' },
-  { title: 'Limited Edition', href: '/collections/limited-edition',  bg: 'linear-gradient(150deg,#caa15a,#5a3f1d)' },
-  { title: 'Best Sellers',    href: '/shop?collection=best-sellers', bg: 'linear-gradient(150deg,#274060,#0d1b2a)' },
-];
-
-export default function CollectionTiles() {
+export default function CollectionTiles({ slides }) {
+  const TILES = slides && slides.length ? slides : [];
   const n = TILES.length;
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -19,10 +12,12 @@ export default function CollectionTiles() {
 
   // auto-advance
   useEffect(() => {
-    if (paused) return;
+    if (paused || n === 0) return;
     const id = setInterval(() => setActive((a) => (a + 1) % n), 3500);
     return () => clearInterval(id);
   }, [paused, n]);
+
+  if (n === 0) return null;
 
   const go = (i) => setActive(((i % n) + n) % n);
 
@@ -60,7 +55,7 @@ export default function CollectionTiles() {
               pointerEvents: off === 0 ? 'auto' : 'none',
             };
             return (
-              <Link key={t.title} href={t.href} className="cover-slide" style={style} aria-hidden={off !== 0}>
+              <Link key={t.id} href={t.href} className="cover-slide" style={style} aria-hidden={off !== 0}>
                 <span className="cover-bg" style={{ background: t.bg }} />
                 <span className="cover-title">{t.title}</span>
               </Link>

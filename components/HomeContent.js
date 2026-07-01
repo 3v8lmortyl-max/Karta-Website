@@ -20,7 +20,7 @@ function useRevealAll() {
   }, []);
 }
 
-export default function HomeContent({ products }) {
+export default function HomeContent({ products, slides }) {
   useRevealAll();
 
   const newArrivals = products.filter((p) => p.collection === 'New Arrivals');
@@ -37,9 +37,9 @@ export default function HomeContent({ products }) {
 
       <CapsCard title="Krta Caps" discoverHref="/shop?q=Cap" items={caps} />
 
-      <CollectionTiles />
+      <CollectionTiles slides={slides} />
 
-      <ProductGrid title="Winter collection" discoverHref="/collections/limited-edition" dark={false}
+      <ProductGrid title="Winter collection" discoverHref="/shop?collection=limited-edition" dark={false}
         items={[...bestSellers, ...limited, ...newArrivals].slice(0, 6)} />
 
       <CustomBanner />
