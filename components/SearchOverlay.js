@@ -62,10 +62,18 @@ export default function SearchOverlay() {
               <SearchIcon size={24} />
               <input
                 ref={inputRef}
+                type="search"
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
                 placeholder="Search pieces, collections, colours…"
                 className="search-input"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck="false"
+                name="krta-search"
+                data-lpignore="true"
+                data-1p-ignore
               />
             </div>
             <button className="icon-btn" onClick={closeSearch} aria-label="Close search">
