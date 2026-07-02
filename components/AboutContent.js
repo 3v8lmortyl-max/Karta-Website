@@ -28,6 +28,32 @@ export default function AboutContent() {
           true art has no limits — it belongs wherever people choose to express themselves.
         </p>
       </div>
+
+      <h2 className="about-subhead">About the Founder</h2>
+      <div className="about-prose">
+        <p>
+          Prashanth Yadav is the Founder and Creative Director of KRTA. A Bachelor of Fine Arts graduate from
+          Jawaharlal Nehru Fine Arts University (JNAFAU), Hyderabad, he founded KRTA with a vision to transform
+          fashion into wearable art. Every collection begins with his creative process — from concept development
+          and hand-painted artwork to product design and brand storytelling.
+        </p>
+        <p>
+          Driven by a passion for originality and craftsmanship, Prashanth believes clothing should be more than
+          something people wear — it should express identity, creativity, and confidence. His long-term vision is
+          to establish KRTA as a globally recognized luxury wearable-art brand, showcasing Indian artistry on the
+          world stage.
+        </p>
+      </div>
+
+      <h2 className="about-subhead">About the Managing Director</h2>
+      <div className="about-prose">
+        <p>
+          Sai Kiran is the Managing Director of KRTA and a Bachelor of Fine Arts graduate from Jawaharlal Nehru
+          Fine Arts University (JNAFAU), Hyderabad. He leads the brand's business operations, strategic planning,
+          partnerships, and long-term growth while ensuring that KRTA's creative vision is translated into a strong
+          and sustainable business.
+        </p>
+      </div>
     </div>
   );
 }
