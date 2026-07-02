@@ -1,8 +1,10 @@
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
+import { Suspense } from 'react';
 import { supabaseServer } from '../../lib/supabase-server';
 import SignOutButton from '../../components/SignOutButton';
 import OpenWishlistCard from '../../components/OpenWishlistCard';
+import AccountCounts from '../../components/AccountCounts';
+import AccountCountsSkeleton from '../../components/AccountCountsSkeleton';
 
 export const metadata = { title: 'My Account — Krta' };
 
@@ -11,10 +13,9 @@ export default async function AccountPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login?next=/account');
 
-  const { data: profile } = await supabase.from('profiles').select('full_name, phone').eq('id', user.id).single();
-  const { count: orderCount } = await supabase.from('orders').select('id', { count: 'exact', head: true }).eq('user_id', user.id);
-  const { count: addressCount } = await supabase.from('addresses').select('id', { count: 'exact', head: true }).eq('user_id', user.id);
-
+  // Only fetch the profile name up front (fast, single row). Order/address
+  // counts stream in separately below so the page paints immediately.
+  const { data: profile } = await supabase.from('profiles').select('full_name').eq('id', user.id).single();
   const displayName = profile?.full_name || user.user_metadata?.full_name || user.email;
 
   return (
@@ -29,14 +30,9 @@ export default async function AccountPage() {
       </div>
 
       <div className="account-grid">
-        <Link href="/account/orders" className="account-card">
-          <h3>Order History</h3>
-          <p>{orderCount || 0} order{orderCount === 1 ? '' : 's'}</p>
-        </Link>
-        <Link href="/account/addresses" className="account-card">
-          <h3>Saved Addresses</h3>
-          <p>{addressCount || 0} address{addressCount === 1 ? '' : 'es'}</p>
-        </Link>
+        <Suspense fallback={<AccountCountsSkeleton />}>
+          <AccountCounts userId={user.id} />
+        </Suspense>
         <OpenWishlistCard />
       </div>
     </div>
