@@ -437,21 +437,9 @@ input { font: inherit; }
 
 /* ─────────── About / Our Story page ─────────── */
 .about-page { padding: 1.6rem 0 4rem; max-width: 720px; }
+.about-hero-photo { width: 100%; aspect-ratio: 16/10; border-radius: 18px; overflow: hidden; background-size: cover; background-position: center;
+  display: flex; align-items: center; justify-content: center; background-color: #efeee9; margin-bottom: 2rem; }
+.about-hero-photo span { font-size: 0.82rem; color: #b3b0a8; font-weight: 500; }
 .about-title { font-size: clamp(1.6rem, 6vw, 2.2rem); font-weight: 700; text-align: center; letter-spacing: -0.01em; margin-bottom: 2rem; }
 .about-prose { display: flex; flex-direction: column; gap: 1.2rem; }
 .about-prose p { font-size: 0.96rem; line-height: 1.75; color: #4a4a4a; }
-.about-subhead { font-size: 1.25rem; font-weight: 700; margin: 2.6rem 0 1.6rem; }
-
-.about-founder { display: flex; flex-direction: column; gap: 1.1rem; margin-bottom: 2.2rem; }
-.about-founder-photo { width: 100%; aspect-ratio: 4/5; border-radius: 16px; overflow: hidden; background-size: cover; background-position: center; }
-.about-founder-photo-empty { display: flex; align-items: center; justify-content: center; background: #efeee9; }
-.about-founder-photo-empty span { font-size: 0.8rem; color: #b3b0a8; font-weight: 500; }
-.about-founder-copy h3 { font-size: 1.1rem; font-weight: 700; }
-.about-founder-role { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 0.25rem 0 0.9rem; }
-.about-founder-copy p { font-size: 0.92rem; line-height: 1.72; color: #4a4a4a; margin-bottom: 0.9rem; }
-.about-founder-copy p:last-child { margin-bottom: 0; }
-
-@media (min-width: 680px) {
-  .about-founder { flex-direction: row; align-items: flex-start; gap: 2rem; }
-  .about-founder-photo { width: 220px; flex: 0 0 220px; }
-}
