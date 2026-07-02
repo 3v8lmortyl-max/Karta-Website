@@ -7,6 +7,9 @@ import { useUI } from '../lib/store';
 import { formatINR } from '../lib/products';
 import { CloseIcon, SearchIcon } from './Icons';
 
+const ORDER_SUPPORT_WA = 'https://wa.me/919014612268?text=' +
+  encodeURIComponent("Hi Krta! I need help with an order.");
+
 export default function SearchOverlay() {
   const { searchOpen, closeSearch } = useUI();
   const [q, setQ] = useState('');
@@ -72,7 +75,28 @@ export default function SearchOverlay() {
 
           <div className="search-body">
             {q.trim() === '' && (
-              <p className="search-hint">Start typing to explore the collection.</p>
+              <>
+                <div className="search-quicklinks">
+                  <h3 className="search-section-title">Collections</h3>
+                  <Link href="/shop?collection=new-arrivals" className="search-quicklink" onClick={closeSearch}>New Arrivals</Link>
+                  <Link href="/shop?collection=best-sellers" className="search-quicklink" onClick={closeSearch}>Best Sellers</Link>
+                  <Link href="/shop?collection=limited-edition" className="search-quicklink" onClick={closeSearch}>Limited Edition</Link>
+                  <Link href="/shop?q=Cap" className="search-quicklink" onClick={closeSearch}>Caps</Link>
+                </div>
+
+                <div className="search-footlinks">
+                  <div className="search-footlinks-col">
+                    <Link href="/about" onClick={closeSearch}>Our Story</Link>
+                    <Link href="/about" onClick={closeSearch}>Collaborations</Link>
+                    <Link href="/journal" onClick={closeSearch}>Media &amp; Press</Link>
+                  </div>
+                  <div className="search-footlinks-col">
+                    <Link href="/login" onClick={closeSearch}>Members Login</Link>
+                    <Link href="/about" onClick={closeSearch}>Careers</Link>
+                    <a href={ORDER_SUPPORT_WA} target="_blank" rel="noopener noreferrer" onClick={closeSearch}>Order Support</a>
+                  </div>
+                </div>
+              </>
             )}
             {q.trim() !== '' && results.length === 0 && (
               <p className="search-hint">No pieces match “{q}”.</p>
