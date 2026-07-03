@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Script from 'next/script';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../lib/store';
 import { formatINR } from '../lib/products';
@@ -56,7 +57,7 @@ export default function CheckoutContent() {
     return shipping;
   };
 
-  const openRazorpay = (order) => {
+  const openRazorpay = (order, shippingPayload) => {
     const rz = new window.Razorpay({
       key: order.keyId,
       amount: order.amount,
@@ -64,6 +65,11 @@ export default function CheckoutContent() {
       name: 'Krta',
       description: 'Order payment',
       order_id: order.razorpayOrderId,
+      prefill: {
+        name: shippingPayload.full_name,
+        contact: shippingPayload.phone,
+        email: shipping.email,
+      },
       handler: async (response) => {
         const res = await fetch('/api/checkout/verify', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -120,7 +126,7 @@ export default function CheckoutContent() {
       return;
     }
     const order = await res.json();
-    openRazorpay(order);
+    openRazorpay(order, shippingPayload);
   };
 
   if (items.length === 0) {
@@ -140,7 +146,9 @@ export default function CheckoutContent() {
       {/* Minimal checkout header — brand + back to shopping */}
       <div className="checkout-brandbar">
         <div className="container checkout-brandbar-inner">
-          <Link href="/" className="checkout-brand" aria-label="Krta home">Krta</Link>
+          <Link href="/" className="checkout-brand" aria-label="Krta home">
+            <Image src="/karta-logo-mark.png" alt="Krta" width={441} height={148} priority className="checkout-brand-img" />
+          </Link>
         </div>
       </div>
 
