@@ -130,11 +130,17 @@ export default function CheckoutContent() {
             const errBody = await saveRes.json().catch(() => ({}));
             console.error('Address save failed:', saveRes.status, errBody);
             setAddressSaveWarning(`Address wasn't saved to your account (${errBody.error || saveRes.status}), but your order will still go through.`);
+          } else {
+            const savedData = await saveRes.json().catch(() => ({}));
+            console.log('Address saved successfully:', savedData);
           }
         } catch (e) {
           console.error('Address save request failed:', e);
           setAddressSaveWarning("Address wasn't saved to your account, but your order will still go through.");
         }
+      } else {
+        console.warn('Address save skipped: no authenticated user found at submit time.');
+        setAddressSaveWarning("You're not signed in, so this address wasn't saved to your account.");
       }
     }
 

@@ -66,41 +66,36 @@ export default function AddressManager() {
           {!showForm ? (
             <button className="btn-line" onClick={startNew} style={{ marginTop: '1rem' }}>+ Add new address</button>
           ) : (
-            <form className="admin-form" onSubmit={save} style={{ marginTop: '1.2rem', maxWidth: 480 }}>
-              <label className="admin-field"><span>Label</span>
-                <input className="admin-input" value={form.label} onChange={(e) => setForm({ ...form, label: e.target.value })} placeholder="Home, Work…" />
-              </label>
-              <label className="admin-field"><span>Full name</span>
-                <input className="admin-input" value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} required />
-              </label>
-              <label className="admin-field"><span>Phone</span>
-                <input className="admin-input" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} required />
-              </label>
-              <label className="admin-field"><span>Address line 1</span>
-                <input className="admin-input" value={form.line1} onChange={(e) => setForm({ ...form, line1: e.target.value })} required />
-              </label>
-              <label className="admin-field"><span>Address line 2 (optional)</span>
-                <input className="admin-input" value={form.line2 || ''} onChange={(e) => setForm({ ...form, line2: e.target.value })} />
-              </label>
-              <div className="admin-field-row">
-                <label className="admin-field"><span>City</span>
-                  <input className="admin-input" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} required />
-                </label>
-                <label className="admin-field"><span>State</span>
-                  <input className="admin-input" value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value })} required />
-                </label>
-                <label className="admin-field"><span>Pincode</span>
-                  <input className="admin-input" value={form.pincode} onChange={(e) => setForm({ ...form, pincode: e.target.value })} required />
-                </label>
+            <form className="account-addr-form" onSubmit={save}>
+              <input className="ck-input" value={form.label} onChange={(e) => setForm({ ...form, label: e.target.value })} placeholder="Label (Home, Work…)" />
+              <input className="ck-input" value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} placeholder="Full name" required />
+              <div className="ck-phone-field">
+                <span className="ck-phone-prefix">+91</span>
+                <input
+                  className="ck-input ck-phone-input"
+                  type="tel"
+                  inputMode="numeric"
+                  placeholder="Phone number"
+                  value={form.phone.replace(/^\+91/, '')}
+                  onChange={(e) => setForm({ ...form, phone: '+91' + e.target.value.replace(/\D/g, '').slice(0, 10) })}
+                  required
+                />
               </div>
-              <label className="admin-field admin-checkbox">
+              <input className="ck-input" value={form.line1} onChange={(e) => setForm({ ...form, line1: e.target.value })} placeholder="Address line 1" required />
+              <input className="ck-input" value={form.line2 || ''} onChange={(e) => setForm({ ...form, line2: e.target.value })} placeholder="Apartment, suite, etc. (optional)" />
+              <input className="ck-input" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} placeholder="City" required />
+              <div className="ck-input-row">
+                <input className="ck-input" value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value })} placeholder="State" required />
+                <input className="ck-input" value={form.pincode} onChange={(e) => setForm({ ...form, pincode: e.target.value })} placeholder="PIN code" required />
+              </div>
+              <label className="ck-checkbox">
                 <input type="checkbox" checked={form.is_default} onChange={(e) => setForm({ ...form, is_default: e.target.checked })} />
                 <span>Set as default address</span>
               </label>
               {error && <p className="admin-error">{error}</p>}
-              <div className="admin-form-actions">
-                <button type="button" className="admin-btn admin-btn-ghost" onClick={() => setShowForm(false)}>Cancel</button>
-                <button className="admin-btn admin-btn-dark">{editingId ? 'Save changes' : 'Add address'}</button>
+              <div className="account-addr-form-actions">
+                <button type="button" className="btn-line" onClick={() => setShowForm(false)}>Cancel</button>
+                <button className="btn-solid">{editingId ? 'Save changes' : 'Add address'}</button>
               </div>
             </form>
           )}

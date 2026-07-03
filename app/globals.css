@@ -411,6 +411,9 @@ input { font: inherit; }
 .order-amount { font-weight: 600; }
 
 .address-manager { margin-top: 1rem; }
+.account-addr-form { display: flex; flex-direction: column; margin-top: 1.2rem; max-width: 480px; }
+.account-addr-form-actions { display: flex; gap: 0.8rem; margin-top: 0.6rem; }
+.account-addr-form-actions .btn-line, .account-addr-form-actions .btn-solid { flex: 1; }
 .address-list { display: flex; flex-direction: column; gap: 0.8rem; }
 .address-card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.1rem; font-size: 0.86rem; }
 .address-card p { margin-top: 0.15rem; color: #444; }
