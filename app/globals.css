@@ -446,7 +446,16 @@ input { font: inherit; }
 .about-subhead { font-size: 1.25rem; font-weight: 700; margin: 2.4rem 0 1.2rem; }
 
 /* ─────────── Checkout page ─────────── */
-.checkout-page { padding-bottom: 6rem; } /* room for sticky pay bar */
+.checkout-page { padding-bottom: 7rem; } /* room for sticky pay bar */
+
+/* Focused checkout: hide the global site header + footer so it's a clean, distraction-free flow (like the reference) */
+body:has(.checkout-page) .footer { display: none; }
+body:has(.checkout-page) .site-header { display: none; }
+.checkout-page { min-height: 100vh; }
+
+.checkout-brandbar { border-bottom: 1px solid var(--line); background: #fff; }
+.checkout-brandbar-inner { padding: 0.9rem 1rem; text-align: center; }
+.checkout-brand { font-family: var(--font-script), cursive; font-size: 1.7rem; color: var(--ink); }
 
 /* Sticky mini order bar pinned at the top while scrolling — mirrors the reference */
 .checkout-topbar { position: sticky; top: 0; z-index: 20; background: #fff; border-bottom: 1px solid var(--line); }
@@ -469,6 +478,15 @@ input { font: inherit; }
 
 /* Larger, more touch-friendly inputs, matching the reference's generous field sizing */
 .checkout-input { height: 52px; padding: 0 1rem; font-size: 0.96rem; border-radius: 10px; }
+
+/* Placeholder-style inputs (label inside the box), matching the reference checkout */
+.ck-input { display: block; width: 100%; height: 54px; padding: 0 1rem; font-size: 0.98rem; font-family: inherit;
+  color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 10px; margin-bottom: 0.85rem; }
+.ck-input::placeholder { color: #8f8b83; }
+.ck-input:focus { outline: none; border-color: var(--ink); }
+.ck-input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+.ck-input-row .ck-input { margin-bottom: 0.85rem; }
+.ck-checkbox { display: flex; align-items: center; gap: 0.5rem; font-size: 0.86rem; color: #444; margin-top: 0.3rem; }
 .checkout-city-row { display: grid; grid-template-columns: 1fr; gap: 1rem; }
 @media (min-width: 540px) { .checkout-city-row { grid-template-columns: 1fr 1fr 1fr; } }
 

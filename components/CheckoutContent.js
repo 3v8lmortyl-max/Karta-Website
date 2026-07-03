@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Script from 'next/script';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../lib/store';
 import { formatINR } from '../lib/products';
@@ -136,6 +137,13 @@ export default function CheckoutContent() {
     <div className="checkout-page">
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
 
+      {/* Minimal checkout header — brand + back to shopping */}
+      <div className="checkout-brandbar">
+        <div className="container checkout-brandbar-inner">
+          <Link href="/" className="checkout-brand" aria-label="Krta home">Krta</Link>
+        </div>
+      </div>
+
       {/* Sticky mini order bar — mirrors the "product pinned at top" pattern from the reference */}
       <div className="checkout-topbar">
         <div className="container checkout-topbar-inner">
@@ -155,11 +163,8 @@ export default function CheckoutContent() {
           <div className="checkout-form-col">
             <section className="checkout-section">
               <h2>Contact</h2>
-              <label className="admin-field">
-                <span>Email</span>
-                <input className="admin-input checkout-input" type="email" value={shipping.email}
-                  onChange={(e) => setShipping({ ...shipping, email: e.target.value })} required />
-              </label>
+              <input className="ck-input" type="email" placeholder="Email" value={shipping.email}
+                onChange={(e) => setShipping({ ...shipping, email: e.target.value })} required />
             </section>
 
             <section className="checkout-section">
@@ -187,31 +192,17 @@ export default function CheckoutContent() {
 
               {useNewAddress && (
                 <div className="checkout-address-fields">
-                  <label className="admin-field"><span>Full name</span>
-                    <input className="admin-input checkout-input" value={shipping.full_name} onChange={(e) => setShipping({ ...shipping, full_name: e.target.value })} required />
-                  </label>
-                  <label className="admin-field"><span>Phone</span>
-                    <input className="admin-input checkout-input" value={shipping.phone} onChange={(e) => setShipping({ ...shipping, phone: e.target.value })} required />
-                  </label>
-                  <label className="admin-field"><span>Address line 1</span>
-                    <input className="admin-input checkout-input" value={shipping.line1} onChange={(e) => setShipping({ ...shipping, line1: e.target.value })} required />
-                  </label>
-                  <label className="admin-field"><span>Address line 2 (optional)</span>
-                    <input className="admin-input checkout-input" value={shipping.line2} onChange={(e) => setShipping({ ...shipping, line2: e.target.value })} />
-                  </label>
-                  <div className="checkout-city-row">
-                    <label className="admin-field"><span>City</span>
-                      <input className="admin-input checkout-input" value={shipping.city} onChange={(e) => setShipping({ ...shipping, city: e.target.value })} required />
-                    </label>
-                    <label className="admin-field"><span>State</span>
-                      <input className="admin-input checkout-input" value={shipping.state} onChange={(e) => setShipping({ ...shipping, state: e.target.value })} required />
-                    </label>
-                    <label className="admin-field"><span>Pincode</span>
-                      <input className="admin-input checkout-input" value={shipping.pincode} onChange={(e) => setShipping({ ...shipping, pincode: e.target.value })} required />
-                    </label>
+                  <input className="ck-input" placeholder="Full name" value={shipping.full_name} onChange={(e) => setShipping({ ...shipping, full_name: e.target.value })} required />
+                  <input className="ck-input" placeholder="Phone" value={shipping.phone} onChange={(e) => setShipping({ ...shipping, phone: e.target.value })} required />
+                  <input className="ck-input" placeholder="Address line 1" value={shipping.line1} onChange={(e) => setShipping({ ...shipping, line1: e.target.value })} required />
+                  <input className="ck-input" placeholder="Apartment, suite, etc. (optional)" value={shipping.line2} onChange={(e) => setShipping({ ...shipping, line2: e.target.value })} />
+                  <input className="ck-input" placeholder="City" value={shipping.city} onChange={(e) => setShipping({ ...shipping, city: e.target.value })} required />
+                  <div className="ck-input-row">
+                    <input className="ck-input" placeholder="State" value={shipping.state} onChange={(e) => setShipping({ ...shipping, state: e.target.value })} required />
+                    <input className="ck-input" placeholder="PIN code" value={shipping.pincode} onChange={(e) => setShipping({ ...shipping, pincode: e.target.value })} required />
                   </div>
                   {signedIn && (
-                    <label className="admin-field admin-checkbox">
+                    <label className="ck-checkbox">
                       <input type="checkbox" checked={saveAddress} onChange={(e) => setSaveAddress(e.target.checked)} />
                       <span>Save this address to my account</span>
                     </label>
