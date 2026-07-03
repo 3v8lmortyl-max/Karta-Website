@@ -495,6 +495,8 @@ body:has(.checkout-page) .site-header { display: none; }
 .ck-phone-prefix { position: absolute; left: 1rem; top: 0; bottom: 0; display: flex; align-items: center;
   font-size: 0.98rem; color: var(--ink); font-weight: 600; pointer-events: none; }
 .ck-phone-input { padding-left: 3rem !important; margin-bottom: 0 !important; }
+.ck-input-invalid { border-color: #b23b2e !important; }
+.ck-field-hint { font-size: 0.76rem; color: #b23b2e; margin: 0.35rem 0 0.85rem; }
 .ck-checkbox { display: flex; align-items: center; gap: 0.5rem; font-size: 0.86rem; color: #444; margin-top: 0.3rem; }
 .checkout-city-row { display: grid; grid-template-columns: 1fr; gap: 1rem; }
 @media (min-width: 540px) { .checkout-city-row { grid-template-columns: 1fr 1fr 1fr; } }
@@ -527,6 +529,7 @@ body:has(.checkout-page) .site-header { display: none; }
 .checkout-paybar-total { display: flex; flex-direction: column; font-size: 0.72rem; color: var(--muted); flex-shrink: 0; }
 .checkout-paybar-total strong { font-size: 1.1rem; color: var(--ink); font-weight: 700; }
 .checkout-pay-btn { flex: 1; height: 52px; font-size: 0.98rem; }
+.checkout-pay-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 .checkout-secure-note { text-align: center; font-size: 0.72rem; color: var(--muted); margin-top: 0.5rem; }
 
 .checkout-success { text-align: center; max-width: 480px; margin: 0 auto; padding-top: 3rem; }

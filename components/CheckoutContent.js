@@ -67,6 +67,14 @@ export default function CheckoutContent() {
     return { ...shipping, phone: normalizePhone(shipping.phone) };
   };
 
+  // Whether the form currently has everything needed to place an order — drives the
+  // Pay button's disabled state so it can't be clicked until the address (including a
+  // real 10-digit phone number) and email are actually complete.
+  const isPhoneValid = /^\d{10}$/.test(shipping.phone);
+  const isFormComplete = useNewAddress
+    ? !!(shipping.email && shipping.full_name && isPhoneValid && shipping.line1 && shipping.city && shipping.state && shipping.pincode)
+    : !!(shipping.email && selectedAddressId);
+
   const openRazorpay = (order, shippingPayload) => {
     const rz = new window.Razorpay({
       key: order.keyId,
@@ -109,6 +117,10 @@ export default function CheckoutContent() {
     if (!shippingPayload) { setError('Please choose or enter a shipping address.'); return; }
     if (!shippingPayload.full_name || !shippingPayload.phone || !shippingPayload.line1 || !shippingPayload.city || !shippingPayload.state || !shippingPayload.pincode) {
       setError('Please fill in all required address fields.');
+      return;
+    }
+    if (useNewAddress && !isPhoneValid) {
+      setError('Please enter a valid 10-digit mobile number.');
       return;
     }
     setPlacing(true);
@@ -237,7 +249,7 @@ export default function CheckoutContent() {
                   <div className="ck-phone-field">
                     <span className="ck-phone-prefix">+91</span>
                     <input
-                      className="ck-input ck-phone-input"
+                      className={`ck-input ck-phone-input ${shipping.phone && !isPhoneValid ? 'ck-input-invalid' : ''}`}
                       type="tel"
                       inputMode="numeric"
                       placeholder="Phone number"
@@ -246,6 +258,9 @@ export default function CheckoutContent() {
                       required
                     />
                   </div>
+                  {shipping.phone && !isPhoneValid && (
+                    <p className="ck-field-hint">Enter all 10 digits ({shipping.phone.length}/10)</p>
+                  )}
                   <input className="ck-input" placeholder="Address line 1" value={shipping.line1} onChange={(e) => setShipping({ ...shipping, line1: e.target.value })} required />
                   <input className="ck-input" placeholder="Apartment, suite, etc. (optional)" value={shipping.line2} onChange={(e) => setShipping({ ...shipping, line2: e.target.value })} />
                   <input className="ck-input" placeholder="City" value={shipping.city} onChange={(e) => setShipping({ ...shipping, city: e.target.value })} required />
@@ -296,7 +311,7 @@ export default function CheckoutContent() {
             <span>Total</span>
             <strong>{formatINR(subtotal)}</strong>
           </div>
-          <button type="submit" form="checkout-form" className="btn-solid checkout-pay-btn" disabled={placing}>
+          <button type="submit" form="checkout-form" className="btn-solid checkout-pay-btn" disabled={placing || !isFormComplete}>
             {placing ? 'Processing…' : 'Pay now'}
           </button>
         </div>
