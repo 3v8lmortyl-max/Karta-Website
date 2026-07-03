@@ -436,14 +436,14 @@ input { font: inherit; }
 @keyframes skeletonShimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
 /* ─────────── About / Our Story page ─────────── */
-.about-page { padding: 1.6rem 0 4rem; max-width: 720px; margin-left: auto; margin-right: auto; }
+.about-page { padding: 1.6rem 1rem 4rem; max-width: 680px; margin-left: auto; margin-right: auto; }
 .about-hero-photo { width: 100%; aspect-ratio: 16/10; border-radius: 18px; overflow: hidden; background-size: cover; background-position: center;
   display: flex; align-items: center; justify-content: center; background-color: #efeee9; margin-bottom: 2rem; }
 .about-hero-photo span { font-size: 0.82rem; color: #b3b0a8; font-weight: 500; }
 .about-title { font-size: clamp(1.6rem, 6vw, 2.2rem); font-weight: 700; text-align: center; letter-spacing: -0.01em; margin-bottom: 2rem; }
-.about-prose { display: flex; flex-direction: column; gap: 1.2rem; }
-.about-prose p { font-size: 0.96rem; line-height: 1.75; color: #4a4a4a; }
-.about-subhead { font-size: 1.25rem; font-weight: 700; margin: 2.4rem 0 1.2rem; }
+.about-prose { display: flex; flex-direction: column; gap: 1.6rem; }
+.about-prose p { font-size: 1.08rem; line-height: 1.7; color: #4a4a4a; }
+.about-subhead { font-size: 1.3rem; font-weight: 700; margin: 2.6rem 0 1.3rem; }
 
 /* ─────────── Checkout page ─────────── */
 .checkout-page { padding-bottom: 7rem; } /* room for sticky pay bar */
