@@ -34,6 +34,7 @@ export default function CheckoutContent() {
 
   const [placing, setPlacing] = useState(false);
   const [error, setError] = useState('');
+  const [addressSaveWarning, setAddressSaveWarning] = useState('');
 
   const subtotal = items.reduce((n, i) => n + i.price * i.qty, 0);
 
@@ -112,18 +113,28 @@ export default function CheckoutContent() {
     }
     setPlacing(true);
 
-    // Save the new address for signed-in users who opted in — awaited so it reliably
-    // completes before checkout proceeds (previously fire-and-forget, which could get
-    // silently dropped if the page moved on before the request finished).
-    if (signedIn && useNewAddress && saveAddress) {
-      try {
-        const saveRes = await fetch('/api/account/addresses', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ label: 'Home', ...shippingPayload, is_default: savedAddresses.length === 0 }),
-        });
-        if (!saveRes.ok) console.error('Address save failed:', await saveRes.text().catch(() => ''));
-      } catch (e) {
-        console.error('Address save request failed:', e);
+    // Save the new address for signed-in users who opted in. We re-check auth status
+    // fresh here (rather than trusting the `signedIn` state set on page load) because
+    // that state can still be false at submit time if getUser() hadn't resolved yet —
+    // which would silently skip this block even though the user really is logged in.
+    if (useNewAddress && saveAddress) {
+      const supabase = supabaseBrowser();
+      const { data: { user: freshUser } } = await supabase.auth.getUser();
+      if (freshUser) {
+        try {
+          const saveRes = await fetch('/api/account/addresses', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ label: 'Home', ...shippingPayload, is_default: savedAddresses.length === 0 }),
+          });
+          if (!saveRes.ok) {
+            const errBody = await saveRes.json().catch(() => ({}));
+            console.error('Address save failed:', saveRes.status, errBody);
+            setAddressSaveWarning(`Address wasn't saved to your account (${errBody.error || saveRes.status}), but your order will still go through.`);
+          }
+        } catch (e) {
+          console.error('Address save request failed:', e);
+          setAddressSaveWarning("Address wasn't saved to your account, but your order will still go through.");
+        }
       }
     }
 
@@ -246,6 +257,7 @@ export default function CheckoutContent() {
               )}
             </section>
 
+            {addressSaveWarning && <p className="checkout-warning">{addressSaveWarning}</p>}
             {error && <p className="admin-error checkout-error">{error}</p>}
           </div>
 

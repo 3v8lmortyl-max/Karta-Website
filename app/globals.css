@@ -504,6 +504,7 @@ body:has(.checkout-page) .site-header { display: none; }
 .checkout-address-option p { color: #555; margin-top: 0.15rem; }
 
 .checkout-error { margin-bottom: 1rem; }
+.checkout-warning { font-size: 0.84rem; color: #8a6d1a; background: #fff3cd; border-radius: 8px; padding: 0.6rem 0.85rem; margin-bottom: 1rem; }
 
 .checkout-summary { background: #fafaf8; border: 1px solid var(--line); border-radius: 14px; padding: 1.3rem; }
 .checkout-summary-title { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 1rem; }
