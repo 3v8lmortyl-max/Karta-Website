@@ -17,7 +17,7 @@ const FOOTER = {
   ],
   brand: [
     { label: 'Our Story', href: '/about' },
-    { label: 'Walk-in Stores', href: '/about' },
+    { label: 'Walk-in Stores', href: '/stores' },
     { label: 'Collaborations', href: '/about' },
     { label: 'Media', href: '/journal' },
   ],

@@ -487,6 +487,11 @@ body:has(.checkout-page) .site-header { display: none; }
 .ck-input:focus { outline: none; border-color: var(--ink); }
 .ck-input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
 .ck-input-row .ck-input { margin-bottom: 0.85rem; }
+
+.ck-phone-field { position: relative; margin-bottom: 0.85rem; }
+.ck-phone-prefix { position: absolute; left: 1rem; top: 0; bottom: 0; display: flex; align-items: center;
+  font-size: 0.98rem; color: var(--ink); font-weight: 600; pointer-events: none; }
+.ck-phone-input { padding-left: 3rem !important; margin-bottom: 0 !important; }
 .ck-checkbox { display: flex; align-items: center; gap: 0.5rem; font-size: 0.86rem; color: #444; margin-top: 0.3rem; }
 .checkout-city-row { display: grid; grid-template-columns: 1fr; gap: 1rem; }
 @media (min-width: 540px) { .checkout-city-row { grid-template-columns: 1fr 1fr 1fr; } }

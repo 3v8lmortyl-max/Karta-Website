@@ -11,6 +11,15 @@ import { supabaseBrowser } from '../lib/supabase-browser';
 
 const EMPTY_SHIPPING = { full_name: '', phone: '', email: '', line1: '', line2: '', city: '', state: '', pincode: '' };
 
+// Ensures the phone number always carries the +91 country code before it's sent
+// anywhere (order creation, Razorpay prefill) — regardless of whether it came from
+// a fresh 10-digit entry or an older saved address that might already have it.
+function normalizePhone(raw) {
+  const digits = String(raw || '').replace(/\D/g, '');
+  const last10 = digits.slice(-10);
+  return last10 ? `+91${last10}` : '';
+}
+
 export default function CheckoutContent() {
   const router = useRouter();
   const items = useCart((s) => s.items);
@@ -52,9 +61,9 @@ export default function CheckoutContent() {
     if (!useNewAddress) {
       const a = savedAddresses.find((x) => x.id === selectedAddressId);
       if (!a) return null;
-      return { full_name: a.full_name, phone: a.phone, line1: a.line1, line2: a.line2, city: a.city, state: a.state, pincode: a.pincode };
+      return { full_name: a.full_name, phone: normalizePhone(a.phone), line1: a.line1, line2: a.line2, city: a.city, state: a.state, pincode: a.pincode };
     }
-    return shipping;
+    return { ...shipping, phone: normalizePhone(shipping.phone) };
   };
 
   const openRazorpay = (order, shippingPayload) => {
@@ -103,12 +112,19 @@ export default function CheckoutContent() {
     }
     setPlacing(true);
 
-    // Save the new address for signed-in users who opted in, before placing the order.
+    // Save the new address for signed-in users who opted in — awaited so it reliably
+    // completes before checkout proceeds (previously fire-and-forget, which could get
+    // silently dropped if the page moved on before the request finished).
     if (signedIn && useNewAddress && saveAddress) {
-      fetch('/api/account/addresses', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ label: 'Home', ...shippingPayload, is_default: savedAddresses.length === 0 }),
-      }).catch(() => {});
+      try {
+        const saveRes = await fetch('/api/account/addresses', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ label: 'Home', ...shippingPayload, is_default: savedAddresses.length === 0 }),
+        });
+        if (!saveRes.ok) console.error('Address save failed:', await saveRes.text().catch(() => ''));
+      } catch (e) {
+        console.error('Address save request failed:', e);
+      }
     }
 
     const res = await fetch('/api/checkout/create-order', {
@@ -201,7 +217,18 @@ export default function CheckoutContent() {
               {useNewAddress && (
                 <div className="checkout-address-fields">
                   <input className="ck-input" placeholder="Full name" value={shipping.full_name} onChange={(e) => setShipping({ ...shipping, full_name: e.target.value })} required />
-                  <input className="ck-input" placeholder="Phone" value={shipping.phone} onChange={(e) => setShipping({ ...shipping, phone: e.target.value })} required />
+                  <div className="ck-phone-field">
+                    <span className="ck-phone-prefix">+91</span>
+                    <input
+                      className="ck-input ck-phone-input"
+                      type="tel"
+                      inputMode="numeric"
+                      placeholder="Phone number"
+                      value={shipping.phone}
+                      onChange={(e) => setShipping({ ...shipping, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
+                      required
+                    />
+                  </div>
                   <input className="ck-input" placeholder="Address line 1" value={shipping.line1} onChange={(e) => setShipping({ ...shipping, line1: e.target.value })} required />
                   <input className="ck-input" placeholder="Apartment, suite, etc. (optional)" value={shipping.line2} onChange={(e) => setShipping({ ...shipping, line2: e.target.value })} />
                   <input className="ck-input" placeholder="City" value={shipping.city} onChange={(e) => setShipping({ ...shipping, city: e.target.value })} required />
