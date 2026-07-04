@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 const VISITOR_WA = 'https://wa.me/919014612268?text=' +
   encodeURIComponent("Hey! I'm a visitor from Krta's website.");
@@ -29,7 +30,7 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="container">
-        <div className="footer-script">krta</div>
+        <Image src="/karta-logo-mark.png" alt="Krta" width={441} height={148} className="footer-logo-img" />
 
         <div className="footer-grid">
           <div className="footer-colset">
