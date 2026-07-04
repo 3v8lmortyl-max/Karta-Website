@@ -202,7 +202,7 @@ input { font: inherit; }
   border-radius: 7px; padding: 0.2rem 0.5rem; background: #fff; }
 
 /* ─────────── Shop / all products page ─────────── */
-.shop-page { padding: 1.4rem 0 3.5rem; }
+.shop-page { padding: 1.4rem 1rem 3.5rem; }
 .shop-title { font-size: clamp(1.4rem, 5vw, 2rem); font-weight: 700; letter-spacing: -0.01em; text-transform: capitalize; margin-bottom: 1.1rem; }
 .shop-filters { display: flex; gap: 0.6rem; overflow-x: auto; scrollbar-width: none; padding-bottom: 1.4rem; }
 .shop-filters::-webkit-scrollbar { display: none; }
@@ -348,11 +348,11 @@ input { font: inherit; }
 .custom-banner { margin: clamp(2rem, 5vw, 3.5rem) auto; }
 .custom-banner-inner { position: relative; border-radius: 22px; overflow: hidden; background: #111113;
   min-height: clamp(330px, 62vw, 460px); display: flex; align-items: flex-end; }
-.custom-banner-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.custom-banner-bg-blur { filter: blur(28px) brightness(0.55) saturate(1.1); transform: scale(1.15); }
-.custom-banner-bg-sharp { object-fit: contain; object-position: center; }
+.custom-banner-bg-static { position: absolute; inset: 0; background-image: url('/video/custom-design-blur-bg.jpg');
+  background-size: cover; background-position: center; }
+.custom-banner-bg-sharp { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; }
 .custom-banner-inner::after { content: ''; position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,.12) 62%); }
+  background: linear-gradient(to top, rgba(0,0,0,.78), rgba(0,0,0,.42) 62%, rgba(0,0,0,.42)); }
 .custom-banner-overlay { position: relative; z-index: 2; padding: clamp(1.4rem, 4.5vw, 2.6rem); color: #fff; max-width: 560px; }
 .custom-banner-kicker { font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; opacity: .85; margin-bottom: .55rem; }
 .custom-banner-title { font-size: clamp(1.5rem, 5.4vw, 2.3rem); font-weight: 600; line-height: 1.08; letter-spacing: -0.01em; }
@@ -537,7 +537,7 @@ body:has(.checkout-page) .site-header { display: none; }
 .checkout-success-actions { display: flex; flex-direction: column; gap: 0.8rem; }
 
 /* ─────────── Policy pages (Refund Policy, etc.) ─────────── */
-.policy-page { padding: 1.6rem 0 4rem; max-width: 720px; margin-left: auto; margin-right: auto; }
+.policy-page { padding: 1.6rem 1rem 4rem; max-width: 720px; margin-left: auto; margin-right: auto; }
 .policy-title { font-size: clamp(1.6rem, 6vw, 2.1rem); font-weight: 700; margin-bottom: 0.8rem; }
 .policy-intro { font-size: 0.96rem; color: #4a4a4a; line-height: 1.7; margin-bottom: 2.2rem; }
 .policy-section { margin-bottom: 2rem; }
