@@ -6,13 +6,15 @@ import { WhatsAppIcon } from './Icons';
 const WA = 'https://wa.me/919014612268?text=' +
   encodeURIComponent("Hi Krta! I'd love to customise my own hand-painted design.");
 
-export default function CustomBanner() {
+const CLIPS = [
+  { video: '/video/custom-design.mp4', poster: '/video/custom-design-poster.jpg', bg: '/video/custom-design-blur-bg.jpg' },
+  { video: '/video/custom-design-2.mp4', poster: '/video/custom-design-2-poster.jpg', bg: '/video/custom-design-2-blur-bg.jpg' },
+];
+
+function VideoPanel({ clip }) {
   const videoRef = useRef(null);
 
-  // Only decode/play the video while the banner is actually on screen. A <video> keeps
-  // decoding frames even when scrolled out of view, which was adding real GPU/CPU load
-  // (and, combined with a live CSS blur filter we've since removed, was the likely cause
-  // of choppy scrolling and the flickering brightness behind the text).
+  // Only decode/play while the panel is actually on screen — see note in the parent.
   useEffect(() => {
     const el = videoRef.current;
     if (!el) return;
@@ -28,19 +30,27 @@ export default function CustomBanner() {
   }, []);
 
   return (
+    <div className="custom-banner-panel">
+      <div className="custom-banner-bg-static" style={{ backgroundImage: `url('${clip.bg}')` }} />
+      <video
+        ref={videoRef}
+        className="custom-banner-bg-sharp"
+        src={clip.video}
+        poster={clip.poster}
+        muted loop playsInline preload="metadata"
+        aria-hidden="true"
+      />
+    </div>
+  );
+}
+
+export default function CustomBanner() {
+  return (
     <section className="custom-banner container">
       <div className="custom-banner-inner">
-        {/* Static pre-blurred/pre-dimmed image — cheap to render, unlike a live CSS blur
-            filter on a playing video, and gives a stable, non-flickering backdrop. */}
-        <div className="custom-banner-bg-static" />
-        <video
-          ref={videoRef}
-          className="custom-banner-bg-sharp"
-          src="/video/custom-design.mp4"
-          poster="/video/custom-design-poster.jpg"
-          muted loop playsInline preload="metadata"
-          aria-hidden="true"
-        />
+        <div className="custom-banner-video-row">
+          {CLIPS.map((clip) => <VideoPanel key={clip.video} clip={clip} />)}
+        </div>
         <div className="custom-banner-overlay">
           <p className="custom-banner-kicker">Hand-painted · One of one</p>
           <h2 className="custom-banner-title">Customise your own design</h2>
