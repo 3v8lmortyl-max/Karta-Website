@@ -477,7 +477,6 @@ body:has(.checkout-page) .site-header { display: none; }
 
 .checkout-section { margin-bottom: 2.2rem; }
 .checkout-section h2 { font-size: 1.05rem; font-weight: 700; margin-bottom: 1.1rem; }
-.checkout-section .admin-field { margin-bottom: 1rem; }
 .checkout-address-fields { display: flex; flex-direction: column; }
 
 /* Larger, more touch-friendly inputs, matching the reference's generous field sizing */

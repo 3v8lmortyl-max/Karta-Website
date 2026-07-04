@@ -11,10 +11,15 @@ export default function AddressManager() {
   const [error, setError] = useState('');
 
   const load = async () => {
-    const res = await fetch('/api/account/addresses');
-    if (res.status === 401) { window.location.href = '/login?next=/account/addresses'; return; }
-    const data = await res.json();
-    setAddresses(data.addresses || []);
+    try {
+      const res = await fetch('/api/account/addresses');
+      if (res.status === 401) { window.location.href = '/login?next=/account/addresses'; return; }
+      if (!res.ok) { setError('Could not load your addresses. Please refresh and try again.'); return; }
+      const data = await res.json();
+      setAddresses(data.addresses || []);
+    } catch (e) {
+      setError('Could not load your addresses. Check your connection and refresh.');
+    }
   };
   useEffect(() => { load(); }, []);
 
@@ -34,17 +39,31 @@ export default function AddressManager() {
 
   const remove = async (id) => {
     if (!confirm('Delete this address?')) return;
-    await fetch(`/api/account/addresses/${id}`, { method: 'DELETE' });
-    load();
+    setError('');
+    try {
+      const res = await fetch(`/api/account/addresses/${id}`, { method: 'DELETE' });
+      if (!res.ok) { setError('Could not delete this address. Please try again.'); return; }
+      load();
+    } catch (e) {
+      setError('Could not delete this address. Check your connection and try again.');
+    }
   };
 
   return (
     <div className="address-manager">
       {!addresses ? (
-        <p className="account-empty">Loading…</p>
+        error ? (
+          <div className="account-empty">
+            <p className="admin-error">{error}</p>
+            <button className="btn-line" onClick={() => { setError(''); load(); }} style={{ marginTop: '0.6rem' }}>Retry</button>
+          </div>
+        ) : (
+          <p className="account-empty">Loading…</p>
+        )
       ) : (
         <>
           {addresses.length === 0 && !showForm && <p className="account-empty">No saved addresses yet.</p>}
+          {error && !showForm && <p className="admin-error">{error}</p>}
           <div className="address-list">
             {addresses.map((a) => (
               <div className="address-card" key={a.id}>

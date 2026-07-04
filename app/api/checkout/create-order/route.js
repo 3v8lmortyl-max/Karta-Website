@@ -32,6 +32,14 @@ export async function POST(req) {
     const p = products.find((x) => x.id === line.id);
     if (!p) return NextResponse.json({ error: `Product not found: ${line.id}` }, { status: 400 });
     const qty = Math.max(1, Math.min(10, Number(line.qty) || 1));
+    const available = Number((p.stock || {})[line.size] ?? 0);
+    if (qty > available) {
+      return NextResponse.json({
+        error: available > 0
+          ? `Only ${available} left of ${p.name} (${line.size}).`
+          : `${p.name} (${line.size}) is out of stock.`,
+      }, { status: 400 });
+    }
     const unitPrice = p.sale_price && p.sale_price < p.price ? p.sale_price : p.price;
     amount += unitPrice * qty;
     orderItems.push({
