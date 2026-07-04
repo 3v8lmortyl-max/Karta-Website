@@ -1,10 +1,6 @@
 export default function AboutContent() {
   return (
     <div className="about-page container">
-      <div className="about-hero-photo">
-        <span>Crew &amp; studio photo coming soon</span>
-      </div>
-
       <h1 className="about-title">About Us</h1>
 
       <div className="about-prose">
