@@ -40,10 +40,17 @@ export default function AuthForm({ mode }) {
   const withGoogle = async () => {
     setError('');
     const supabase = supabaseBrowser();
-    await supabase.auth.signInWithOAuth({
+    // skipBrowserRedirect + location.replace (instead of Supabase's default
+    // location.assign) means this page's own history entry is replaced by the
+    // Google auth URL rather than stacked on top of it. That's what stops the
+    // back button from ever being able to land on Google's account picker —
+    // there's no separate "our login page" stop left in history to back into.
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/api/auth/callback` },
+      options: { redirectTo: `${window.location.origin}/api/auth/callback`, skipBrowserRedirect: true },
     });
+    if (error) { setError(error.message); return; }
+    if (data?.url) window.location.replace(data.url);
   };
 
   return (
