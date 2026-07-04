@@ -18,6 +18,7 @@ const FOOTER = {
     { label: 'Shipping Policy', href: '/shipping' },
     { label: "FAQ's", href: '/faq' },
     { label: 'Terms', href: '/terms' },
+    { label: 'Privacy Policy', href: '/privacy' },
   ],
   brand: [
     { label: 'Our Story', href: '/about' },
