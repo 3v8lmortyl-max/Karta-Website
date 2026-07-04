@@ -8,12 +8,12 @@ export default function Loader() {
   const [gone, setGone] = useState(false);
 
   useEffect(() => {
-    const MIN = 1400;
+    const MIN = 700;
     const start = performance.now();
     const finish = () => setTimeout(() => setDone(true), Math.max(0, MIN - (performance.now() - start)));
     if (document.readyState === 'complete') finish();
     else window.addEventListener('load', finish, { once: true });
-    const safety = setTimeout(() => setDone(true), 4500);
+    const safety = setTimeout(() => setDone(true), 2250);
     return () => { window.removeEventListener('load', finish); clearTimeout(safety); };
   }, []);
 
@@ -26,7 +26,7 @@ export default function Loader() {
 
   useEffect(() => {
     if (!done) return;
-    const t = setTimeout(() => setGone(true), 650);
+    const t = setTimeout(() => setGone(true), 325);
     return () => clearTimeout(t);
   }, [done]);
 
