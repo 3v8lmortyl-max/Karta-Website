@@ -14,7 +14,7 @@ const links = [
 ];
 
 const secondary = [
-  { label: 'Order Tracking', href: '/account/orders' },
+  { label: 'Order Tracking', href: '/track' },
   { label: 'Login', href: '/login' },
 ];
 
