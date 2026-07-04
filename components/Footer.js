@@ -9,7 +9,7 @@ const FOOTER = {
     { label: 'Call', href: 'tel:+919014612268' },
     { label: 'Text (WhatsApp)', href: VISITOR_WA },
     { label: 'Instagram', href: 'https://instagram.com/krta.in' },
-    { label: 'YouTube', href: 'https://youtube.com' },
+    { label: 'YouTube', href: 'https://youtube.com/@krta-behindthescenes?si=8Pd7y6ChdRVT4Tv4' },
   ],
   support: [
     { label: 'Make a Return / Exchange', href: '/returns' },
