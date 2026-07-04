@@ -8,6 +8,16 @@ import { supabaseAdmin } from '../../../../lib/supabase';
 // id — RLS is a second layer, but this pattern doesn't depend on the session JWT being
 // forwarded into the RLS check (which was silently failing before, so no address saved).
 
+// Whitelist, not blacklist — any field outside this list is silently dropped rather
+// than sent to PostgREST, which previously rejected the whole insert with a 400 the
+// moment an unrelated field (e.g. `email`) rode along in the request body.
+const ALLOWED_FIELDS = ['label', 'full_name', 'phone', 'line1', 'line2', 'city', 'state', 'pincode', 'is_default'];
+function pickAllowed(body) {
+  const out = {};
+  for (const key of ALLOWED_FIELDS) if (key in body) out[key] = body[key];
+  return out;
+}
+
 export async function GET() {
   const supabase = supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
@@ -23,8 +33,7 @@ export async function POST(req) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   const body = await req.json();
-  // Never trust a client-sent user_id — always force it to the authenticated user.
-  const { user_id: _ignore, id: _ignore2, ...safe } = body;
+  const safe = pickAllowed(body);
   const admin = supabaseAdmin();
   const { data, error } = await admin.from('addresses').insert({ ...safe, user_id: user.id }).select().single();
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });

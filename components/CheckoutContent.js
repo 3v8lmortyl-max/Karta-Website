@@ -134,9 +134,15 @@ export default function CheckoutContent() {
       const { data: { user: freshUser } } = await supabase.auth.getUser();
       if (freshUser) {
         try {
+          // Only pass the columns the addresses table actually has — shippingPayload
+          // also carries `email` (needed for the order/customer record), and sending
+          // that straight through made PostgREST reject the whole insert with a 400
+          // ("column not found"), which silently dropped every saved address.
+          const { full_name, phone, line1, line2, city, state, pincode } = shippingPayload;
+          const addressPayload = { label: 'Home', full_name, phone, line1, line2, city, state, pincode, is_default: savedAddresses.length === 0 };
           const saveRes = await fetch('/api/account/addresses', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ label: 'Home', ...shippingPayload, is_default: savedAddresses.length === 0 }),
+            body: JSON.stringify(addressPayload),
           });
           if (!saveRes.ok) {
             const errBody = await saveRes.json().catch(() => ({}));
