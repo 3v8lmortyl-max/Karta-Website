@@ -95,8 +95,7 @@ export default function SearchOverlay() {
                 <div className="search-footlinks">
                   <div className="search-footlinks-col">
                     <Link href="/about" onClick={closeSearch}>Our Story</Link>
-                    <Link href="/about" onClick={closeSearch}>Collaborations</Link>
-                    <Link href="/journal" onClick={closeSearch}>Media &amp; Press</Link>
+                    <Link href="/collaborations" onClick={closeSearch}>Collaborations</Link>
                   </div>
                   <div className="search-footlinks-col">
                     <Link href="/login" onClick={closeSearch}>Members Login</Link>

@@ -8,20 +8,18 @@ import { CloseIcon } from './Icons';
 const links = [
   { label: 'Home', href: '/' },
   { label: 'Shop', href: '/shop' },
-  { label: 'Collections', href: '/collections' },
+  { label: 'Collections', href: '/shop' },
   { label: 'About', href: '/about' },
-  { label: 'Journal', href: '/journal' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Contact', href: 'https://wa.me/919014612268', external: true },
 ];
 
 const secondary = [
-  { label: 'Wishlist', href: '/wishlist' },
-  { label: 'Order Tracking', href: '/track' },
-  { label: 'Login', href: '/account' },
+  { label: 'Order Tracking', href: '/account/orders' },
+  { label: 'Login', href: '/login' },
 ];
 
 export default function MenuDrawer() {
-  const { menuOpen, closeMenu } = useUI();
+  const { menuOpen, closeMenu, openWishlist } = useUI();
 
   return (
     <AnimatePresence>
@@ -52,25 +50,36 @@ export default function MenuDrawer() {
             <nav className="menu-nav">
               {links.map((l, i) => (
                 <motion.div
-                  key={l.href}
+                  key={l.href + l.label}
                   initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.12 + i * 0.05, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <Link href={l.href} className="menu-link" onClick={closeMenu}>
-                    {l.label}
-                  </Link>
+                  {l.external ? (
+                    <a href={l.href} className="menu-link" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
+                      {l.label}
+                    </a>
+                  ) : (
+                    <Link href={l.href} className="menu-link" onClick={closeMenu}>
+                      {l.label}
+                    </Link>
+                  )}
                 </motion.div>
               ))}
             </nav>
 
             <div className="menu-secondary">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.5 }}>
+                <button type="button" className="menu-link-sm" onClick={() => { openWishlist(); closeMenu(); }}>
+                  Wishlist
+                </button>
+              </motion.div>
               {secondary.map((l, i) => (
                 <motion.div
                   key={l.href}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4 + i * 0.05, duration: 0.5 }}
+                  transition={{ delay: 0.45 + i * 0.05, duration: 0.5 }}
                 >
                   <Link href={l.href} className="menu-link-sm" onClick={closeMenu}>
                     {l.label}

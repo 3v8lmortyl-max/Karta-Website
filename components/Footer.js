@@ -1,9 +1,12 @@
 import Link from 'next/link';
 
+const VISITOR_WA = 'https://wa.me/919014612268?text=' +
+  encodeURIComponent("Hey! I'm a visitor from Krta's website.");
+
 const FOOTER = {
   connect: [
     { label: 'Call', href: 'tel:+919014612268' },
-    { label: 'Text (WhatsApp)', href: 'https://wa.me/919014612268' },
+    { label: 'Text (WhatsApp)', href: VISITOR_WA },
     { label: 'Instagram', href: 'https://instagram.com/krta.in' },
     { label: 'YouTube', href: 'https://youtube.com' },
   ],
@@ -18,8 +21,7 @@ const FOOTER = {
   brand: [
     { label: 'Our Story', href: '/about' },
     { label: 'Walk-in Stores', href: '/stores' },
-    { label: 'Collaborations', href: '/about' },
-    { label: 'Media', href: '/journal' },
+    { label: 'Collaborations', href: '/collaborations' },
   ],
 };
 
