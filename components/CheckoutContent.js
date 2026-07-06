@@ -285,7 +285,7 @@ export default function CheckoutContent() {
             </section>
 
             {addressSaveWarning && <p className="checkout-warning">{addressSaveWarning}</p>}
-            {error && <p className="admin-error checkout-error">{error}</p>}
+            {error && <p className="auth-error checkout-error">{error}</p>}
           </div>
 
           <div className="checkout-summary-col">

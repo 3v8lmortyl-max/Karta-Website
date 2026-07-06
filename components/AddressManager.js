@@ -54,7 +54,7 @@ export default function AddressManager() {
       {!addresses ? (
         error ? (
           <div className="account-empty">
-            <p className="admin-error">{error}</p>
+            <p className="auth-error">{error}</p>
             <button className="btn-line" onClick={() => { setError(''); load(); }} style={{ marginTop: '0.6rem' }}>Retry</button>
           </div>
         ) : (
@@ -63,7 +63,7 @@ export default function AddressManager() {
       ) : (
         <>
           {addresses.length === 0 && !showForm && <p className="account-empty">No saved addresses yet.</p>}
-          {error && !showForm && <p className="admin-error">{error}</p>}
+          {error && !showForm && <p className="auth-error">{error}</p>}
           <div className="address-list">
             {addresses.map((a) => (
               <div className="address-card" key={a.id}>
@@ -111,7 +111,7 @@ export default function AddressManager() {
                 <input type="checkbox" checked={form.is_default} onChange={(e) => setForm({ ...form, is_default: e.target.checked })} />
                 <span>Set as default address</span>
               </label>
-              {error && <p className="admin-error">{error}</p>}
+              {error && <p className="auth-error">{error}</p>}
               <div className="account-addr-form-actions">
                 <button type="button" className="btn-line" onClick={() => setShowForm(false)}>Cancel</button>
                 <button className="btn-solid">{editingId ? 'Save changes' : 'Add address'}</button>

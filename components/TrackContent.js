@@ -4,16 +4,27 @@ import { useState } from 'react';
 
 export default function TrackContent() {
   const [value, setValue] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [result, setResult] = useState(null);
 
-  const track = (e) => {
+  const track = async (e) => {
     e.preventDefault();
     const trimmed = value.trim();
-    // Shiprocket's own public tracker — no account or API key needed on our side,
-    // works for any AWB/Order ID they've shipped, same approach the old site used.
-    const url = trimmed
-      ? `https://www.shiprocket.in/shipment-tracking/?awb=${encodeURIComponent(trimmed)}`
-      : 'https://www.shiprocket.in/shipment-tracking/';
-    window.open(url, '_blank', 'noopener,noreferrer');
+    if (!trimmed) return;
+    setLoading(true);
+    setError('');
+    setResult(null);
+    try {
+      const res = await fetch(`/api/track?awb=${encodeURIComponent(trimmed)}`);
+      const data = await res.json();
+      if (!res.ok) { setError(data.error || 'Something went wrong. Please try again.'); return; }
+      setResult(data.tracking);
+    } catch (err) {
+      setError('Could not reach tracking right now. Please try again shortly.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -21,11 +32,11 @@ export default function TrackContent() {
       <h1 className="policy-title">Track Your Order</h1>
       <p className="policy-intro">
         Once your order ships, we'll send you the AWB tracking number via WhatsApp or email.
-        Enter it below to see live status from our shipping partner, Shiprocket.
+        Enter it below to see live status.
       </p>
       <form className="auth-form" onSubmit={track} style={{ maxWidth: 420 }}>
         <label className="auth-field">
-          <span>Order ID / AWB Number</span>
+          <span>AWB Number</span>
           <input
             className="auth-input"
             value={value}
@@ -33,8 +44,38 @@ export default function TrackContent() {
             placeholder="e.g. 141123221084922"
           />
         </label>
-        <button className="btn-solid auth-submit" type="submit">Track Now</button>
+        <button className="btn-solid auth-submit" type="submit" disabled={loading}>
+          {loading ? 'Tracking…' : 'Track Now'}
+        </button>
       </form>
+
+      {error && <p className="auth-error" style={{ marginTop: '1.2rem' }}>{error}</p>}
+
+      {result && (
+        <div className="track-result">
+          <div className="track-result-status">
+            <span className="track-result-label">Status</span>
+            <span className="track-result-value">{result.status || 'Unknown'}</span>
+          </div>
+          <div className="track-result-meta">
+            {result.courier && <span>Courier: {result.courier}</span>}
+            {result.destination && <span>Destination: {result.destination}</span>}
+            {result.edd && <span>Expected: {result.edd}</span>}
+            {result.deliveredDate && <span>Delivered: {result.deliveredDate}</span>}
+          </div>
+          {result.history?.length > 0 && (
+            <ul className="track-result-history">
+              {result.history.map((h, i) => (
+                <li key={i}>
+                  <span className="track-result-history-date">{h.date}</span>
+                  <span>{h.activity}{h.location ? ` — ${h.location}` : ''}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+
       <p className="policy-intro" style={{ marginTop: '1.4rem', fontSize: '0.86rem' }}>
         Can't find your AWB number? Message us on{' '}
         <a href="https://wa.me/919014612268" target="_blank" rel="noopener noreferrer">WhatsApp</a>{' '}
