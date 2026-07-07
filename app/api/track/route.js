@@ -13,6 +13,11 @@ export async function GET(req) {
     return NextResponse.json({ tracking: result });
   } catch (err) {
     console.error('Shiprocket tracking error:', err);
-    return NextResponse.json({ error: 'Tracking lookup is temporarily unavailable. Please try again shortly.' }, { status: 502 });
+    // TEMP-DEBUG: exposing the real error message to diagnose the current issue.
+    // Remove this detail once Shiprocket tracking is confirmed working end-to-end.
+    return NextResponse.json({
+      error: 'Tracking lookup is temporarily unavailable. Please try again shortly.',
+      debug: String(err?.message || err),
+    }, { status: 502 });
   }
 }

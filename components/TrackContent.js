@@ -18,7 +18,11 @@ export default function TrackContent() {
     try {
       const res = await fetch(`/api/track?awb=${encodeURIComponent(trimmed)}`);
       const data = await res.json();
-      if (!res.ok) { setError(data.error || 'Something went wrong. Please try again.'); return; }
+      if (!res.ok) {
+        const msg = data.debug ? `${data.error} [${data.debug}]` : (data.error || 'Something went wrong. Please try again.');
+        setError(msg);
+        return;
+      }
       setResult(data.tracking);
     } catch (err) {
       setError('Could not reach tracking right now. Please try again shortly.');
