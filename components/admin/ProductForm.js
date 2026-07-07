@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-const SIZE_OPTIONS = ['XS', 'S', 'M', 'L', 'One Size'];
+const SIZE_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', 'One Size'];
 const IMAGE_SLOT_LABELS = ['Front', 'Back', 'Styled angle', 'Close-up detail'];
 // These must match exactly what the storefront filters on (app/components/HomeContent.js).
 const CATEGORY_OPTIONS = ['Tops', 'Bottoms', 'Outerwear', 'Cap', 'Accessories'];
