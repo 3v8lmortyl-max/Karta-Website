@@ -7,16 +7,12 @@ export async function GET(req) {
 
   try {
     const result = await trackByAwb(awb);
-    // TEMP-DEBUG: returning the raw Shiprocket payload alongside our parsed shape
-    // so we can see their actual field names and fix parsing to match.
+    if (!result) {
+      return NextResponse.json({ error: "We couldn't find a shipment with that AWB number." }, { status: 404 });
+    }
     return NextResponse.json({ tracking: result });
   } catch (err) {
     console.error('Shiprocket tracking error:', err);
-    // TEMP-DEBUG: exposing the real error message to diagnose the current issue.
-    // Remove this detail once Shiprocket tracking is confirmed working end-to-end.
-    return NextResponse.json({
-      error: 'Tracking lookup is temporarily unavailable. Please try again shortly.',
-      debug: String(err?.message || err),
-    }, { status: 502 });
+    return NextResponse.json({ error: 'Tracking lookup is temporarily unavailable. Please try again shortly.' }, { status: 502 });
   }
 }

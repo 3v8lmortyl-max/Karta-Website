@@ -18,11 +18,7 @@ export default function TrackContent() {
     try {
       const res = await fetch(`/api/track?awb=${encodeURIComponent(trimmed)}`);
       const data = await res.json();
-      if (!res.ok) {
-        const msg = data.debug ? `${data.error} [${data.debug}]` : (data.error || 'Something went wrong. Please try again.');
-        setError(msg);
-        return;
-      }
+      if (!res.ok) { setError(data.error || 'Something went wrong. Please try again.'); return; }
       setResult(data.tracking);
     } catch (err) {
       setError('Could not reach tracking right now. Please try again shortly.');
@@ -76,11 +72,6 @@ export default function TrackContent() {
                 </li>
               ))}
             </ul>
-          )}
-          {result._raw && (
-            <pre style={{ marginTop: '1rem', fontSize: '0.68rem', whiteSpace: 'pre-wrap', background: '#f5f4f0', padding: '0.8rem', borderRadius: '8px', maxHeight: 300, overflow: 'auto' }}>
-              {JSON.stringify(result._raw, null, 2)}
-            </pre>
           )}
         </div>
       )}
