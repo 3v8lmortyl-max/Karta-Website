@@ -7,9 +7,8 @@ export async function GET(req) {
 
   try {
     const result = await trackByAwb(awb);
-    if (!result) {
-      return NextResponse.json({ error: "We couldn't find a shipment with that AWB number." }, { status: 404 });
-    }
+    // TEMP-DEBUG: returning the raw Shiprocket payload alongside our parsed shape
+    // so we can see their actual field names and fix parsing to match.
     return NextResponse.json({ tracking: result });
   } catch (err) {
     console.error('Shiprocket tracking error:', err);

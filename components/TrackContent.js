@@ -77,6 +77,11 @@ export default function TrackContent() {
               ))}
             </ul>
           )}
+          {result._raw && (
+            <pre style={{ marginTop: '1rem', fontSize: '0.68rem', whiteSpace: 'pre-wrap', background: '#f5f4f0', padding: '0.8rem', borderRadius: '8px', maxHeight: 300, overflow: 'auto' }}>
+              {JSON.stringify(result._raw, null, 2)}
+            </pre>
+          )}
         </div>
       )}
 
