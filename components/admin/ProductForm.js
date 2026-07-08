@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const SIZE_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', 'One Size'];
-const IMAGE_SLOT_LABELS = ['Front', 'Back', 'Styled angle', 'Close-up detail'];
+const IMAGE_SLOT_LABELS = ['Front', 'Back', 'Styled angle', 'Close-up detail', 'Extra angle'];
 // These must match exactly what the storefront filters on (app/components/HomeContent.js).
 const CATEGORY_OPTIONS = ['Tops', 'Bottoms', 'Outerwear', 'Cap', 'Accessories'];
 const COLLECTION_OPTIONS = ['New Arrivals', 'Best Sellers', 'Limited Edition', 'Caps'];
@@ -208,7 +208,7 @@ export default function ProductForm({ initial }) {
               })}
             </div>
             <p className="admin-hint">
-              One photo per slot — front, back, a styled angle, and a close-up of the print or detail work. Tap "Change" to replace a photo already in a slot.
+              One photo per slot — front, back, a styled angle, a close-up of the print or detail work, and an extra angle. Tap "Change" to replace a photo already in a slot.
             </p>
           </>
         )}
