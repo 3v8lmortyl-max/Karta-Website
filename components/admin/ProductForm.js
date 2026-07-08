@@ -33,7 +33,17 @@ export default function ProductForm({ initial }) {
   const [error, setError] = useState('');
 
   const toggleSize = (s) => setSizes((cur) => cur.includes(s) ? cur.filter((x) => x !== s) : [...cur, s]);
-  const setStockFor = (s, v) => setStock((cur) => ({ ...cur, [s]: Number(v) || 0 }));
+  const setStockFor = (s, v) => {
+    if (v === '') {
+      // Let the field go genuinely blank while the admin is mid-edit, rather than
+      // storing 0 and having it redisplay as "0" — that was the cause of new
+      // digits appending after a stray 0 (e.g. typing "15" showing "015").
+      setStock((cur) => { const next = { ...cur }; delete next[s]; return next; });
+      return;
+    }
+    const n = parseInt(v, 10);
+    setStock((cur) => ({ ...cur, [s]: Number.isNaN(n) ? 0 : n }));
+  };
 
   const setSlotBusy = (i, val) => setSlotUploading((cur) => cur.map((v, idx) => (idx === i ? val : v)));
 
@@ -69,11 +79,12 @@ export default function ProductForm({ initial }) {
       return;
     }
     setSaving(true);
+    const normalizedStock = Object.fromEntries(sizes.map((s) => [s, stock[s] ?? 0]));
     const payload = {
       name, price: Number(price), sale_price: salePrice === '' ? null : Number(salePrice),
       category, collection, sizes, featured, images,
       details: details.split('\n').map((s) => s.trim()).filter(Boolean),
-      description, stock,
+      description, stock: normalizedStock,
     };
     let res;
     if (isEdit) {
