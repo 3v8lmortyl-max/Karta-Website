@@ -4,6 +4,20 @@ import ProductDetail from '../../../components/ProductDetail';
 
 export const revalidate = 30;
 
+// Pre-render every product page at build/deploy time instead of on first visit — this
+// is what actually removes the "loading gap" people were seeing the first time a page
+// hadn't been visited yet (e.g. a brand-new product just added and immediately linked
+// from a homepage slide). revalidate=30 above still keeps them fresh after that.
+export async function generateStaticParams() {
+  try {
+    const products = await getProducts();
+    return products.map((p) => ({ id: p.id }));
+  } catch (err) {
+    console.error('generateStaticParams: could not fetch products, falling back to on-demand rendering', err);
+    return [];
+  }
+}
+
 export async function generateMetadata({ params }) {
   const product = await getProduct(params.id);
   if (!product) return { title: 'Product — Krta' };
