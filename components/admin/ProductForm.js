@@ -87,19 +87,32 @@ export default function ProductForm({ initial }) {
       description, stock: normalizedStock,
     };
     let res;
-    if (isEdit) {
-      res = await fetch(`/api/admin/products/${initial.id}`, {
-        method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
-      });
-    } else {
-      const id = slugify(name);
-      res = await fetch('/api/admin/products', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, ...payload }),
-      });
+    try {
+      if (isEdit) {
+        res = await fetch(`/api/admin/products/${initial.id}`, {
+          method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+        });
+      } else {
+        const id = slugify(name);
+        res = await fetch('/api/admin/products', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, ...payload }),
+        });
+      }
+    } catch (networkErr) {
+      setSaving(false);
+      setError(`Failed to save. [network error: ${networkErr?.message || networkErr}]`);
+      return;
     }
     setSaving(false);
-    if (res.ok) router.push('/admin');
-    else { const d = await res.json().catch(() => ({})); setError(d.error || 'Failed to save.'); }
+    if (res.ok) { router.push('/admin'); return; }
+    // TEMP-DEBUG: show the real status + raw body to diagnose the current save failure.
+    const rawText = await res.text().catch(() => '');
+    let parsed = null;
+    try { parsed = JSON.parse(rawText); } catch {}
+    const detail = parsed?.error
+      ? parsed.error
+      : `HTTP ${res.status}: ${rawText.slice(0, 300) || '(empty response)'}`;
+    setError(`Failed to save. [${detail}]`);
   };
 
   return (
