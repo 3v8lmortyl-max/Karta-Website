@@ -1,17 +1,39 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function SlideForm({ initial }) {
   const router = useRouter();
   const isEdit = !!initial;
+
+  // A slide can link to a specific product page (picked from the catalog, so the
+  // URL is always correct) or to any other custom link (a collection filter, /shop,
+  // /collaborations, etc). Detect which mode an existing slide is in from its href.
+  const initialHref = initial?.href || '/shop';
+  const productMatch = initialHref.match(/^\/products\/(.+)$/);
+
   const [title, setTitle] = useState(initial?.title || '');
-  const [href, setHref] = useState(initial?.href || '/shop');
+  const [linkMode, setLinkMode] = useState(productMatch ? 'product' : 'custom');
+  const [productId, setProductId] = useState(productMatch ? productMatch[1] : '');
+  const [customHref, setCustomHref] = useState(productMatch ? '/shop' : initialHref);
+  const [products, setProducts] = useState([]);
+  const [productsLoading, setProductsLoading] = useState(true);
   const [image, setImage] = useState(initial?.image || null);
   const [sortOrder, setSortOrder] = useState(initial?.sort_order ?? 1);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    fetch('/api/products')
+      .then((r) => r.json())
+      .then((d) => setProducts(d.products || []))
+      .catch(() => setProducts([]))
+      .finally(() => setProductsLoading(false));
+  }, []);
+
+  // The actual href that gets saved — derived from whichever mode is active.
+  const href = linkMode === 'product' ? (productId ? `/products/${productId}` : '') : (customHref || '/shop');
 
   const onFileChange = async (e) => {
     const file = e.target.files && e.target.files[0];
@@ -29,8 +51,9 @@ export default function SlideForm({ initial }) {
   const save = async (e) => {
     e.preventDefault();
     if (!title.trim()) { setError('Title is required.'); return; }
+    if (linkMode === 'product' && !productId) { setError('Please choose a product for this slide to link to.'); return; }
     setSaving(true); setError('');
-    const payload = { title, href: href || '/shop', image, sort_order: Number(sortOrder) || 1 };
+    const payload = { title, href, image, sort_order: Number(sortOrder) || 1 };
     const res = isEdit
       ? await fetch(`/api/admin/slides/${initial.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
       : await fetch('/api/admin/slides', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -46,10 +69,48 @@ export default function SlideForm({ initial }) {
         <input className="admin-input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Yacht Collection" required />
       </label>
 
-      <label className="admin-field">
-        <span>Link (where it goes when tapped)</span>
-        <input className="admin-input" value={href} onChange={(e) => setHref(e.target.value)} placeholder="/shop?collection=..." />
-      </label>
+      <div className="admin-field">
+        <span>Where should this slide go when tapped?</span>
+        <div className="admin-link-mode-toggle">
+          <button
+            type="button"
+            className={`admin-link-mode-btn ${linkMode === 'product' ? 'active' : ''}`}
+            onClick={() => setLinkMode('product')}
+          >
+            Link to a product
+          </button>
+          <button
+            type="button"
+            className={`admin-link-mode-btn ${linkMode === 'custom' ? 'active' : ''}`}
+            onClick={() => setLinkMode('custom')}
+          >
+            Custom link
+          </button>
+        </div>
+      </div>
+
+      {linkMode === 'product' ? (
+        <label className="admin-field">
+          <span>Product</span>
+          <select
+            className="admin-input"
+            value={productId}
+            onChange={(e) => setProductId(e.target.value)}
+            disabled={productsLoading}
+          >
+            <option value="">{productsLoading ? 'Loading products…' : 'Select a product…'}</option>
+            {products.map((p) => (
+              <option key={p.id} value={p.id}>{p.name}</option>
+            ))}
+          </select>
+          <p className="admin-hint">Tapping the slide will take visitors straight to this product's page.</p>
+        </label>
+      ) : (
+        <label className="admin-field">
+          <span>Link (where it goes when tapped)</span>
+          <input className="admin-input" value={customHref} onChange={(e) => setCustomHref(e.target.value)} placeholder="/shop?collection=..." />
+        </label>
+      )}
 
       <label className="admin-field">
         <span>Order (lower number shows first)</span>

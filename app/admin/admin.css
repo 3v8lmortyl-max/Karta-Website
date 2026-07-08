@@ -71,6 +71,10 @@
 .admin-image-slot.empty .admin-image-slot-action { border-top: none; color: var(--a-muted); }
 
 .admin-hint { font-size: 0.78rem; color: var(--a-muted); font-weight: 500; }
+.admin-link-mode-toggle { display: flex; gap: 0.6rem; }
+.admin-link-mode-btn { flex: 1; padding: 0.62rem 0.8rem; border: 1px solid var(--a-line); border-radius: 10px;
+  background: #fff; font-size: 0.88rem; font-weight: 600; color: var(--a-ink); cursor: pointer; transition: all .15s ease; }
+.admin-link-mode-btn.active { background: var(--a-ink); color: #fff; border-color: var(--a-ink); }
 
 .admin-form-actions { display: flex; justify-content: flex-end; }
 
