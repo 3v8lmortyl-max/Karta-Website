@@ -50,7 +50,7 @@ export default function HomeContent({ products, slides }) {
 
       <CollectionTiles slides={slides} />
 
-      <ProductGrid title="Limited Edition" discoverHref="/shop?collection=limited-edition" dark={false} darkSection
+      <ProductGrid title="Limited Edition" discoverHref="/shop?collection=limited-edition" dark={false}
         items={limitedEdition} />
 
       <CustomBanner />
