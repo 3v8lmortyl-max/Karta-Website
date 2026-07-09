@@ -30,6 +30,12 @@ input { font: inherit; }
 
 .container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(0.9rem, 2.6vw, 2rem); }
 .section { padding: clamp(1.4rem, 3vw, 2.6rem) 0; }
+.section-dark { background: #17171a; padding: clamp(2.2rem, 5vw, 3.6rem) 0; }
+.section-dark .grid-title { color: #fff; }
+.section-dark .product-name { color: #fff; }
+.section-dark .product-price { color: #b7b7b7; }
+.section-dark .price-was { color: #7a7a7a; }
+.section-dark .product-plus { color: #fff; }
 
 .card-reveal, .fade-up { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
 .card-reveal.revealed, .fade-up.revealed { opacity: 1; transform: none; }
@@ -92,6 +98,8 @@ input { font: inherit; }
 
 /* ---------- Product grid ---------- */
 .pgrid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.7rem, 2vw, 1.4rem) clamp(0.7rem, 2vw, 1.1rem); }
+@media (min-width: 760px) { .pgrid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1100px) { .pgrid { grid-template-columns: repeat(4, 1fr); } }
 @media (min-width: 900px) { .pgrid { grid-template-columns: repeat(3, 1fr); } }
 @media (min-width: 1200px) { .pgrid { grid-template-columns: repeat(4, 1fr); } }
 
@@ -205,6 +213,8 @@ input { font: inherit; }
 /* ─────────── Shop / all products page ─────────── */
 .shop-page { padding: 1.4rem 1rem 3.5rem; }
 .shop-title { font-size: clamp(1.4rem, 5vw, 2rem); font-weight: 700; letter-spacing: -0.01em; text-transform: capitalize; margin-bottom: 1.1rem; }
+.shop-active-filter { display: flex; align-items: center; gap: 0.7rem; font-size: 0.82rem; color: var(--muted); margin-top: -0.6rem; margin-bottom: 1rem; }
+.shop-active-filter-clear { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
 .shop-filters { display: flex; gap: 0.6rem; overflow-x: auto; scrollbar-width: none; padding-bottom: 1.4rem; }
 .shop-filters::-webkit-scrollbar { display: none; }
 .shop-filter-pill { flex: 0 0 auto; padding: 0.5rem 1.1rem; border-radius: 999px; border: 1px solid var(--line);

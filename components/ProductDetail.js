@@ -68,14 +68,15 @@ export default function ProductDetail({ product, related = [] }) {
     `The ${product.name} is finished by hand in the Krta studio, so every piece carries small, deliberate variations that make it one of a kind. Cut from premium fabric in a relaxed, layerable silhouette that pairs easily with denim, cargos and everyday staples.`;
   const washcare = product.washcare || DEFAULT_WASHCARE;
   const shipping = product.shipping || DEFAULT_SHIPPING;
-  const drop = product.collection || '2026 Drop';
+  const KNOWN_COLLECTIONS = ['New Arrivals', 'Best Sellers', 'Limited Edition', 'Caps'];
+  const drop = KNOWN_COLLECTIONS.includes(product.collection) ? product.collection : null;
 
   return (
     <div className="pdp">
       <div className="container">
         <nav className="pdp-crumb">
           <Link href="/">Home</Link><span>›</span>
-          <Link href={`/shop?collection=${encodeURIComponent(drop)}`}>{drop}</Link><span>›</span>
+          {drop && (<><Link href={`/shop?collection=${encodeURIComponent(drop.toLowerCase().replace(/\s+/g, '-'))}`}>{drop}</Link><span>›</span></>)}
           <span className="pdp-crumb-current">{product.name}</span>
         </nav>
 

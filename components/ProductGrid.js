@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import ProductCard from './ProductCard';
 
-export default function ProductGrid({ title, discoverHref, dark = false, items }) {
+export default function ProductGrid({ title, discoverHref, dark = false, darkSection = false, items }) {
   if (!items || items.length === 0) return null;
   return (
-    <section className="section">
+    <section className={`section ${darkSection ? 'section-dark' : ''}`}>
       <div className="container">
         <div className="grid-head">
           <h2 className="grid-title">{title}</h2>
