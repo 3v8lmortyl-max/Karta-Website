@@ -19,6 +19,8 @@ export default function SlideForm({ initial }) {
   const [products, setProducts] = useState([]);
   const [productsLoading, setProductsLoading] = useState(true);
   const [image, setImage] = useState(initial?.image || null);
+  const [video, setVideo] = useState(initial?.video || null);
+  const [mediaType, setMediaType] = useState(initial?.video ? 'video' : 'photo');
   const [sortOrder, setSortOrder] = useState(initial?.sort_order ?? 1);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -43,9 +45,14 @@ export default function SlideForm({ initial }) {
     const form = new FormData(); form.append('file', file);
     const res = await fetch('/api/admin/upload', { method: 'POST', body: form });
     setUploading(false);
-    if (!res.ok) { setError('Image upload failed.'); return; }
+    if (!res.ok) {
+      const d = await res.json().catch(() => ({}));
+      setError(d.error || `${mediaType === 'video' ? 'Video' : 'Image'} upload failed.`);
+      return;
+    }
     const data = await res.json();
-    setImage(data.url);
+    if (mediaType === 'video') { setVideo(data.url); setImage(null); }
+    else { setImage(data.url); setVideo(null); }
   };
 
   const save = async (e) => {
@@ -53,7 +60,7 @@ export default function SlideForm({ initial }) {
     if (!title.trim()) { setError('Title is required.'); return; }
     if (linkMode === 'product' && !productId) { setError('Please choose a product for this slide to link to.'); return; }
     setSaving(true); setError('');
-    const payload = { title, href, image, sort_order: Number(sortOrder) || 1 };
+    const payload = { title, href, image, video, sort_order: Number(sortOrder) || 1 };
     const res = isEdit
       ? await fetch(`/api/admin/slides/${initial.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
       : await fetch('/api/admin/slides', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -118,25 +125,66 @@ export default function SlideForm({ initial }) {
       </label>
 
       <div className="admin-field">
-        <span>Image</span>
-        {error && <p className="admin-error">{error}</p>}
-        <div className="admin-image-grid">
-          <div className={`admin-image-slot ${image ? 'filled' : 'empty'}`}>
-            {image ? (
-              <div className="admin-image-preview" style={{ backgroundImage: `url(${image})` }} />
-            ) : (
-              <div className="admin-image-placeholder"><small>No image — a gradient will show instead</small></div>
-            )}
-            {image && (
-              <button type="button" className="admin-image-remove" onClick={() => setImage(null)} aria-label="Remove slide image">×</button>
-            )}
-            <label className="admin-image-slot-action">
-              {uploading ? 'Uploading…' : image ? 'Change' : '+ Add image'}
-              <input type="file" accept="image/*" hidden onChange={onFileChange} />
-            </label>
-          </div>
+        <span>Slide media</span>
+        <div className="admin-link-mode-toggle">
+          <button
+            type="button"
+            className={`admin-link-mode-btn ${mediaType === 'photo' ? 'active' : ''}`}
+            onClick={() => setMediaType('photo')}
+          >
+            Photo
+          </button>
+          <button
+            type="button"
+            className={`admin-link-mode-btn ${mediaType === 'video' ? 'active' : ''}`}
+            onClick={() => setMediaType('video')}
+          >
+            Video
+          </button>
         </div>
-        <p className="admin-hint">A tall (portrait) photo works best — this fills the sliding card on the homepage.</p>
+
+        {error && <p className="admin-error" style={{ marginTop: '0.6rem' }}>{error}</p>}
+
+        {mediaType === 'photo' ? (
+          <div className="admin-image-grid" style={{ marginTop: '0.8rem' }}>
+            <div className={`admin-image-slot ${image ? 'filled' : 'empty'}`}>
+              {image ? (
+                <div className="admin-image-preview" style={{ backgroundImage: `url(${image})` }} />
+              ) : (
+                <div className="admin-image-placeholder"><small>No image — a gradient will show instead</small></div>
+              )}
+              {image && (
+                <button type="button" className="admin-image-remove" onClick={() => setImage(null)} aria-label="Remove slide image">×</button>
+              )}
+              <label className="admin-image-slot-action">
+                {uploading ? 'Uploading…' : image ? 'Change' : '+ Add image'}
+                <input type="file" accept="image/*" hidden onChange={onFileChange} />
+              </label>
+            </div>
+            <p className="admin-hint">A tall (portrait) photo works best — this fills the sliding card on the homepage.</p>
+          </div>
+        ) : (
+          <div className="admin-image-grid" style={{ marginTop: '0.8rem' }}>
+            <div className={`admin-image-slot admin-video-slot ${video ? 'filled' : 'empty'}`}>
+              {video ? (
+                <video className="admin-image-preview" src={video} muted loop autoPlay playsInline />
+              ) : (
+                <div className="admin-image-placeholder"><small>No video yet</small></div>
+              )}
+              {video && (
+                <button type="button" className="admin-image-remove" onClick={() => setVideo(null)} aria-label="Remove slide video">×</button>
+              )}
+              <label className="admin-image-slot-action">
+                {uploading ? 'Uploading…' : video ? 'Change' : '+ Add video'}
+                <input type="file" accept="video/mp4" hidden onChange={onFileChange} />
+              </label>
+            </div>
+            <p className="admin-hint">
+              Portrait video, 9:16 ratio (e.g. 1080×1920), MP4, under 4 MB, ideally 15 seconds or less —
+              it loops silently and muted, so keep it short and compressed.
+            </p>
+          </div>
+        )}
       </div>
 
       <div className="admin-form-actions">

@@ -124,17 +124,18 @@ input { font: inherit; }
 /* ---------- Collection coverflow ---------- */
 .section-cover { padding: clamp(1.8rem, 4vw, 3.2rem) 0; overflow: hidden; }
 .cover-viewport { position: relative; width: 100%; touch-action: pan-y; }
-.cover-stage { position: relative; height: clamp(440px, 96vw, 640px); }
-.cover-slide { position: absolute; top: 0; left: 50%; width: min(74%, 440px); height: 100%;
+.cover-stage { position: relative; height: clamp(420px, 132vw, 782px); }
+.cover-slide { position: absolute; top: 0; left: 50%; width: min(74%, 440px); aspect-ratio: 9 / 16; height: auto;
   border-radius: 20px; overflow: hidden; display: flex; align-items: flex-end; justify-content: center;
   will-change: transform, opacity; transition: transform .6s cubic-bezier(.16,1,.3,1), opacity .6s ease; }
 .cover-bg { position: absolute; inset: 0; background-size: cover; background-position: center; }
+.cover-video { width: 100%; height: 100%; object-fit: cover; background: #111; }
 .cover-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.55), transparent 52%); }
 .cover-title { position: relative; z-index: 2; color: #fff; font-size: 1.15rem; font-weight: 600; letter-spacing: 0.02em; padding-bottom: 1.5rem; }
 .cover-dots { display: flex; justify-content: center; gap: 8px; margin-top: 1.3rem; }
 .cover-dot { width: 7px; height: 7px; border-radius: 50%; background: #c8c6c1; transition: background .3s ease, transform .3s ease; }
 .cover-dot.on { background: var(--ink); transform: scale(1.2); }
-@media (min-width: 760px) { .cover-slide { width: min(42%, 460px); } .cover-stage { height: clamp(520px, 52vw, 660px); } }
+@media (min-width: 760px) { .cover-slide { width: min(42%, 460px); } .cover-stage { height: clamp(540px, 75vw, 818px); } }
 
 /* ---------- Brand story ---------- */
 .brandstory { background: var(--card); }

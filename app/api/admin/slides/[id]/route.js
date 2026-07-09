@@ -7,7 +7,7 @@ export async function PATCH(req, { params }) {
   const body = await req.json();
   const sb = supabaseAdmin();
   const patch = {};
-  for (const k of ['title', 'href', 'image', 'sort_order']) if (k in body) patch[k] = body[k];
+  for (const k of ['title', 'href', 'image', 'video', 'sort_order']) if (k in body) patch[k] = body[k];
   const { data, error } = await sb.from('slides').update(patch).eq('id', params.id).select().single();
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ slide: data });
