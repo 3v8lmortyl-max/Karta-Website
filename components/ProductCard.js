@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCart, useUI, useWishlist } from '../lib/store';
 import { PlusIcon, BookmarkIcon } from './Icons';
 import { formatINR } from '../lib/products';
@@ -29,8 +30,12 @@ export default function ProductCard({ product, index = 0 }) {
   const toggleWish = useWishlist((s) => s.toggle);
   const inWish = useWishlist((s) => !!s.items.find((i) => i.id === product.id));
 
-  const gallery = (product.images && product.images.length)
-    ? product.images
+  // Real photos go through next/image (cached + resized by Vercel instead of pulling
+  // full-size originals from Supabase on every view). Gradient placeholders keep the
+  // old CSS-background rendering.
+  const hasPhotos = product.imageUrls && product.imageUrls.length > 0;
+  const gallery = hasPhotos
+    ? product.imageUrls
     : [product.image, product.image2].filter(Boolean);
 
   const [idx, setIdx] = useState(0);
@@ -63,7 +68,19 @@ export default function ProductCard({ product, index = 0 }) {
         <div className="product-media" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
           <div className="product-track" style={{ transform: `translateX(-${idx * 100}%)` }}>
             {gallery.map((g, i) => (
-              <div key={i} className="product-slide" style={{ backgroundImage: g }} />
+              hasPhotos ? (
+                <div key={i} className="product-slide">
+                  <Image
+                    src={g}
+                    alt={`${product.name} — photo ${i + 1}`}
+                    fill
+                    sizes="(min-width: 1100px) 25vw, (min-width: 760px) 33vw, 50vw"
+                    style={{ objectFit: 'cover' }}
+                  />
+                </div>
+              ) : (
+                <div key={i} className="product-slide" style={{ backgroundImage: g }} />
+              )
             ))}
           </div>
           <button className="product-bookmark" onClick={wish} aria-label="Save to wishlist">

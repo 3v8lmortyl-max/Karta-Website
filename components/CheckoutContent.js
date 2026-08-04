@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '../lib/store';
 import { formatINR } from '../lib/products';
 import { supabaseBrowser } from '../lib/supabase-browser';
+import { rawImageUrl } from '../lib/img';
 
 const EMPTY_SHIPPING = { full_name: '', phone: '', email: '', line1: '', line2: '', city: '', state: '', pincode: '' };
 
@@ -206,7 +207,13 @@ export default function CheckoutContent() {
       {/* Sticky mini order bar — mirrors the "product pinned at top" pattern from the reference */}
       <div className="checkout-topbar">
         <div className="container checkout-topbar-inner">
-          <div className="checkout-topbar-thumb" style={{ backgroundImage: items[0].image }} />
+          {rawImageUrl(items[0].image) ? (
+            <div className="checkout-topbar-thumb">
+              <Image src={rawImageUrl(items[0].image)} alt="" fill sizes="42px" style={{ objectFit: 'cover' }} />
+            </div>
+          ) : (
+            <div className="checkout-topbar-thumb" style={{ backgroundImage: items[0].image }} />
+          )}
           <div className="checkout-topbar-info">
             <p className="checkout-topbar-name">{items[0].name}{itemCount > 1 ? ` + ${itemCount - 1} more` : ''}</p>
             <p className="checkout-topbar-qty">Qty {itemCount}</p>
@@ -293,7 +300,13 @@ export default function CheckoutContent() {
               <p className="checkout-summary-title">Order summary</p>
               {items.map((i) => (
                 <div className="checkout-summary-row" key={`${i.id}-${i.size}`}>
-                  <div className="checkout-summary-thumb" style={{ backgroundImage: i.image }} />
+                  {rawImageUrl(i.image) ? (
+                    <div className="checkout-summary-thumb">
+                      <Image src={rawImageUrl(i.image)} alt="" fill sizes="52px" style={{ objectFit: 'cover' }} />
+                    </div>
+                  ) : (
+                    <div className="checkout-summary-thumb" style={{ backgroundImage: i.image }} />
+                  )}
                   <div className="checkout-summary-info">
                     <p className="checkout-summary-name">{i.name}</p>
                     <p className="checkout-summary-size">Size {i.size} · Qty {i.qty}</p>

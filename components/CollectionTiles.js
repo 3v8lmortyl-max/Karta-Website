@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function CollectionTiles({ slides }) {
   const TILES = slides && slides.length ? slides : [];
@@ -58,6 +59,8 @@ export default function CollectionTiles({ slides }) {
               <Link key={t.id} href={t.href} className="cover-slide" style={style} aria-hidden={off !== 0}>
                 {t.video ? (
                   <video className="cover-bg cover-video" src={t.video} muted loop autoPlay playsInline aria-hidden="true" />
+                ) : t.image ? (
+                  <Image src={t.image} alt={t.title || ''} fill sizes="(min-width: 760px) 460px, 74vw" style={{ objectFit: 'cover' }} />
                 ) : (
                   <span className="cover-bg" style={{ backgroundImage: t.bg }} />
                 )}

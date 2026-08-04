@@ -2,9 +2,11 @@
 
 import { useState, useMemo, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useUI } from '../lib/store';
 import { formatINR } from '../lib/products';
+import { rawImageUrl } from '../lib/img';
 import { CloseIcon, SearchIcon } from './Icons';
 
 const ORDER_SUPPORT_WA = 'https://wa.me/919014612268?text=' +
@@ -116,7 +118,13 @@ export default function SearchOverlay() {
                   className="search-result"
                   onClick={closeSearch}
                 >
-                  <div className="search-result-img" style={{ backgroundImage: p.image }} />
+                  {rawImageUrl(p.image) ? (
+                    <div className="search-result-img">
+                      <Image src={rawImageUrl(p.image)} alt="" fill sizes="58px" style={{ objectFit: 'cover' }} />
+                    </div>
+                  ) : (
+                    <div className="search-result-img" style={{ backgroundImage: p.image }} />
+                  )}
                   <div className="search-result-meta">
                     <span className="search-result-name">{p.name}</span>
                     <span className="search-result-sub">

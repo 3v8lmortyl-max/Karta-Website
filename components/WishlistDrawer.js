@@ -1,9 +1,11 @@
 'use client';
 
+import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useUI, useWishlist, useCart } from '../lib/store';
 import { CloseIcon } from './Icons';
 import { formatINR } from '../lib/products';
+import { rawImageUrl } from '../lib/img';
 
 export default function WishlistDrawer() {
   const { wishlistOpen, closeWishlist, openCart } = useUI();
@@ -54,7 +56,13 @@ export default function WishlistDrawer() {
               <div className="cart-items">
                 {items.map((p) => (
                   <div className="cart-item" key={p.id}>
-                    <div className="cart-item-img" style={{ backgroundImage: p.image }} />
+                    {rawImageUrl(p.image) ? (
+                      <div className="cart-item-img">
+                        <Image src={rawImageUrl(p.image)} alt="" fill sizes="84px" style={{ objectFit: 'cover' }} />
+                      </div>
+                    ) : (
+                      <div className="cart-item-img" style={{ backgroundImage: p.image }} />
+                    )}
                     <div className="cart-item-meta">
                       <div className="cart-item-top">
                         <span className="cart-item-name">{p.name}</span>

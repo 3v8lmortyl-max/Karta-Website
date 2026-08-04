@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import ProductCard from './ProductCard';
 import { useCart, useUI, useWishlist } from '../lib/store';
 import { formatINR } from '../lib/products';
@@ -27,18 +28,19 @@ const DEFAULT_SHIPPING =
 
 const SIZE_GUIDE = [['S', 40, 27], ['M', 42, 28], ['L', 44, 29]];
 
-// Build at least 4 gallery slides. Real photos (product.images) take priority;
-// otherwise derive tonal variations from the placeholder gradients.
+// Build at least 4 gallery slides. Real photos (raw URLs, rendered via next/image so
+// Vercel caches + resizes them) take priority; otherwise derive tonal variations from
+// the placeholder gradients rendered as CSS backgrounds.
 function buildGallery(p) {
-  if (Array.isArray(p.images) && p.images.length) return p.images;
+  if (Array.isArray(p.imageUrls) && p.imageUrls.length) return { photos: true, items: p.imageUrls };
   const a = p.image;
   const b = p.image2 || p.image;
   const tweak = (g, deg) => g.replace(/\(\s*-?\d+deg/, `(${deg}deg`);
-  return [a, b, tweak(a, 300), tweak(b, 25)];
+  return { photos: false, items: [a, b, tweak(a, 300), tweak(b, 25)] };
 }
 
 export default function ProductDetail({ product, related = [] }) {
-  const gallery = buildGallery(product);
+  const { photos: galleryHasPhotos, items: gallery } = buildGallery(product);
   const sizes = product.sizes && product.sizes.length ? product.sizes : ['XS', 'S', 'M', 'L'];
 
   const [slide, setSlide] = useState(0);
@@ -85,13 +87,34 @@ export default function ProductDetail({ product, related = [] }) {
           <div className="pdp-gallery">
             <div className="pdp-stage" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
               <div className="pdp-track" style={{ transform: `translateX(-${slide * 100}%)` }}>
-                {gallery.map((g, i) => <span key={i} className="pdp-slide" style={{ backgroundImage: g }} />)}
+                {gallery.map((g, i) => (
+                  galleryHasPhotos ? (
+                    <span key={i} className="pdp-slide">
+                      <Image
+                        src={g}
+                        alt={`${product.name} — photo ${i + 1}`}
+                        fill
+                        priority={i === 0}
+                        sizes="(min-width: 900px) 55vw, 100vw"
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </span>
+                  ) : (
+                    <span key={i} className="pdp-slide" style={{ backgroundImage: g }} />
+                  )
+                ))}
               </div>
               <span className="pdp-counter">{slide + 1} / {gallery.length}</span>
             </div>
             <div className="pdp-thumbs">
               {gallery.map((g, i) => (
-                <button key={i} className={`pdp-thumb ${i === slide ? 'on' : ''}`} style={{ backgroundImage: g }} onClick={() => setSlide(i)} aria-label={`Image ${i + 1}`} />
+                galleryHasPhotos ? (
+                  <button key={i} className={`pdp-thumb ${i === slide ? 'on' : ''}`} onClick={() => setSlide(i)} aria-label={`Image ${i + 1}`}>
+                    <Image src={g} alt="" fill sizes="54px" style={{ objectFit: 'cover' }} />
+                  </button>
+                ) : (
+                  <button key={i} className={`pdp-thumb ${i === slide ? 'on' : ''}`} style={{ backgroundImage: g }} onClick={() => setSlide(i)} aria-label={`Image ${i + 1}`} />
+                )
               ))}
             </div>
           </div>

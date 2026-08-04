@@ -1,10 +1,12 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useUI, useCart } from '../lib/store';
 import { CloseIcon, PlusIcon, MinusIcon } from './Icons';
 import { formatINR } from '../lib/products';
+import { rawImageUrl } from '../lib/img';
 
 export default function CartDrawer() {
   const { cartOpen, closeCart } = useUI();
@@ -49,7 +51,13 @@ export default function CartDrawer() {
                 <div className="cart-items">
                   {items.map((i) => (
                     <div className="cart-item" key={`${i.id}-${i.size}`}>
-                      <div className="cart-item-img" style={{ backgroundImage: i.image }} />
+                      {rawImageUrl(i.image) ? (
+                        <div className="cart-item-img">
+                          <Image src={rawImageUrl(i.image)} alt="" fill sizes="84px" style={{ objectFit: 'cover' }} />
+                        </div>
+                      ) : (
+                        <div className="cart-item-img" style={{ backgroundImage: i.image }} />
+                      )}
                       <div className="cart-item-meta">
                         <div className="cart-item-top">
                           <span className="cart-item-name">{i.name}</span>
